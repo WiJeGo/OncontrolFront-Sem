@@ -358,27 +358,35 @@ export default function PatientsPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem asChild>
-                              <Link href={`/dashboard/medico/pacientes/${patient.id}`}>
-                                <Eye className="mr-2 h-4 w-4" />
-                                Ver Detalles
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <Link href={`/dashboard/medico/citas/nueva?patientId=${patient.id}`}>
-                                <Calendar className="mr-2 h-4 w-4" />
-                                Nueva Cita
-                              </Link>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div className="flex items-center justify-end gap-2">
+                          <Button asChild variant="outline" size="sm" className="border-2 hover:bg-primary hover:text-primary-foreground transition-all">
+                            <Link href={`/dashboard/medico/pacientes/${patient.id}`}>
+                              <Eye className="mr-2 h-4 w-4" />
+                              Detalles
+                            </Link>
+                          </Button>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0 rounded-full hover:bg-primary/10">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="dynamic-island rounded-xl border-border/50">
+                              <DropdownMenuItem asChild>
+                                <Link href={`/dashboard/medico/pacientes/${patient.id}/editar`}>
+                                  <Users className="mr-2 h-4 w-4" />
+                                  Editar Paciente
+                                </Link>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem asChild>
+                                <Link href={`/dashboard/medico/citas/nueva?patientId=${patient.id}`}>
+                                  <Calendar className="mr-2 h-4 w-4" />
+                                  Nueva Cita
+                                </Link>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}

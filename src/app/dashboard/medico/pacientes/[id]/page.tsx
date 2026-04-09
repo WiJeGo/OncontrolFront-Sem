@@ -296,38 +296,48 @@ export default function PatientDetailsPage() {
             </Card>
           </div>
 
-          {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardContent className="pt-6">
+            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
+              <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">Tratamientos Activos</p>
-                    <p className="text-2xl font-bold">{patient.activeTreatments}</p>
+                    <p className="text-sm font-semibold text-muted-foreground">Tratamientos Activos</p>
+                    <p className="text-3xl font-bold text-foreground">{treatmentsData.filter(t => t.status === 'ACTIVE').length}</p>
                   </div>
-                  <Activity className="h-8 w-8 text-primary" />
+                  <div className="p-3 rounded-2xl bg-primary/10">
+                    <Activity className="h-8 w-8 text-primary" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="pt-6">
+            <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+              <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">Citas Próximas</p>
-                    <p className="text-2xl font-bold">{patient.upcomingAppointments}</p>
+                    <p className="text-sm font-semibold text-muted-foreground">Citas Próximas</p>
+                    <p className="text-3xl font-bold text-foreground">
+                      {appointmentsData.filter(a => new Date(a.appointmentDate) >= new Date() && a.status !== 'CANCELLED').length}
+                    </p>
                   </div>
-                  <Calendar className="h-8 w-8 text-primary" />
+                  <div className="p-3 rounded-2xl bg-secondary/10">
+                    <Calendar className="h-8 w-8 text-secondary" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="pt-6">
+            <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+              <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">Alergias Registradas</p>
-                    <p className="text-2xl font-bold">{allergies.length}</p>
+                    <p className="text-sm font-semibold text-muted-foreground">Alergias Registradas</p>
+                    <p className="text-3xl font-bold text-foreground">{allergies.length}</p>
                   </div>
-                  <Shield className="h-8 w-8 text-primary" />
+                  <div className="p-3 rounded-2xl bg-accent/10">
+                    <Shield className="h-8 w-8 text-accent" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
