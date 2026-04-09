@@ -165,66 +165,30 @@
   box-shadow: 0 12px 32px oklch(0.52 0.13 185 / 0.18), 0 4px 12px oklch(0.52 0.13 185 / 0.12);
 }
 
-/* Dynamic Island Styles - Glassmorphism Effect */
+/* Dynamic Island Styles - Solid and Clean */
 .dynamic-island {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  @apply bg-card border border-border shadow-lg;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .dynamic-island-sidebar {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.15),
-    0 4px 16px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    -1px 0 0 rgba(0, 0, 0, 0.05);
+  @apply bg-card border-r border-border shadow-xl;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .dynamic-island-navbar {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 
-    0 4px 24px rgba(0, 0, 0, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  @apply bg-card border border-border shadow-sm;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
-/* Dark mode adjustments */
-.dark .dynamic-island {
-  background: rgba(15, 15, 15, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.dark .dynamic-island-sidebar {
-  background: rgba(15, 15, 15, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.5),
-    0 4px 16px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    -1px 0 0 rgba(255, 255, 255, 0.05);
-}
-
+/* Dark mode adjustments - Solid */
+.dark .dynamic-island,
+.dark .dynamic-island-sidebar,
 .dark .dynamic-island-navbar {
-  background: rgba(15, 15, 15, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 4px 24px rgba(0, 0, 0, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  @apply bg-card border-border;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
