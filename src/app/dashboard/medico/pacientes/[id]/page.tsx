@@ -29,7 +29,8 @@ import {
   AlertTriangle,
   Shield,
   Edit,
-  Stethoscope
+  Stethoscope,
+  Eye
 } from "lucide-react"
 import Link from "next/link"
 import { format } from "date-fns"
@@ -39,6 +40,22 @@ export default function PatientDetailsPage() {
   const { user } = useAuthContext()
   const params = useParams()
   const patientId = params.id as string
+
+  const getStatusText = (status: string) => {
+    switch (status?.toUpperCase()) {
+      case 'CONFIRMED':
+      case 'CONFIRMADA': return 'Confirmada'
+      case 'SCHEDULED':
+      case 'PROGRAMADA': return 'Programada'
+      case 'COMPLETED':
+      case 'COMPLETADA': return 'Completada'
+      case 'CANCELLED':
+      case 'CANCELADA': return 'Cancelada'
+      case 'IN_PROGRESS': return 'En curso'
+      case 'NO_SHOW': return 'No asistió'
+      default: return status
+    }
+  }
   
   const [doctorProfileId, setDoctorProfileId] = useState<number | null>(null)
   const [patient, setPatient] = useState<PatientProfileResponse | null>(null)
@@ -316,9 +333,9 @@ export default function PatientDetailsPage() {
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-semibold text-muted-foreground">Citas Próximas</p>
+                    <p className="text-sm font-semibold text-muted-foreground">Total de Citas</p>
                     <p className="text-3xl font-bold text-foreground">
-                      {appointmentsData.filter(a => new Date(a.appointmentDate) >= new Date() && a.status !== 'CANCELLED').length}
+                      {appointmentsData.length}
                     </p>
                   </div>
                   <div className="p-3 rounded-2xl bg-secondary/10">
@@ -539,18 +556,29 @@ export default function PatientDetailsPage() {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      {appointmentsData.map((appointment) => (
-                        <Card key={appointment.id} className="border-2 hover:border-primary/40 hover:shadow-md transition-all">
-                          <CardContent className="p-6">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="space-y-3 flex-1">
-                                <div className="flex items-center gap-3">
-                                  <Badge className={`${getAppointmentStatusColor(appointment.status)} border-2 font-semibold`}>
-                                    {appointment.status}
-                                  </Badge>
-                                  <Badge variant="outline" className="border-2 font-semibold">{appointment.type}</Badge>
+                      {appointmentsData
+                        .sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime())
+                        .map((appointment) => (
+                        <Card key={appointment.id} className="border-2 hover:border-primary/40 hover:shadow-md transition-all group overflow-hidden">
+                          <CardContent className="p-0">
+                            <div className="flex flex-col md:flex-row">
+                              <div className={`w-2 md:w-3 ${getAppointmentStatusColor(appointment.status).split(' ')[0]}`} />
+                              <div className="p-6 flex-1 space-y-3">
+                                <div className="flex items-center justify-between gap-4">
+                                  <div className="flex items-center gap-3">
+                                    <Badge className={`${getAppointmentStatusColor(appointment.status)} border-2 font-semibold`}>
+                                      {getStatusText(appointment.status)}
+                                    </Badge>
+                                    <Badge variant="outline" className="border-2 font-semibold">{appointment.type}</Badge>
+                                  </div>
+                                  <Link href={`/dashboard/medico/citas/${appointment.id}`}>
+                                    <Button variant="outline" size="sm" className="border-2 hover:bg-primary hover:text-primary-foreground transition-all">
+                                      <Eye className="mr-2 h-4 w-4" />
+                                      Ver Detalles
+                                    </Button>
+                                  </Link>
                                 </div>
-                                <div className="flex items-center gap-4 text-sm">
+                                <div className="flex flex-wrap items-center gap-4 text-sm">
                                   <div className="flex items-center gap-2 p-2 bg-muted/50 rounded-lg">
                                     <Calendar className="h-4 w-4 text-primary" />
                                     <span className="font-medium">{formatDate(appointment.appointmentDate)}</span>
@@ -569,7 +597,7 @@ export default function PatientDetailsPage() {
                                 {appointment.notes && (
                                   <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
                                     <p className="text-xs font-semibold text-muted-foreground mb-1">Notas:</p>
-                                    <p className="text-sm font-medium">{appointment.notes}</p>
+                                    <p className="text-sm font-medium italic">{appointment.notes}</p>
                                   </div>
                                 )}
                               </div>
