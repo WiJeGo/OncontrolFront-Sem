@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Eye, EyeOff, Mail, Lock, Heart, Shield, Users } from "lucide-react"
 import Link from "next/link"
 import { useAuthContext } from "@/contexts/auth-context"
+import { ModeToggle } from "@/components/mode-toggle"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -148,7 +149,12 @@ export default function LoginPage() {
       </div>
 
       {/* Mitad derecha - Formulario */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-background">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-background relative">
+        {/* Theme Toggle - Top Right */}
+        <div className="absolute top-4 right-4 sm:top-8 sm:right-8">
+          <ModeToggle />
+        </div>
+
         <div className="w-full max-w-md">
           {/* Logo móvil */}
           <div className="lg:hidden text-center mb-8">

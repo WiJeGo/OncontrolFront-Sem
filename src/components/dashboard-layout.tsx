@@ -189,9 +189,9 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
               </>
             ) : (
               <div className="flex flex-col items-center gap-4 w-full">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border-2 border-primary/30">
-                  <span className="text-lg font-bold text-primary">O</span>
-                </div>
+                <Link href={`/dashboard/${userType}`} className="hover:scale-110 transition-transform">
+                  <OnControlLogo size="sm" hideText={true} />
+                </Link>
                 <Button 
                   variant="ghost" 
                   size="sm" 
