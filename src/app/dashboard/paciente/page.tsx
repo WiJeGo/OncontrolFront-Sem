@@ -19,7 +19,8 @@ import {
   Clock,
   AlertTriangle,
   Stethoscope,
-  Pill
+  Pill,
+  CheckCircle
 } from "lucide-react"
 
 export default function PacienteDashboard() {
