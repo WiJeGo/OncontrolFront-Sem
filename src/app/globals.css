@@ -1,0 +1,230 @@
+@import "tailwindcss";
+@import "../styles/performance.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* OnControl Brand Colors - Modern Palette */
+  --background: oklch(0.99 0 0); /* Slightly off-white for softer look */
+  --foreground: oklch(0.15 0.01 260); /* Deep dark blue-gray for text */
+  --card: oklch(1 0 0); /* Pure white for cards */
+  --card-foreground: oklch(0.15 0.01 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.01 260);
+
+  /* Primary: Modern Teal #00897b - More vibrant and modern */
+  --primary: oklch(0.52 0.13 185); /* Vibrant teal */
+  --primary-foreground: oklch(1 0 0); /* White text on teal */
+
+  /* Secondary: Warm Coral #ff6b47 - Softer, more modern orange */
+  --secondary: oklch(0.68 0.17 30); /* Modern coral-orange */
+  --secondary-foreground: oklch(1 0 0); /* White text on orange */
+
+  --muted: oklch(0.96 0.005 260); /* Very light blue-gray */
+  --muted-foreground: oklch(0.50 0.01 260); /* Medium gray for muted text */
+
+  /* Accent: Soft Red #ff4757 - Modern red */
+  --accent: oklch(0.64 0.20 25); /* Modern red */
+  --accent-foreground: oklch(1 0 0);
+
+  /* Destructive: Modern Pink #ff6b9d - Softer pink */
+  --destructive: oklch(0.65 0.19 340); /* Modern pink */
+  --destructive-foreground: oklch(1 0 0);
+
+  --border: oklch(0.90 0.005 260); /* Light border with subtle blue tint */
+  --input: oklch(1 0 0); /* White inputs */
+  --ring: oklch(0.52 0.13 185 / 0.25); /* Teal ring with opacity */
+
+  /* Chart colors using modern OnControl palette */
+  --chart-1: oklch(0.52 0.13 185); /* Teal */
+  --chart-2: oklch(0.68 0.17 30); /* Coral */
+  --chart-3: oklch(0.64 0.20 25); /* Red */
+  --chart-4: oklch(0.48 0.16 250); /* Blue */
+  --chart-5: oklch(0.65 0.19 340); /* Pink */
+
+  --radius: 0.75rem; /* Slightly larger radius for modern look */
+
+  /* Sidebar colors */
+  --sidebar: oklch(0.98 0.005 260);
+  --sidebar-foreground: oklch(0.15 0.01 260);
+  --sidebar-primary: oklch(0.52 0.13 185);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.68 0.17 30);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.90 0.005 260);
+  --sidebar-ring: oklch(0.52 0.13 185 / 0.25);
+}
+
+.dark {
+  --background: oklch(0.10 0.01 260); /* Dark blue-gray background */
+  --foreground: oklch(0.98 0.005 260); /* Light text */
+  --card: oklch(0.13 0.01 260); /* Darker cards */
+  --card-foreground: oklch(0.98 0.005 260);
+  --popover: oklch(0.10 0.01 260);
+  --popover-foreground: oklch(0.98 0.005 260);
+  --primary: oklch(0.60 0.14 185); /* Lighter teal for dark mode */
+  --primary-foreground: oklch(0.10 0.01 260);
+  --secondary: oklch(0.72 0.18 30); /* Lighter coral for dark mode */
+  --secondary-foreground: oklch(0.10 0.01 260);
+  --muted: oklch(0.18 0.01 260); /* Dark muted background */
+  --muted-foreground: oklch(0.70 0.01 260); /* Light muted text */
+  --accent: oklch(0.70 0.21 25); /* Lighter red for dark mode */
+  --accent-foreground: oklch(0.10 0.01 260);
+  --destructive: oklch(0.72 0.20 340); /* Lighter pink for dark mode */
+  --destructive-foreground: oklch(0.10 0.01 260);
+  --border: oklch(0.20 0.01 260); /* Darker borders */
+  --input: oklch(0.13 0.01 260); /* Dark input background */
+  --ring: oklch(0.60 0.14 185 / 0.3); /* Teal ring with more opacity */
+  --chart-1: oklch(0.60 0.14 185);
+  --chart-2: oklch(0.72 0.18 30);
+  --chart-3: oklch(0.70 0.21 25);
+  --chart-4: oklch(0.55 0.17 250);
+  --chart-5: oklch(0.72 0.20 340);
+  --sidebar: oklch(0.10 0.01 260);
+  --sidebar-foreground: oklch(0.98 0.005 260);
+  --sidebar-primary: oklch(0.60 0.14 185);
+  --sidebar-primary-foreground: oklch(0.10 0.01 260);
+  --sidebar-accent: oklch(0.72 0.18 30);
+  --sidebar-accent-foreground: oklch(0.10 0.01 260);
+  --sidebar-border: oklch(0.20 0.01 260);
+  --sidebar-ring: oklch(0.60 0.14 185 / 0.3);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+/* OnControl specific styles - Modern */
+.oncontrol-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+}
+
+.oncontrol-text-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.oncontrol-shadow {
+  box-shadow: 0 4px 24px oklch(0.52 0.13 185 / 0.12), 0 2px 8px oklch(0.52 0.13 185 / 0.08);
+}
+
+.oncontrol-hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.oncontrol-hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px oklch(0.52 0.13 185 / 0.18), 0 4px 12px oklch(0.52 0.13 185 / 0.12);
+}
+
+/* Dynamic Island Styles - Glassmorphism Effect */
+.dynamic-island {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.dynamic-island-sidebar {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    -1px 0 0 rgba(0, 0, 0, 0.05);
+}
+
+.dynamic-island-navbar {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Dark mode adjustments */
+.dark .dynamic-island {
+  background: rgba(15, 15, 15, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dark .dynamic-island-sidebar {
+  background: rgba(15, 15, 15, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    -1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.dark .dynamic-island-navbar {
+  background: rgba(15, 15, 15, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
