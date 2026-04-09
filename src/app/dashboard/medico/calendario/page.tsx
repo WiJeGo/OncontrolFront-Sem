@@ -70,23 +70,40 @@ export default function CalendarPage() {
 
   const getAppointmentsForDate = (date: Date) => {
     return appointmentsList.filter(appointment => 
-      isSameDay(parseISO(appointment.appointmentDate), date) &&
-      appointment.status === 'CONFIRMED' // Solo mostrar citas confirmadas en el calendario
+      isSameDay(parseISO(appointment.appointmentDate), date)
     )
   }
 
   const getStatusColor = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case 'confirmada':
-        return 'bg-primary/20 text-primary-foreground border-primary/30'
-      case 'programada':
-        return 'bg-primary/10 text-primary-foreground border-primary/20'
-      case 'completada':
-        return 'bg-muted text-muted-foreground border-muted'
-      case 'cancelada':
-        return 'bg-muted text-muted-foreground border-border'
+    switch (status?.toUpperCase()) {
+      case 'CONFIRMED':
+      case 'CONFIRMADA':
+        return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800'
+      case 'SCHEDULED':
+      case 'PROGRAMADA':
+        return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
+      case 'COMPLETED':
+      case 'COMPLETADA':
+        return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800/30 dark:text-gray-400 dark:border-gray-700'
+      case 'CANCELLED':
+      case 'CANCELADA':
+        return 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
+      case 'IN_PROGRESS':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800'
       default:
         return 'bg-muted text-muted-foreground border-muted'
+    }
+  }
+
+  const getStatusText = (status: string) => {
+    switch (status?.toUpperCase()) {
+      case 'CONFIRMED': return 'Confirmada'
+      case 'SCHEDULED': return 'Programada'
+      case 'COMPLETED': return 'Completada'
+      case 'CANCELLED': return 'Cancelada'
+      case 'IN_PROGRESS': return 'En curso'
+      case 'NO_SHOW': return 'No asistió'
+      default: return status
     }
   }
 
@@ -160,7 +177,7 @@ export default function CalendarPage() {
                     <p className="font-semibold truncate">{appointment.patientName}</p>
                     <p className="text-muted-foreground truncate text-xs">{appointment.type}</p>
                     <Badge className={`text-xs border ${getStatusColor(appointment.status)} font-semibold mt-1`}>
-                      {appointment.status}
+                      {getStatusText(appointment.status)}
                     </Badge>
                   </div>
                 ))}
@@ -245,7 +262,7 @@ export default function CalendarPage() {
                         </div>
                         <p className="font-semibold truncate">{appointment.patientName}</p>
                         <Badge className={`text-xs border ${getStatusColor(appointment.status)} font-semibold mt-0.5`}>
-                          {appointment.status}
+                          {getStatusText(appointment.status)}
                         </Badge>
                       </div>
                     ))}
@@ -393,7 +410,7 @@ export default function CalendarPage() {
                             {format(parseISO(appointment.appointmentDate), 'HH:mm')}
                           </p>
                           <Badge className={`${getStatusColor(appointment.status)} border-2 font-semibold`}>
-                            {appointment.status}
+                            {getStatusText(appointment.status)}
                           </Badge>
                         </div>
                         <DropdownMenu>
