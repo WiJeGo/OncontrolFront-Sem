@@ -197,27 +197,33 @@ export default function PacienteDashboard() {
             </Card>
           )}
 
-          {/* Next Medication Countdown */}
+          {/* Next Medication Countdown - Redesigned Solid */}
           {nextMedication && (
-            <Card className="border-2 border-primary shadow-xl bg-gradient-to-r from-primary/20 via-primary/10 to-transparent overflow-hidden">
+            <Card className="border-2 border-primary shadow-xl overflow-hidden bg-card">
               <CardContent className="p-0">
-                <div className="flex flex-col md:flex-row items-center">
-                  <div className="p-6 bg-primary text-primary-foreground flex flex-col items-center justify-center min-w-[200px]">
-                    <Clock className="h-10 w-10 mb-2 animate-pulse" />
-                    <p className="text-sm font-medium opacity-90 uppercase tracking-wider">Próxima toma en</p>
-                    <p className="text-4xl font-black">{nextMedication.timeLeft}</p>
+                <div className="flex flex-col md:flex-row">
+                  <div className="p-8 bg-primary text-primary-foreground flex flex-col items-center justify-center min-w-[240px] text-center">
+                    <div className="p-3 rounded-full bg-white/20 mb-4 animate-bounce">
+                      <Clock className="h-10 w-10" />
+                    </div>
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-80 mb-1">Próxima toma en</p>
+                    <p className="text-5xl font-black tabular-nums">{nextMedication.timeLeft}</p>
                   </div>
-                  <div className="p-6 flex-1 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-2xl bg-primary/10 text-primary">
-                        <Pill className="h-8 w-8" />
+                  <div className="p-8 flex-1 flex flex-col md:flex-row items-center justify-between gap-6 bg-card">
+                    <div className="flex items-center gap-6">
+                      <div className="p-4 rounded-2xl bg-primary/10 text-primary border-2 border-primary/20">
+                        <Pill className="h-10 w-10" />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold">{nextMedication.name}</h3>
-                        <p className="text-muted-foreground font-medium">Programado para las {nextMedication.time}</p>
+                        <h3 className="text-3xl font-black text-foreground tracking-tight">{nextMedication.name}</h3>
+                        <div className="flex items-center gap-2 mt-1 text-muted-foreground font-semibold">
+                          <Calendar className="h-4 w-4" />
+                          <span>Hoy a las {nextMedication.time}</span>
+                        </div>
                       </div>
                     </div>
-                    <Button className="bg-primary text-primary-foreground hover:scale-105 transition-all shadow-lg rounded-xl h-12 px-8 font-bold">
+                    <Button className="w-full md:w-auto bg-primary text-primary-foreground hover:scale-105 active:scale-95 transition-all shadow-[0_8px_16px_rgba(var(--primary-rgb),0.3)] rounded-2xl h-14 px-10 font-bold text-lg border-b-4 border-primary-foreground/20">
+                      <CheckCircle className="mr-2 h-6 w-6" />
                       Marcar como tomada
                     </Button>
                   </div>

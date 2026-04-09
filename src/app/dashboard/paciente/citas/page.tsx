@@ -29,6 +29,9 @@ import { format, parseISO, isFuture, isPast } from "date-fns"
 import { es } from "date-fns/locale"
 import Link from "next/link"
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Calendar as CalendarComponent } from "@/components/ui/calendar"
+
 export default function CitasPacientePage() {
   const { user } = useAuthContext()
   const [patientProfileId, setPatientProfileId] = useState<number | null>(null)
@@ -36,6 +39,7 @@ export default function CitasPacientePage() {
   const [appointments, setAppointments] = useState<AppointmentResponse[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [currentDate, setCurrentDate] = useState(new Date())
 
   useEffect(() => {
     if (user && isPatientUser(user)) {
@@ -52,7 +56,9 @@ export default function CitasPacientePage() {
         setError(null)
         
         const data = await appointmentsApi.getPatientAppointments(patientProfileId)
-        setAppointments(data)
+        // Sort newest first
+        const sorted = [...data].sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime())
+        setAppointments(sorted)
       } catch (err) {
         console.error('Error loading appointments:', err)
         setError('Error al cargar las citas')
@@ -81,6 +87,27 @@ export default function CitasPacientePage() {
     }
     return appointment.status === statusFilter
   })
+
+  const getAppointmentsForDate = (date: Date) => {
+    return appointments.filter(appointment => 
+      format(parseISO(appointment.appointmentDate), 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')
+    )
+  }
+
+  const getStatusText = (status: string) => {
+    switch (status?.toUpperCase()) {
+      case "CONFIRMED":
+      case "CONFIRMADA": return "Confirmada"
+      case "SCHEDULED":
+      case "PROGRAMADA":
+      case "PENDIENTE": return "Programada"
+      case "COMPLETED":
+      case "COMPLETADA": return "Completada"
+      case "CANCELLED":
+      case "CANCELADA": return "Cancelada"
+      default: return status
+    }
+  }
 
   const getStatusColor = (status: string) => {
     switch (status?.toUpperCase()) {
