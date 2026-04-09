@@ -86,18 +86,35 @@ export default function CitasPacientePage() {
     switch (status?.toUpperCase()) {
       case "CONFIRMED":
       case "CONFIRMADA":
-        return "bg-primary/10 text-primary border-primary/20"
+        return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800"
       case "SCHEDULED":
+      case "PROGRAMADA":
       case "PENDIENTE":
-        return "bg-secondary/10 text-secondary border-secondary/20"
+        return "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800"
       case "COMPLETED":
       case "COMPLETADA":
-        return "bg-accent/10 text-accent border-accent/20"
+        return "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800/30 dark:text-gray-400 dark:border-gray-700"
       case "CANCELLED":
       case "CANCELADA":
-        return "bg-destructive/10 text-destructive border-destructive/20"
+        return "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800"
       default:
-        return "bg-muted text-muted-foreground"
+        return "bg-muted text-muted-foreground border-muted"
+    }
+  }
+
+  const getStatusText = (status: string) => {
+    switch (status?.toUpperCase()) {
+      case "CONFIRMED":
+      case "CONFIRMADA": return "Confirmada"
+      case "SCHEDULED":
+      case "PROGRAMADA":
+      case "PENDIENTE": return "Programada"
+      case "COMPLETED":
+      case "COMPLETADA": return "Completada"
+      case "CANCELLED":
+      case "CANCELADA": return "Cancelada"
+      case "IN_PROGRESS": return "En curso"
+      default: return status
     }
   }
 
@@ -105,13 +122,13 @@ export default function CitasPacientePage() {
     switch (status?.toUpperCase()) {
       case "CONFIRMED":
       case "CONFIRMADA":
-        return <CheckCircle className="h-4 w-4" />
-      case "SCHEDULED":
-      case "PENDIENTE":
-        return <Clock className="h-4 w-4" />
       case "COMPLETED":
       case "COMPLETADA":
         return <CheckCircle className="h-4 w-4" />
+      case "SCHEDULED":
+      case "PROGRAMADA":
+      case "PENDIENTE":
+        return <Clock className="h-4 w-4" />
       case "CANCELLED":
       case "CANCELADA":
         return <X className="h-4 w-4" />
@@ -324,7 +341,7 @@ export default function CitasPacientePage() {
                           <h3 className="text-xl font-bold">{appointment.type}</h3>
                           <Badge className={`${getStatusColor(appointment.status)} border-2 font-semibold`}>
                             {getStatusIcon(appointment.status)}
-                            <span className="ml-1">{appointment.status}</span>
+                            <span className="ml-1">{getStatusText(appointment.status)}</span>
                           </Badge>
                         </div>
                         <div className="space-y-2 text-sm text-muted-foreground">
