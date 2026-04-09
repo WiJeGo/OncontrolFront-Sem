@@ -94,21 +94,6 @@ export default function CitasPacientePage() {
     )
   }
 
-  const getStatusText = (status: string) => {
-    switch (status?.toUpperCase()) {
-      case "CONFIRMED":
-      case "CONFIRMADA": return "Confirmada"
-      case "SCHEDULED":
-      case "PROGRAMADA":
-      case "PENDIENTE": return "Programada"
-      case "COMPLETED":
-      case "COMPLETADA": return "Completada"
-      case "CANCELLED":
-      case "CANCELADA": return "Cancelada"
-      default: return status
-    }
-  }
-
   const getStatusColor = (status: string) => {
     switch (status?.toUpperCase()) {
       case "CONFIRMED":
