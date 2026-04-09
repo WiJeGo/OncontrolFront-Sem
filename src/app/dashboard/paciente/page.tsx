@@ -18,18 +18,44 @@ import {
   Heart, 
   Clock,
   AlertTriangle,
-  Stethoscope
+  Stethoscope,
+  Pill
 } from "lucide-react"
 
 export default function PacienteDashboard() {
   const { user } = useAuthContext()
   const [patientProfileId, setPatientProfileId] = useState<number | null>(null)
+  const [nextMedication, setNextMedication] = useState<{name: string, time: string, timeLeft: string} | null>(null)
 
   useEffect(() => {
     if (user && isPatientUser(user)) {
       setPatientProfileId(user.profile.id)
     }
   }, [user])
+
+  // Lógica para el contador de medicación
+  useEffect(() => {
+    const updateCountdown = () => {
+      // Datos simulados por ahora, en una app real esto vendría de la API
+      const now = new Date()
+      const nextTime = new Date()
+      nextTime.setHours(now.getHours() + 2, 30, 0) // Simular toma en 2h 30m
+
+      const diff = nextTime.getTime() - now.getTime()
+      const hours = Math.floor(diff / (1000 * 60 * 60))
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+
+      setNextMedication({
+        name: "Tamoxifeno 20mg",
+        time: nextTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+        timeLeft: `${hours}h ${minutes}m`
+      })
+    }
+
+    updateCountdown()
+    const timer = setInterval(updateCountdown, 60000)
+    return () => clearInterval(timer)
+  }, [])
 
   const { dashboard, isLoading, error, refetch } = usePatientDashboard(patientProfileId)
 
@@ -167,6 +193,35 @@ export default function PacienteDashboard() {
                     Solicitar Cita de Emergencia
                   </Link>
                 </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Next Medication Countdown */}
+          {nextMedication && (
+            <Card className="border-2 border-primary shadow-xl bg-gradient-to-r from-primary/20 via-primary/10 to-transparent overflow-hidden">
+              <CardContent className="p-0">
+                <div className="flex flex-col md:flex-row items-center">
+                  <div className="p-6 bg-primary text-primary-foreground flex flex-col items-center justify-center min-w-[200px]">
+                    <Clock className="h-10 w-10 mb-2 animate-pulse" />
+                    <p className="text-sm font-medium opacity-90 uppercase tracking-wider">Próxima toma en</p>
+                    <p className="text-4xl font-black">{nextMedication.timeLeft}</p>
+                  </div>
+                  <div className="p-6 flex-1 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 rounded-2xl bg-primary/10 text-primary">
+                        <Pill className="h-8 w-8" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold">{nextMedication.name}</h3>
+                        <p className="text-muted-foreground font-medium">Programado para las {nextMedication.time}</p>
+                      </div>
+                    </div>
+                    <Button className="bg-primary text-primary-foreground hover:scale-105 transition-all shadow-lg rounded-xl h-12 px-8 font-bold">
+                      Marcar como tomada
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           )}

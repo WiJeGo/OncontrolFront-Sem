@@ -17,7 +17,7 @@ import { Loading } from "@/components/loading"
 import { useAuthContext } from "@/contexts/auth-context"
 import { useDoctorPatients } from "@/hooks/use-doctors"
 import { isDoctorUser } from "@/types/organization"
-import { Search, Plus, MoreHorizontal, Eye, Calendar, Phone, Mail, Activity, Users } from "lucide-react"
+import { Search, Plus, MoreHorizontal, Eye, Calendar, Phone, Mail, Activity, Users, Download, UserX } from "lucide-react"
 
 export default function PatientsPage() {
   const { user } = useAuthContext()
@@ -28,6 +28,36 @@ export default function PatientsPage() {
   const doctorProfileId = user && isDoctorUser(user) ? user.profile.id : null
 
   const { patients: patientsList, isLoading, error, refetch } = useDoctorPatients(doctorProfileId)
+
+  const exportToCSV = () => {
+    if (!filteredPatients || filteredPatients.length === 0) return
+
+    const headers = ["Nombre", "Apellido", "Email", "Teléfono", "ID Paciente", "Tipo Cáncer", "Etapa", "Estado"]
+    const csvRows = [
+      headers.join(","),
+      ...filteredPatients.map(p => [
+        p.firstName,
+        p.lastName,
+        p.email,
+        p.phone || "N/A",
+        p.profileId || "N/A",
+        p.cancerType || "N/A",
+        p.cancerStage || "N/A",
+        p.isActive ? "Activo" : "Inactivo"
+      ].map(field => `"${field}"`).join(","))
+    ]
+
+    const csvString = csvRows.join("\n")
+    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.setAttribute("href", url)
+    link.setAttribute("download", `pacientes_${new Date().toISOString().split('T')[0]}.csv`)
+    link.style.visibility = "hidden"
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   const filteredPatients = (patientsList || []).filter(patient => {
     // Filter by search term
@@ -100,12 +130,23 @@ export default function PatientsPage() {
               Administra y supervisa a tus pacientes ({filteredPatients.length} {filteredPatients.length === 1 ? 'paciente' : 'pacientes'})
             </p>
           </div>
-          <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl">
-            <Link href="/dashboard/medico/pacientes/nuevo">
-              <Plus className="mr-2 h-5 w-5" />
-              Nuevo Paciente
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              onClick={exportToCSV}
+              disabled={filteredPatients.length === 0}
+              className="border-2 h-11 px-4 shadow-sm hover:shadow-md transition-all"
+            >
+              <Download className="mr-2 h-5 w-5" />
+              Exportar CSV
+            </Button>
+            <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl">
+              <Link href="/dashboard/medico/pacientes/nuevo">
+                <Plus className="mr-2 h-5 w-5" />
+                Nuevo Paciente
+              </Link>
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -204,25 +245,34 @@ export default function PatientsPage() {
           </CardHeader>
           <CardContent className="p-6">
             {filteredPatients.length === 0 ? (
-              <div className="text-center py-16">
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
-                  <Users className="h-10 w-10 text-muted-foreground" />
+              <div className="text-center py-20 bg-muted/20 rounded-2xl border-2 border-dashed border-muted">
+                <div className="relative inline-flex items-center justify-center w-24 h-24 rounded-full bg-muted/50 mb-6">
+                  <UserX className="h-12 w-12 text-muted-foreground animate-pulse" />
+                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-primary rounded-full border-4 border-background animate-bounce" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">
+                <h3 className="text-2xl font-bold mb-3">
                   {searchTerm || statusFilter !== "all" 
-                    ? "No se encontraron pacientes" 
-                    : "No hay pacientes registrados"}
+                    ? "No se encontraron resultados" 
+                    : "Tu lista de pacientes está vacía"}
                 </h3>
-                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                <p className="text-muted-foreground mb-8 max-w-sm mx-auto text-lg leading-relaxed">
                   {searchTerm || statusFilter !== "all" 
-                    ? "Intenta cambiar los filtros de búsqueda" 
-                    : "Comienza agregando pacientes para gestionar sus tratamientos"}
+                    ? "Hemos buscado por todos lados, pero no encontramos coincidencias con esos filtros." 
+                    : "Parece que aún no has registrado pacientes. Comienza agregando uno para gestionar su atención."}
                 </p>
-                {!searchTerm && statusFilter === "all" && (
-                  <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg">
+                {searchTerm || statusFilter !== "all" ? (
+                  <Button 
+                    variant="outline" 
+                    onClick={() => { setSearchTerm(""); setStatusFilter("all"); }}
+                    className="h-11 px-6 border-2 hover:bg-muted transition-all"
+                  >
+                    Limpiar todos los filtros
+                  </Button>
+                ) : (
+                  <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-12 px-8 shadow-xl hover:shadow-primary/20">
                     <Link href="/dashboard/medico/pacientes/nuevo">
-                      <Plus className="mr-2 h-5 w-5" />
-                      Agregar Primer Paciente
+                      <Plus className="mr-2 h-6 w-6" />
+                      Registrar Primer Paciente
                     </Link>
                   </Button>
                 )}

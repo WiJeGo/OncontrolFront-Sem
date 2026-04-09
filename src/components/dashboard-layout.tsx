@@ -35,6 +35,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useAuthContext } from "@/contexts/auth-context"
 import { Loading } from "./loading"
+import { ModeToggle } from "./mode-toggle"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -235,6 +236,7 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
             </div>
 
             <div className="flex items-center gap-3">
+              <ModeToggle />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:ring-2 hover:ring-primary/20 transition-all">
