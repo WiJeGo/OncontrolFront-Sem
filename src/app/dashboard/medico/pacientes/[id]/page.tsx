@@ -80,14 +80,20 @@ export default function PatientDetailsPage() {
         
         const [appointmentsResult, treatmentsResult, historyData, allergiesData] = await Promise.all([
           appointmentsApi.getDoctorAppointments(doctorProfileId)
-            .then(data => data.filter(apt => (apt.patientId || apt.patientProfileId) === patientProfileId))
+            .then(data => data.filter(apt => {
+              const aptPatientId = apt.patientId || apt.patientProfileId;
+              return aptPatientId?.toString() === patientId.toString();
+            }))
             .catch(() => []),
           treatments.getDoctorTreatments(doctorProfileId)
-            .then(data => data.filter(t => Number(t.patientProfileId) === patientProfileId))
+            .then(data => data.filter(t => {
+              const tPatientId = t.patientId || t.patientProfileId;
+              return tPatientId?.toString() === patientId.toString();
+            }))
             .catch(() => []),
-          medicalHistory.getHistory(patientProfileId)
+          medicalHistory.getHistory(Number(patientId))
             .catch(() => []),
-          medicalHistory.getAllergies(patientProfileId)
+          medicalHistory.getAllergies(Number(patientId))
             .catch(() => [])
         ])
         
