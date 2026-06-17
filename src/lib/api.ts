@@ -2,7 +2,7 @@
 // New Architecture: Organizations → Doctors → Patients
 
 // API Base URL - defaults to production backend
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://oncontrol-backend.onrender.com';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://oncontrol-backend-api.onrender.com';
 
 // ============================================
 // TYPE DEFINITIONS
