@@ -301,7 +301,7 @@ export default function AppointmentsPage() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Gestión de Citas
               </h1>
               <p className="text-muted-foreground text-lg">
@@ -309,7 +309,7 @@ export default function AppointmentsPage() {
               </p>
             </div>
             <div className="flex gap-3">
-              <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl">
+              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
                 <Link href="/dashboard/medico/citas/nueva">
                   <Plus className="mr-2 h-5 w-5" />
                   Nueva Cita
@@ -342,12 +342,12 @@ export default function AppointmentsPage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Hoy</CardTitle>
-                <div className="p-2 rounded-lg bg-secondary/10">
-                  <Clock className="h-5 w-5 text-secondary" />
+                <div className="p-2 rounded-lg bg-chart-2/10">
+                  <Clock className="h-5 w-5 text-chart-2" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
@@ -359,17 +359,17 @@ export default function AppointmentsPage() {
                   }).length}
                 </div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-2"></span>
                   Citas hoy
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Confirmadas</CardTitle>
-                <div className="p-2 rounded-lg bg-accent/10">
-                  <CheckCircle className="h-5 w-5 text-accent" />
+                <div className="p-2 rounded-lg bg-chart-5/10">
+                  <CheckCircle className="h-5 w-5 text-chart-5" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
@@ -377,7 +377,7 @@ export default function AppointmentsPage() {
                   {appointmentsList.filter(apt => apt.status === 'CONFIRMED').length}
                 </div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-5"></span>
                   Confirmadas
                 </p>
               </CardContent>
@@ -470,7 +470,7 @@ export default function AppointmentsPage() {
                       : "Comienza programando citas para tus pacientes"}
                   </p>
                   {!searchTerm && statusFilter === "all" && dateFilter === "all" && (
-                    <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg">
+                    <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg">
                       <Link href="/dashboard/medico/citas/nueva">
                         <Plus className="mr-2 h-5 w-5" />
                         Programar Primera Cita
@@ -640,7 +640,7 @@ export default function AppointmentsPage() {
                 <Button
                   onClick={handleRescheduleSubmit}
                   disabled={isRescheduling || !rescheduleDate || !rescheduleTime}
-                  className="bg-gradient-to-r from-primary to-secondary text-white"
+                  className="bg-primary text-primary-foreground"
                 >
                   {isRescheduling ? "Reprogramando..." : "Reprogramar"}
                 </Button>

@@ -128,12 +128,12 @@ export default function TratamientosPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
         <div className="space-y-2">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
             Gestión de Tratamientos
           </h1>
           <p className="text-muted-foreground text-lg">Administra los protocolos de tratamiento de tus pacientes</p>
         </div>
-        <Button className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl" asChild>
+        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm" asChild>
           <Link href="/dashboard/medico/tratamientos/nuevo">
             <Plus className="w-5 h-5 mr-2" />
             Nuevo Tratamiento
@@ -160,35 +160,35 @@ export default function TratamientosPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+        <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
             <CardTitle className="text-sm font-semibold text-muted-foreground">Activos</CardTitle>
-            <div className="p-2 rounded-lg bg-secondary/10">
-              <Pill className="h-5 w-5 text-secondary" />
+            <div className="p-2 rounded-lg bg-chart-2/10">
+              <Pill className="h-5 w-5 text-chart-2" />
             </div>
           </CardHeader>
           <CardContent className="relative z-10">
             <div className="text-3xl font-bold text-foreground mb-1">{stats.activos}</div>
             <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-chart-2"></span>
               En curso
             </p>
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+        <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
             <CardTitle className="text-sm font-semibold text-muted-foreground">Pausados</CardTitle>
-            <div className="p-2 rounded-lg bg-accent/10">
-              <Clock className="h-5 w-5 text-accent" />
+            <div className="p-2 rounded-lg bg-chart-5/10">
+              <Clock className="h-5 w-5 text-chart-5" />
             </div>
           </CardHeader>
           <CardContent className="relative z-10">
             <div className="text-3xl font-bold text-foreground mb-1">{stats.pausados}</div>
             <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-chart-5"></span>
               Temporalmente pausados
             </p>
           </CardContent>
@@ -278,7 +278,7 @@ export default function TratamientosPage() {
                   : "Comienza creando tratamientos para tus pacientes"}
               </p>
               {!searchTerm && filtroEstado === "todos" && filtroTipo === "todos" && (
-                <Button className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg" asChild>
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg" asChild>
                   <Link href="/dashboard/medico/tratamientos/nuevo">
                     <Plus className="w-5 h-5 mr-2" />
                     Crear Primer Tratamiento
@@ -334,7 +334,7 @@ export default function TratamientosPage() {
                         Ver
                       </Link>
                     </Button>
-                    <Button variant="outline" size="sm" className="border-2 hover:bg-secondary hover:text-secondary-foreground" asChild>
+                    <Button variant="outline" size="sm" className="border-2 hover:bg-chart-2 hover:text-chart-2-foreground" asChild>
                       <Link href={`/dashboard/medico/tratamientos/${tratamiento.id}/editar`}>
                         <Edit className="w-4 h-4 mr-1" />
                         Editar
@@ -351,7 +351,7 @@ export default function TratamientosPage() {
                   </div>
                   <div className="w-full bg-muted rounded-full h-3 border-2 border-border/50 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-primary to-secondary h-3 rounded-full transition-all duration-300 shadow-lg"
+                      className="bg-primary h-3 rounded-full transition-all duration-300 shadow-lg"
                       style={{ width: `${Math.min(tratamiento.progressPercentage, 100)}%` }}
                     />
                   </div>

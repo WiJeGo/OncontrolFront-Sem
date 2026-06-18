@@ -172,14 +172,14 @@ export default function NuevaCitaPage() {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    <h3 className="text-2xl font-bold mb-3 text-foreground">
                       ¡Solicitud Enviada!
                     </h3>
                     <p className="text-muted-foreground text-lg font-medium">
                       Tu solicitud de cita ha sido enviada exitosamente. El doctor la revisará y te contactará pronto.
                     </p>
                   </div>
-                  <Button asChild className="w-full bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-12 px-6 text-lg font-semibold shadow-lg hover:shadow-xl">
+                  <Button asChild className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-6 text-lg font-semibold shadow-sm">
                     <Link href="/dashboard/paciente/citas">Ver Mis Citas</Link>
                   </Button>
                 </div>
@@ -273,7 +273,7 @@ export default function NuevaCitaPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-secondary" />
+                    <Clock className="h-5 w-5 text-chart-2" />
                     Programación
                   </CardTitle>
                   <CardDescription>Fecha, hora y ubicación</CardDescription>

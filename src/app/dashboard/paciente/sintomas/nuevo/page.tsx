@@ -207,7 +207,7 @@ export default function NuevoSintomaPage() {
               </Link>
             </Button>
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Reportar Síntoma
               </h1>
               <p className="text-muted-foreground text-lg">Registra un nuevo síntoma para tu seguimiento médico</p>
@@ -346,8 +346,8 @@ export default function NuevoSintomaPage() {
               <Card className="border-2 shadow-lg">
                 <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                   <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                    <div className="p-2 rounded-lg bg-secondary/10">
-                      <AlertTriangle className="h-5 w-5 text-secondary" />
+                    <div className="p-2 rounded-lg bg-chart-2/10">
+                      <AlertTriangle className="h-5 w-5 text-chart-2" />
                     </div>
                     Información Adicional
                   </CardTitle>
@@ -464,7 +464,7 @@ export default function NuevoSintomaPage() {
                     <span className="font-semibold text-muted-foreground text-sm block mb-3">Desencadenantes:</span>
                     <div className="flex flex-wrap gap-2">
                       {formData.triggers.map((trigger, index) => (
-                        <span key={index} className="px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-semibold border-2 border-secondary/20">
+                        <span key={index} className="px-4 py-2 bg-chart-2/10 text-chart-2 rounded-full text-sm font-semibold border-2 border-chart-2/20">
                           {trigger === "Otro" ? formData.customTrigger : trigger}
                         </span>
                       ))}
@@ -476,7 +476,7 @@ export default function NuevoSintomaPage() {
                     <span className="font-semibold text-muted-foreground text-sm block mb-3">Acciones de manejo:</span>
                     <div className="flex flex-wrap gap-2">
                       {formData.managementActions.map((action, index) => (
-                        <span key={index} className="px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-semibold border-2 border-accent/20">
+                        <span key={index} className="px-4 py-2 bg-chart-5/10 text-chart-5 rounded-full text-sm font-semibold border-2 border-chart-5/20">
                           {action === "Otro" ? formData.customManagement : action}
                         </span>
                       ))}
@@ -493,7 +493,7 @@ export default function NuevoSintomaPage() {
               </Button>
               <Button 
                 type="submit" 
-                className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
                 disabled={!isFormValid || isSubmitting}
               >
                 {isSubmitting ? (

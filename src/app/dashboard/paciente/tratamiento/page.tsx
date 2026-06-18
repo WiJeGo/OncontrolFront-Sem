@@ -125,14 +125,14 @@ export default function TratamientoPacientePage() {
         <div className="space-y-8">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
           Mi Tratamiento
         </h1>
         <p className="text-muted-foreground text-lg">Información detallada sobre tu protocolo de tratamiento actual</p>
       </div>
 
       {/* Resumen del tratamiento */}
-      <Card className="border-2 border-primary/30 shadow-lg bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10">
+      <Card className="border-2 border-primary/30 shadow-lg ">
         <CardHeader className="border-b border-primary/30">
           <div className="flex items-center justify-between mb-4">
             <div className="space-y-2">
@@ -157,7 +157,7 @@ export default function TratamientoPacientePage() {
                 </div>
                 <div className="w-full bg-muted rounded-full h-4 border-2 border-border/50 overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-primary to-secondary h-4 rounded-full transition-all duration-300 shadow-lg"
+                    className="bg-primary h-4 rounded-full transition-all duration-300 shadow-lg"
                     style={{ width: `${Math.min(treatment.progressPercentage, 100)}%` }}
                   />
                 </div>
@@ -221,13 +221,13 @@ export default function TratamientoPacientePage() {
                   {treatment.effectiveness && (
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground font-semibold">Efectividad:</span>
-                      <span className="font-bold text-lg text-secondary">{treatment.effectiveness.toFixed(1)}%</span>
+                      <span className="font-bold text-lg text-chart-2">{treatment.effectiveness.toFixed(1)}%</span>
                     </div>
                   )}
                   {treatment.adherence && (
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground font-semibold">Adherencia:</span>
-                      <span className="font-bold text-lg text-accent">{treatment.adherence.toFixed(1)}%</span>
+                      <span className="font-bold text-lg text-chart-5">{treatment.adherence.toFixed(1)}%</span>
                     </div>
                   )}
                 </div>
@@ -237,8 +237,8 @@ export default function TratamientoPacientePage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <Calendar className="w-5 h-5 text-secondary" />
+                  <div className="p-2 rounded-lg bg-chart-2/10">
+                    <Calendar className="w-5 h-5 text-chart-2" />
                   </div>
                   Información Adicional
                 </CardTitle>
@@ -285,11 +285,11 @@ export default function TratamientoPacientePage() {
           )}
 
           {treatment.preparationInstructions && (
-            <Card className="border-2 border-secondary/30 shadow-lg bg-gradient-to-br from-secondary/10 to-secondary/5">
-              <CardHeader className="border-b border-secondary/30">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold text-secondary">
-                  <div className="p-2 rounded-lg bg-secondary/20">
-                    <AlertCircle className="w-5 h-5 text-secondary" />
+            <Card className="border-2 border-border shadow-lg ">
+              <CardHeader className="border-b border-border">
+                <CardTitle className="flex items-center gap-3 text-xl font-bold text-chart-2">
+                  <div className="p-2 rounded-lg bg-chart-2/20">
+                    <AlertCircle className="w-5 h-5 text-chart-2" />
                   </div>
                   Instrucciones de Preparación
                 </CardTitle>
@@ -341,8 +341,8 @@ export default function TratamientoPacientePage() {
           <Card className="border-2 shadow-lg">
             <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                <div className="p-2 rounded-lg bg-secondary/10">
-                  <AlertCircle className="w-6 h-6 text-secondary" />
+                <div className="p-2 rounded-lg bg-chart-2/10">
+                  <AlertCircle className="w-6 h-6 text-chart-2" />
                 </div>
                 Efectos Secundarios Registrados
               </CardTitle>
@@ -366,7 +366,7 @@ export default function TratamientoPacientePage() {
                   <p className="text-muted-foreground">No se han reportado efectos secundarios para este tratamiento</p>
                 </div>
               )}
-              <Button className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl" asChild>
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm" asChild>
                 <a href="/dashboard/paciente/sintomas/nuevo">Reportar Nuevo Síntoma</a>
               </Button>
             </CardContent>

@@ -148,7 +148,7 @@ export default function HistorialPage() {
         <div className="space-y-8">
           {/* Header */}
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
               Historial Médico
             </h1>
             <p className="text-muted-foreground text-lg">Registro completo de tu atención médica</p>
@@ -176,7 +176,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "todos" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("todos")}
-                      className={filtroTipo === "todos" ? "bg-gradient-to-r from-primary to-secondary text-white border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "todos" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
                     >
                       Todos ({historyEntries.length})
                     </Button>
@@ -184,7 +184,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "CONSULTATION" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("CONSULTATION")}
-                      className={filtroTipo === "CONSULTATION" ? "bg-gradient-to-r from-primary to-secondary text-white border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "CONSULTATION" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
                     >
                       Consultas ({historyEntries.filter(e => e.type === "CONSULTATION").length})
                     </Button>
@@ -192,7 +192,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "PROCEDURE" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("PROCEDURE")}
-                      className={filtroTipo === "PROCEDURE" ? "bg-gradient-to-r from-primary to-secondary text-white border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "PROCEDURE" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
                     >
                       Procedimientos ({historyEntries.filter(e => e.type === "PROCEDURE").length})
                     </Button>
@@ -200,7 +200,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "SURGERY" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("SURGERY")}
-                      className={filtroTipo === "SURGERY" ? "bg-gradient-to-r from-primary to-secondary text-white border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "SURGERY" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
                     >
                       Cirugías ({historyEntries.filter(e => e.type === "SURGERY").length})
                     </Button>
@@ -208,7 +208,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "LAB_RESULT" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("LAB_RESULT")}
-                      className={filtroTipo === "LAB_RESULT" ? "bg-gradient-to-r from-primary to-secondary text-white border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "LAB_RESULT" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
                     >
                       Laboratorio ({historyEntries.filter(e => e.type === "LAB_RESULT").length})
                     </Button>

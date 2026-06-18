@@ -112,7 +112,7 @@ export default function PacientePerfilPage() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Mi Perfil
               </h1>
               <p className="text-muted-foreground text-lg">Gestiona tu información personal</p>
@@ -126,7 +126,7 @@ export default function PacientePerfilPage() {
                 }
                 setIsEditing(!isEditing)
               }}
-              className={isEditing ? "border-2 hover:bg-muted hover:border-muted-foreground h-11 px-6" : "bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl"}
+              className={isEditing ? "border-2 hover:bg-muted hover:border-muted-foreground h-11 px-6" : "bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm"}
             >
               {isEditing ? (
                 <>Cancelar</>
@@ -152,11 +152,11 @@ export default function PacientePerfilPage() {
           )}
 
           {/* Profile Header Card */}
-          <Card className="border-2 shadow-lg bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10">
+          <Card className="border-2 shadow-lg ">
             <CardContent className="pt-8 pb-8">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
                 <Avatar className="h-28 w-28 ring-4 ring-primary/20 shadow-lg">
-                  <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-primary/30 to-secondary/30 text-primary">
+                  <AvatarFallback className="text-3xl font-bold bg-primary/15 text-primary">
                     {patientData.firstName.charAt(0)}{patientData.lastName.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
@@ -259,8 +259,8 @@ export default function PacientePerfilPage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <Heart className="w-5 h-5 text-secondary" />
+                  <div className="p-2 rounded-lg bg-chart-2/10">
+                    <Heart className="w-5 h-5 text-chart-2" />
                   </div>
                   Información Médica
                 </CardTitle>
@@ -329,8 +329,8 @@ export default function PacientePerfilPage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                  <div className="p-2 rounded-lg bg-accent/10">
-                    <Settings className="w-5 h-5 text-accent" />
+                  <div className="p-2 rounded-lg bg-chart-5/10">
+                    <Settings className="w-5 h-5 text-chart-5" />
                   </div>
                   Dirección
                 </CardTitle>
@@ -369,9 +369,9 @@ export default function PacientePerfilPage() {
                   <p className="text-4xl font-bold text-primary mb-2 relative z-10">{patientData.activeTreatments}</p>
                   <p className="text-sm text-muted-foreground font-semibold relative z-10">Tratamientos Activos</p>
                 </div>
-                <div className="text-center p-6 border-2 border-secondary/20 rounded-xl bg-muted/50 hover:border-secondary/40 hover:shadow-md transition-all relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-secondary/5 rounded-full -mr-12 -mt-12"></div>
-                  <p className="text-4xl font-bold text-secondary mb-2 relative z-10">{patientData.upcomingAppointments}</p>
+                <div className="text-center p-6 border-2 border-chart-2/20 rounded-xl bg-muted/50 hover:border-chart-2/40 hover:shadow-md transition-all relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-chart-2/5 rounded-full -mr-12 -mt-12"></div>
+                  <p className="text-4xl font-bold text-chart-2 mb-2 relative z-10">{patientData.upcomingAppointments}</p>
                   <p className="text-sm text-muted-foreground font-semibold relative z-10">Citas Próximas</p>
                 </div>
               </div>
@@ -393,7 +393,7 @@ export default function PacientePerfilPage() {
               >
                 Cancelar
               </Button>
-              <Button onClick={handleSave} disabled={isSaving} className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
+              <Button onClick={handleSave} disabled={isSaving} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
                 <Save className="w-5 h-5 mr-2" />
                 {isSaving ? "Guardando..." : "Guardar Cambios"}
               </Button>

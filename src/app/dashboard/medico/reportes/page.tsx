@@ -273,7 +273,7 @@ export default function ReportesPage() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Reportes y Análisis
               </h1>
               <p className="text-muted-foreground text-lg">Métricas reales de tu práctica médica</p>
@@ -300,7 +300,7 @@ export default function ReportesPage() {
                 Refrescar Datos
               </Button>
               <Button 
-                className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg" 
+                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg" 
                 onClick={exportarReporte}
               >
                 <Download className="mr-2 h-5 w-5" />
@@ -327,7 +327,7 @@ export default function ReportesPage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-bold text-muted-foreground">Tratamientos</CardTitle>
-                <Activity className="h-5 w-5 text-secondary" />
+                <Activity className="h-5 w-5 text-chart-2" />
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">{overview?.treatments.active}</div>
@@ -340,7 +340,7 @@ export default function ReportesPage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-bold text-muted-foreground">Citas del Mes</CardTitle>
-                <Calendar className="h-5 w-5 text-accent" />
+                <Calendar className="h-5 w-5 text-chart-5" />
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">{overview?.appointments.totalMonth}</div>
@@ -397,7 +397,7 @@ export default function ReportesPage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-2">
-                  <PieChart className="h-5 w-5 text-secondary" />
+                  <PieChart className="h-5 w-5 text-chart-2" />
                   Distribución de Tratamientos
                 </CardTitle>
               </CardHeader>
@@ -411,7 +411,7 @@ export default function ReportesPage() {
                       </div>
                       <div className="h-3 bg-muted rounded-full overflow-hidden border">
                         <div 
-                          className="h-full bg-secondary transition-all duration-500" 
+                          className="h-full bg-chart-2 transition-all duration-500" 
                           style={{ width: `${item.percentage}%` }}
                         />
                       </div>
@@ -426,7 +426,7 @@ export default function ReportesPage() {
           <Card className="border-2 shadow-lg">
             <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-2">
-                <LineChart className="h-5 w-5 text-accent" />
+                <LineChart className="h-5 w-5 text-chart-5" />
                 Distribución Semanal de Citas
               </CardTitle>
             </CardHeader>
@@ -436,7 +436,7 @@ export default function ReportesPage() {
                   <div key={index} className="flex flex-col items-center gap-2">
                     <div className="flex-1 w-full bg-muted rounded-t-lg relative min-h-[100px] flex items-end">
                       <div 
-                        className="w-full bg-accent rounded-t-lg transition-all duration-500"
+                        className="w-full bg-chart-5 rounded-t-lg transition-all duration-500"
                         style={{ height: `${item.count > 0 ? (item.count / Math.max(...appointmentsByDay.data.map(d => d.count || 1))) * 100 : 5}%` }}
                       />
                     </div>

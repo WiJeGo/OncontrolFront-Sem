@@ -200,12 +200,12 @@ export default function CitasPacientePage() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Mis Citas
               </h1>
               <p className="text-muted-foreground text-lg">Gestiona tus citas médicas</p>
             </div>
-            <Button className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl" asChild>
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm" asChild>
               <Link href="/dashboard/paciente/citas/nueva">
                 <Calendar className="mr-2 h-5 w-5" />
                 Solicitar Nueva Cita
@@ -231,36 +231,36 @@ export default function CitasPacientePage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Pendientes</CardTitle>
-                <div className="p-2 rounded-lg bg-secondary/10">
-                  <Clock className="h-5 w-5 text-secondary" />
+                <div className="p-2 rounded-lg bg-chart-2/10">
+                  <Clock className="h-5 w-5 text-chart-2" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-secondary mb-1">
+                <div className="text-3xl font-bold text-chart-2 mb-1">
                   {appointments.filter((apt) => apt.status === "SCHEDULED").length}
                 </div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-2"></span>
                   Por confirmar
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Completadas</CardTitle>
-                <div className="p-2 rounded-lg bg-accent/10">
-                  <CheckCircle className="h-5 w-5 text-accent" />
+                <div className="p-2 rounded-lg bg-chart-5/10">
+                  <CheckCircle className="h-5 w-5 text-chart-5" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-accent mb-1">{completedAppointments.length}</div>
+                <div className="text-3xl font-bold text-chart-5 mb-1">{completedAppointments.length}</div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-5"></span>
                   Finalizadas
                 </p>
               </CardContent>
@@ -341,7 +341,7 @@ export default function CitasPacientePage() {
                   <div className="flex items-start justify-between gap-6">
                     <div className="flex items-start gap-4 flex-1">
                       <Avatar className="h-14 w-14 ring-2 ring-primary/20">
-                        <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/20 font-bold text-lg">
+                        <AvatarFallback className="bg-primary/10 font-bold text-lg">
                           {appointment.doctorName
                             .split(" ")
                             .map((n) => n[0])
@@ -423,7 +423,7 @@ export default function CitasPacientePage() {
                 <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                   No tienes citas que coincidan con los filtros seleccionados.
                 </p>
-                <Button className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg" asChild>
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg" asChild>
                   <Link href="/dashboard/paciente/citas/nueva">
                     <Calendar className="mr-2 h-5 w-5" />
                     Solicitar Nueva Cita
@@ -441,17 +441,17 @@ export default function CitasPacientePage() {
             </CardHeader>
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Button variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-all border-2 hover:scale-105 hover:shadow-lg" asChild>
+                <Button variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-all border-2 hover:shadow-lg" asChild>
                   <Link href="/dashboard/paciente/citas/nueva">
                     <Calendar className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Solicitar Nueva Cita</span>
                   </Link>
                 </Button>
-                <Button variant="outline" className="h-24 flex-col hover:bg-secondary hover:text-secondary-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button variant="outline" className="h-24 flex-col hover:bg-chart-2 hover:text-chart-2-foreground transition-all border-2 hover:shadow-lg">
                   <Phone className="h-7 w-7 mb-2" />
                   <span className="font-semibold">Contactar Clínica</span>
                 </Button>
-                <Button variant="outline" className="h-24 flex-col hover:bg-accent hover:text-accent-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-chart-5-foreground transition-all border-2 hover:shadow-lg">
                   <Calendar className="h-7 w-7 mb-2" />
                   <span className="font-semibold">Ver Calendario</span>
                 </Button>

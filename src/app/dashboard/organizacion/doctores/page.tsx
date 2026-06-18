@@ -74,12 +74,12 @@ export default function DoctorsListPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
               Doctores
             </h1>
             <p className="text-muted-foreground text-lg">Gestiona los médicos de tu organización</p>
           </div>
-          <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl">
+          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
             <Link href="/dashboard/organizacion/doctores/nuevo">
               <UserPlus className="mr-2 h-5 w-5" />
               Agregar Doctor
@@ -129,7 +129,7 @@ export default function DoctorsListPage() {
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               Comienza agregando doctores a tu organización para gestionar pacientes y citas
             </p>
-            <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg">
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg">
               <Link href="/dashboard/organizacion/doctores/nuevo">
                 <UserPlus className="mr-2 h-5 w-5" />
                 Agregar Primer Doctor
@@ -146,7 +146,7 @@ export default function DoctorsListPage() {
               <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 group-hover:bg-primary/10 transition-colors"></div>
               <CardHeader className="relative z-10">
                 <div className="flex items-center space-x-4">
-                  <div className="h-14 w-14 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border-2 border-primary/30 group-hover:scale-110 transition-transform">
+                  <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/30 transition-transform">
                     <Stethoscope className="h-7 w-7 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
