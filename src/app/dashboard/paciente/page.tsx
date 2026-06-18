@@ -94,15 +94,15 @@ export default function PacienteDashboard() {
   const getSeverityColor = (severity: string) => {
     switch (severity?.toUpperCase()) {
       case 'CRITICAL':
-        return 'bg-secondary/20 text-secondary-foreground border-secondary/30'
+        return 'bg-critical/15 text-critical border-critical/30'
       case 'SEVERE':
-        return 'bg-secondary/10 text-secondary-foreground border-secondary/20'
+        return 'bg-severe/15 text-severe border-severe/30'
       case 'MODERATE':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+        return 'bg-warning/20 text-warning-foreground border-warning/40'
       case 'MILD':
-        return 'bg-green-100 text-green-800 border-green-200'
+        return 'bg-success/15 text-success border-success/30'
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200'
+        return 'bg-muted text-muted-foreground border-border'
     }
   }
 
@@ -121,6 +121,21 @@ export default function PacienteDashboard() {
     }
   }
 
+  // Severity must not rely on color alone (a11y): pair with an icon + text.
+  const SeverityIcon = ({ severity, className }: { severity: string; className?: string }) => {
+    switch (severity?.toUpperCase()) {
+      case 'CRITICAL':
+      case 'SEVERE':
+        return <AlertTriangle className={className} aria-hidden="true" />
+      case 'MODERATE':
+        return <Activity className={className} aria-hidden="true" />
+      case 'MILD':
+        return <CheckCircle className={className} aria-hidden="true" />
+      default:
+        return <Activity className={className} aria-hidden="true" />
+    }
+  }
+
   const criticalSymptoms = dashboard.recentSymptoms.filter(s => s.requiresMedicalAttention)
 
   return (
@@ -130,7 +145,7 @@ export default function PacienteDashboard() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Mi Dashboard
               </h1>
               <div className="flex items-center gap-2">
@@ -146,7 +161,7 @@ export default function PacienteDashboard() {
               )}
             </div>
             <div className="flex gap-3">
-              <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl">
+              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
                 <Link href="/dashboard/paciente/sintomas/nuevo">
                   <Plus className="mr-2 h-5 w-5" />
                   Reportar Síntoma
@@ -182,13 +197,14 @@ export default function PacienteDashboard() {
                           {new Date(symptom.occurrenceDate).toLocaleDateString('es-ES')}
                         </p>
                       </div>
-                      <Badge className={`${getSeverityColor(symptom.severity)} border-2 font-semibold`}>
+                      <Badge className={`${getSeverityColor(symptom.severity)} font-semibold inline-flex items-center gap-1`}>
+                        <SeverityIcon severity={symptom.severity} className="h-3.5 w-3.5" />
                         {getSeverityText(symptom.severity)}
                       </Badge>
                     </div>
                   ))}
                 </div>
-                <Button asChild className="w-full mt-6 bg-gradient-to-r from-destructive to-secondary text-white hover:opacity-90 transition-opacity h-11 shadow-lg">
+                <Button asChild className="w-full mt-6 bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors h-11 shadow-sm">
                   <Link href="/dashboard/paciente/citas/nueva">
                     <AlertTriangle className="mr-2 h-5 w-5" />
                     Solicitar Cita de Emergencia
@@ -204,7 +220,7 @@ export default function PacienteDashboard() {
               <CardContent className="p-0">
                 <div className="flex flex-col md:flex-row">
                   <div className="p-8 bg-primary text-primary-foreground flex flex-col items-center justify-center min-w-[240px] text-center">
-                    <div className="p-3 rounded-full bg-white/20 mb-4 animate-bounce">
+                    <div className="p-3 rounded-full bg-white/20 mb-4">
                       <Clock className="h-10 w-10" />
                     </div>
                     <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-80 mb-1">Próxima toma en</p>
@@ -223,7 +239,7 @@ export default function PacienteDashboard() {
                         </div>
                       </div>
                     </div>
-                    <Button className="w-full md:w-auto bg-primary text-primary-foreground hover:scale-105 active:scale-95 transition-all shadow-[0_8px_16px_rgba(var(--primary-rgb),0.3)] rounded-2xl h-14 px-10 font-bold text-lg border-b-4 border-primary-foreground/20">
+                    <Button className="w-full md:w-auto bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] transition-all shadow-md rounded-2xl h-14 px-10 font-bold text-lg">
                       <CheckCircle className="mr-2 h-6 w-6" />
                       Marcar como tomada
                     </Button>
@@ -244,7 +260,7 @@ export default function PacienteDashboard() {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                   {dashboard.upcomingAppointments}
                 </div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
@@ -254,20 +270,20 @@ export default function PacienteDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Síntomas Recientes</CardTitle>
-                <div className="p-2 rounded-lg bg-secondary/10">
-                  <Activity className="h-5 w-5 text-secondary" />
+                <div className="p-2 rounded-lg bg-chart-2/10">
+                  <Activity className="h-5 w-5 text-chart-2" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                   {dashboard.recentSymptoms.length}
                 </div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-2"></span>
                   Últimos 7 días
                 </p>
               </CardContent>
@@ -282,11 +298,11 @@ export default function PacienteDashboard() {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-destructive mb-1">
+                <div className="text-3xl font-bold text-destructive mb-1 tabular-nums">
                   {dashboard.criticalSymptoms}
                 </div>
                 <p className="text-xs text-destructive font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse motion-reduce:animate-none" aria-hidden="true"></span>
                   Requieren atención
                 </p>
               </CardContent>
@@ -332,7 +348,7 @@ export default function PacienteDashboard() {
                         className="flex items-center justify-between p-4 border-2 rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
                       >
                         <div className="flex items-center space-x-4 flex-1">
-                          <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border-2 border-primary/30">
+                          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
                             <Stethoscope className="h-6 w-6 text-primary" />
                           </div>
                           <div className="flex-1">
@@ -376,8 +392,8 @@ export default function PacienteDashboard() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <Activity className="h-6 w-6 text-secondary" />
+                  <div className="p-2 rounded-lg bg-chart-2/10">
+                    <Activity className="h-6 w-6 text-chart-2" />
                   </div>
                   Síntomas Recientes
                 </CardTitle>
@@ -396,7 +412,7 @@ export default function PacienteDashboard() {
                       <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                         Reporta tus síntomas para ayudar a tu médico a monitorear tu estado
                       </p>
-                      <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg">
+                      <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
                         <Link href="/dashboard/paciente/sintomas/nuevo">
                           <Plus className="mr-2 h-5 w-5" />
                           Reportar Síntoma
@@ -416,7 +432,8 @@ export default function PacienteDashboard() {
                             {symptom.occurrenceTime}
                           </p>
                         </div>
-                        <Badge className={`${getSeverityColor(symptom.severity)} border-2 font-semibold`}>
+                        <Badge className={`${getSeverityColor(symptom.severity)} font-semibold inline-flex items-center gap-1`}>
+                          <SeverityIcon severity={symptom.severity} className="h-3.5 w-3.5" />
                           {getSeverityText(symptom.severity)}
                         </Badge>
                       </div>
@@ -446,25 +463,25 @@ export default function PacienteDashboard() {
             </CardHeader>
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border-2 hover:shadow-md">
                   <Link href="/dashboard/paciente/citas">
                     <Calendar className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mis Citas</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-secondary hover:text-secondary-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-accent hover:text-accent-foreground transition-all border-2 hover:shadow-md">
                   <Link href="/dashboard/paciente/sintomas">
                     <Activity className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mis Síntomas</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-accent hover:text-accent-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-accent hover:text-accent-foreground transition-colors border-2 hover:shadow-md">
                   <Link href="/dashboard/paciente/historial">
                     <Heart className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mi Historial</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border-2 hover:shadow-md">
                   <Link href="/dashboard/paciente/perfil">
                     <Stethoscope className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mi Perfil</span>
@@ -475,35 +492,35 @@ export default function PacienteDashboard() {
           </Card>
 
           {/* Patient Info */}
-          <Card className="border-2 shadow-lg bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10">
+          <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="text-2xl font-bold">Tu Información Médica</CardTitle>
+              <CardTitle className="text-xl font-semibold tracking-tight">Tu Información Médica</CardTitle>
             </CardHeader>
-            <CardContent className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-muted-foreground">Doctor Asignado</p>
-                  <p className="font-bold text-lg">{dashboard.doctorName || 'No asignado'}</p>
+            <CardContent className="p-0">
+              <dl className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x">
+                <div className="px-6 py-4">
+                  <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Doctor Asignado</dt>
+                  <dd className="mt-1 text-base font-medium text-foreground">{dashboard.doctorName || 'No asignado'}</dd>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-muted-foreground">Tipo de Sangre</p>
-                  <p className="font-bold text-lg">{dashboard.bloodType || 'No especificado'}</p>
+                <div className="px-6 py-4">
+                  <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tipo de Sangre</dt>
+                  <dd className="mt-1 text-base font-medium text-foreground font-mono tabular-nums">{dashboard.bloodType || 'No especificado'}</dd>
                 </div>
                 {dashboard.cancerType && (
                   <>
-                    <div className="space-y-1">
-                      <p className="text-sm font-semibold text-muted-foreground">Diagnóstico</p>
-                      <p className="font-bold text-lg">{dashboard.cancerType}</p>
+                    <div className="px-6 py-4 border-t sm:border-t-0">
+                      <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Diagnóstico</dt>
+                      <dd className="mt-1 text-base font-medium text-foreground">{dashboard.cancerType}</dd>
                     </div>
-                    <div className="space-y-1">
-                      <p className="text-sm font-semibold text-muted-foreground">Etapa</p>
-                      <p className="font-bold text-lg">{dashboard.cancerStage || 'No especificada'}</p>
+                    <div className="px-6 py-4 border-t sm:border-t-0">
+                      <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Etapa</dt>
+                      <dd className="mt-1 text-base font-medium text-foreground">{dashboard.cancerStage || 'No especificada'}</dd>
                     </div>
                   </>
                 )}
-              </div>
-              <div className="pt-4 border-t">
-                <Button asChild variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors border-2">
+              </dl>
+              <div className="border-t px-6 py-4">
+                <Button asChild variant="outline" size="sm" className="hover:bg-primary hover:text-primary-foreground transition-colors">
                   <Link href="/dashboard/paciente/perfil">
                     Ver Perfil Completo
                   </Link>
