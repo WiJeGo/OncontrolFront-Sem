@@ -112,16 +112,16 @@ export default function MedicamentosPage() {
         <div className="space-y-8">
           {/* Header */}
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
               Mis Medicamentos
             </h1>
-            <p className="text-muted-foreground text-lg">Gestiona tus medicamentos y recordatorios</p>
+            <p className="text-muted-foreground">Gestiona tus medicamentos y recordatorios</p>
           </div>
 
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-primary/20 hover:border-primary/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Medicamentos Activos</CardTitle>
                 <div className="p-2 rounded-lg bg-primary/10">
@@ -129,45 +129,45 @@ export default function MedicamentosPage() {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">{medicationsList.length}</div>
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">{medicationsList.length}</div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true"></span>
                   Medicamentos activos
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Dosis Próximas (24h)</CardTitle>
-                <div className="p-2 rounded-lg bg-secondary/10">
-                  <Clock className="h-5 w-5 text-secondary" />
+                <div className="p-2 rounded-lg bg-chart-2/10">
+                  <Clock className="h-5 w-5 text-chart-2" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">{upcomingDoses.length}</div>
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">{upcomingDoses.length}</div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-2" aria-hidden="true"></span>
                   Próximas 24 horas
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-warning/20 hover:border-warning/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-warning/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Dosis Pendientes</CardTitle>
-                <div className="p-2 rounded-lg bg-accent/10">
-                  <CheckCircle className="h-5 w-5 text-accent" />
+                <div className="p-2 rounded-lg bg-warning/15">
+                  <CheckCircle className="h-5 w-5 text-warning-foreground" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                   {upcomingDoses.filter(d => !d.taken).length}
                 </div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-warning" aria-hidden="true"></span>
                   Por tomar
                 </p>
               </CardContent>
@@ -191,24 +191,24 @@ export default function MedicamentosPage() {
                   {upcomingDoses.map((dose) => (
                     <div
                       key={`${dose.medicationId}-${dose.scheduledTime}`}
-                      className={`flex items-center justify-between p-5 border-2 rounded-xl transition-all ${
-                        dose.taken ? 'bg-muted/50 border-muted' : 'bg-card border-border/50 hover:border-primary/40 hover:shadow-md'
+                      className={`flex items-center justify-between p-5 border rounded-xl transition-colors ${
+                        dose.taken ? 'bg-muted/50 border-border' : 'bg-card border-border hover:border-primary/40 hover:shadow-md'
                       }`}
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`p-3 rounded-lg ${dose.taken ? 'bg-primary/20' : 'bg-secondary/20'}`}>
+                        <div className={`p-3 rounded-lg ${dose.taken ? 'bg-success/15' : 'bg-warning/15'}`}>
                           {dose.taken ? (
-                            <CheckCircle className="w-6 h-6 text-primary" />
+                            <CheckCircle className="w-6 h-6 text-success" aria-hidden="true" />
                           ) : (
-                            <Clock className="w-6 h-6 text-secondary" />
+                            <Clock className="w-6 h-6 text-warning-foreground" aria-hidden="true" />
                           )}
                         </div>
                         <div>
                           <p className="font-bold text-lg text-foreground">{dose.medicationName}</p>
                           <div className="flex items-center gap-3 text-sm text-muted-foreground font-medium mt-1">
-                            <span>{dose.dosage}</span>
-                            <span>•</span>
-                            <span>{new Date(dose.scheduledTime).toLocaleTimeString('es-ES', {
+                            <span className="font-mono tabular-nums">{dose.dosage}</span>
+                            <span aria-hidden="true">•</span>
+                            <span className="tabular-nums">{new Date(dose.scheduledTime).toLocaleTimeString('es-ES', {
                               hour: '2-digit',
                               minute: '2-digit'
                             })}</span>
@@ -219,15 +219,16 @@ export default function MedicamentosPage() {
                         <Button
                           size="sm"
                           onClick={() => handleMarkDoseTaken(dose.medicationId)}
-                          className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-10 px-5 shadow-lg hover:shadow-xl"
+                          className="bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] transition-all h-10 px-5 shadow-sm"
                         >
                           Marcar como Tomada
                         </Button>
                       )}
                       {dose.taken && (
-                        <Badge variant="outline" className="bg-primary/10 border-2 font-semibold">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-success/15 text-success border border-success/30">
+                          <CheckCircle className="h-3.5 w-3.5" aria-hidden="true" />
                           Tomada
-                        </Badge>
+                        </span>
                       )}
                     </div>
                   ))}
@@ -242,7 +243,7 @@ export default function MedicamentosPage() {
               <div className="p-2 rounded-lg bg-primary/10">
                 <Pill className="w-6 h-6 text-primary" />
               </div>
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">
                 Medicamentos Activos
               </h2>
             </div>
@@ -259,94 +260,101 @@ export default function MedicamentosPage() {
               </Card>
             ) : (
               medicationsList.map((medication) => (
-                <Card key={medication.id} className="border-2 shadow-lg hover:border-primary/40 hover:shadow-xl transition-all">
-                  <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                <Card key={medication.id} className="border shadow-sm hover:border-primary/30 transition-colors">
+                  <CardHeader className="border-b bg-muted/30">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
-                        <CardTitle className="flex items-center gap-3 text-xl font-bold mb-2">
+                        <CardTitle className="flex items-center gap-3 text-xl font-semibold mb-1">
                           <div className="p-2 rounded-lg bg-primary/10">
                             <Pill className="w-5 h-5 text-primary" />
                           </div>
                           {medication.name}
                         </CardTitle>
-                        <CardDescription className="text-base font-medium">
+                        <CardDescription>
                           Prescrito por {medication.doctorName}
                         </CardDescription>
                       </div>
-                      <Badge variant={medication.status === 'ACTIVE' ? 'default' : 'secondary'} className="border-2 font-semibold">
-                        {medication.status === 'ACTIVE' ? 'Activo' : medication.status}
-                      </Badge>
+                      {medication.status === 'ACTIVE' ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-success/15 text-success border border-success/30">
+                          <span className="w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true" />
+                          Activo
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
+                          {medication.status}
+                        </span>
+                      )}
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6 space-y-6">
+                  <CardContent className="p-0">
                     {/* Dosage Information */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
-                        <p className="text-sm font-semibold text-muted-foreground mb-2">Dosis</p>
-                        <p className="text-xl font-bold text-foreground">{medication.dosage}</p>
+                    <dl className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x">
+                      <div className="px-6 py-4">
+                        <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Dosis</dt>
+                        <dd className="mt-1 text-lg font-semibold text-foreground font-mono tabular-nums">{medication.dosage}</dd>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
-                        <p className="text-sm font-semibold text-muted-foreground mb-2">Frecuencia</p>
-                        <p className="text-xl font-bold text-foreground">{medication.frequency}</p>
+                      <div className="px-6 py-4 border-t md:border-t-0">
+                        <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Frecuencia</dt>
+                        <dd className="mt-1 text-lg font-semibold text-foreground">{medication.frequency}</dd>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
-                        <p className="text-sm font-semibold text-muted-foreground mb-2">Vía</p>
-                        <p className="text-xl font-bold text-foreground">
+                      <div className="px-6 py-4 border-t md:border-t-0">
+                        <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Vía</dt>
+                        <dd className="mt-1 text-lg font-semibold text-foreground">
                           {medication.route ? (routeNames[medication.route] || medication.route) : 'No especificada'}
-                        </p>
+                        </dd>
                       </div>
-                    </div>
+                    </dl>
 
-                    {/* Date Information */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="flex items-center gap-3 text-sm p-3 bg-card rounded-lg border-2 border-border/50">
-                        <Calendar className="w-5 h-5 text-primary" />
-                        <span className="text-muted-foreground font-semibold">Inicio:</span>
-                        <span className="font-bold text-foreground">
-                          {new Date(medication.startDate).toLocaleDateString('es-ES')}
-                        </span>
+                    <div className="px-6 py-4 border-t space-y-4">
+                      {/* Date Information */}
+                      <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                        <div className="inline-flex items-center gap-2">
+                          <Calendar className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                          <span className="text-muted-foreground">Inicio:</span>
+                          <span className="font-medium text-foreground tabular-nums">
+                            {new Date(medication.startDate).toLocaleDateString('es-ES')}
+                          </span>
+                        </div>
+                        {medication.endDate && (
+                          <div className="inline-flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                            <span className="text-muted-foreground">Fin:</span>
+                            <span className="font-medium text-foreground tabular-nums">
+                              {new Date(medication.endDate).toLocaleDateString('es-ES')}
+                            </span>
+                          </div>
+                        )}
                       </div>
-                      {medication.endDate && (
-                        <div className="flex items-center gap-3 text-sm p-3 bg-card rounded-lg border-2 border-border/50">
-                          <Calendar className="w-5 h-5 text-primary" />
-                          <span className="text-muted-foreground font-semibold">Fin:</span>
-                          <span className="font-bold text-foreground">
-                            {new Date(medication.endDate).toLocaleDateString('es-ES')}
+
+                      {/* Instructions */}
+                      {medication.instructions && (
+                        <Alert>
+                          <Info className="h-4 w-4 text-primary" />
+                          <AlertDescription>
+                            <span className="font-semibold">Instrucciones: </span>
+                            {medication.instructions}
+                          </AlertDescription>
+                        </Alert>
+                      )}
+
+                      {/* Side Effects */}
+                      {medication.sideEffects && (
+                        <div>
+                          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Posibles efectos secundarios</p>
+                          <p className="text-sm text-foreground">{medication.sideEffects}</p>
+                        </div>
+                      )}
+
+                      {/* Next Refill */}
+                      {medication.nextRefillDate && (
+                        <div className="pt-3 border-t flex items-baseline gap-2">
+                          <span className="text-sm text-muted-foreground">Próximo resurtido:</span>
+                          <span className="font-semibold text-primary tabular-nums">
+                            {new Date(medication.nextRefillDate).toLocaleDateString('es-ES')}
                           </span>
                         </div>
                       )}
                     </div>
-
-                    {/* Instructions */}
-                    {medication.instructions && (
-                      <Alert className="border-2 bg-card">
-                        <Info className="h-5 w-5 text-primary" />
-                        <AlertDescription className="font-medium">
-                          <span className="font-bold">Instrucciones: </span>
-                          {medication.instructions}
-                        </AlertDescription>
-                      </Alert>
-                    )}
-
-                    {/* Side Effects */}
-                    {medication.sideEffects && (
-                      <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
-                        <p className="text-sm font-bold mb-3 text-foreground">Posibles efectos secundarios:</p>
-                        <p className="text-sm text-muted-foreground">{medication.sideEffects}</p>
-                      </div>
-                    )}
-
-                    {/* Next Refill */}
-                    {medication.nextRefillDate && (
-                      <div className="pt-4 border-t border-border/50">
-                        <p className="text-sm text-muted-foreground font-medium">
-                          Próximo resurtido:{' '}
-                          <span className="font-bold text-primary text-lg">
-                            {new Date(medication.nextRefillDate).toLocaleDateString('es-ES')}
-                          </span>
-                        </p>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               ))
