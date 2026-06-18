@@ -123,11 +123,11 @@ export default function PatientsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
               Gestión de Pacientes
             </h1>
-            <p className="text-muted-foreground text-lg">
-              Administra y supervisa a tus pacientes ({filteredPatients.length} {filteredPatients.length === 1 ? 'paciente' : 'pacientes'})
+            <p className="text-muted-foreground">
+              Administra y supervisa a tus pacientes (<span className="tabular-nums">{filteredPatients.length}</span> {filteredPatients.length === 1 ? 'paciente' : 'pacientes'})
             </p>
           </div>
           <div className="flex gap-2">
@@ -140,7 +140,7 @@ export default function PatientsPage() {
               <Download className="mr-2 h-5 w-5" />
               Exportar CSV
             </Button>
-            <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl">
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
               <Link href="/dashboard/medico/pacientes/nuevo">
                 <Plus className="mr-2 h-5 w-5" />
                 Nuevo Paciente
@@ -151,54 +151,54 @@ export default function PatientsPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
+          <Card className="border border-primary/20 hover:border-primary/40 transition-colors hover:shadow-md relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
               <CardTitle className="text-sm font-semibold text-muted-foreground">Total Pacientes</CardTitle>
               <div className="p-2 rounded-lg bg-primary/10">
-                <Activity className="h-5 w-5 text-primary" />
+                <Users className="h-5 w-5 text-primary" />
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <div className="text-3xl font-bold text-foreground mb-1">{patientsList.length}</div>
+              <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">{patientsList.length}</div>
               <p className="text-xs text-muted-foreground flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true"></span>
                 Pacientes registrados
               </p>
             </CardContent>
           </Card>
-          <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+          <Card className="border border-success/20 hover:border-success/40 transition-colors hover:shadow-md relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-success/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
               <CardTitle className="text-sm font-semibold text-muted-foreground">Pacientes Activos</CardTitle>
-              <div className="p-2 rounded-lg bg-secondary/10">
-                <Users className="h-5 w-5 text-secondary" />
+              <div className="p-2 rounded-lg bg-success/10">
+                <Activity className="h-5 w-5 text-success" />
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <div className="text-3xl font-bold text-foreground mb-1">
+              <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                 {patientsList.filter(p => p.isActive).length}
               </div>
               <p className="text-xs text-muted-foreground flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true"></span>
                 En tratamiento
               </p>
             </CardContent>
           </Card>
-          <Card className="border-2 border-muted/20 hover:border-muted/40 transition-all hover:shadow-lg relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-muted/5 rounded-full -mr-16 -mt-16"></div>
+          <Card className="border border-muted hover:border-border transition-colors hover:shadow-md relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-muted/40 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
               <CardTitle className="text-sm font-semibold text-muted-foreground">Pacientes Inactivos</CardTitle>
-              <div className="p-2 rounded-lg bg-muted/10">
+              <div className="p-2 rounded-lg bg-muted">
                 <Activity className="h-5 w-5 text-muted-foreground" />
               </div>
             </CardHeader>
             <CardContent className="relative z-10">
-              <div className="text-3xl font-bold text-foreground mb-1">
+              <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                 {patientsList.filter(p => !p.isActive).length}
               </div>
               <p className="text-xs text-muted-foreground flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground" aria-hidden="true"></span>
                 Inactivos
               </p>
             </CardContent>
@@ -245,10 +245,9 @@ export default function PatientsPage() {
           </CardHeader>
           <CardContent className="p-6">
             {filteredPatients.length === 0 ? (
-              <div className="text-center py-20 bg-muted/20 rounded-2xl border-2 border-dashed border-muted">
-                <div className="relative inline-flex items-center justify-center w-24 h-24 rounded-full bg-muted/50 mb-6">
-                  <UserX className="h-12 w-12 text-muted-foreground animate-pulse" />
-                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-primary rounded-full border-4 border-background animate-bounce" />
+              <div className="text-center py-20 bg-muted/20 rounded-2xl border-2 border-dashed border-border">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
+                  <UserX className="h-10 w-10 text-muted-foreground" />
                 </div>
                 <h3 className="text-2xl font-bold mb-3">
                   {searchTerm || statusFilter !== "all" 
@@ -269,9 +268,9 @@ export default function PatientsPage() {
                     Limpiar todos los filtros
                   </Button>
                 ) : (
-                  <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-12 px-8 shadow-xl hover:shadow-primary/20">
+                  <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-8 shadow-sm">
                     <Link href="/dashboard/medico/pacientes/nuevo">
-                      <Plus className="mr-2 h-6 w-6" />
+                      <Plus className="mr-2 h-5 w-5" />
                       Registrar Primer Paciente
                     </Link>
                   </Button>
@@ -296,8 +295,8 @@ export default function PatientsPage() {
                     <TableRow key={patient.id}>
                       <TableCell>
                         <div className="flex items-center space-x-3">
-                          <Avatar className="h-12 w-12 ring-2 ring-primary/20">
-                            <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/20 font-bold">
+                          <Avatar className="h-12 w-12 ring-1 ring-primary/20">
+                            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                               {patient.firstName[0]}{patient.lastName[0]}
                             </AvatarFallback>
                           </Avatar>
@@ -316,7 +315,7 @@ export default function PatientsPage() {
                           {patient.profileId}
                         </code>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="tabular-nums">
                         {calculateAge(patient.birthDate)} años
                       </TableCell>
                       <TableCell>
@@ -348,14 +347,22 @@ export default function PatientsPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="border-2">
+                        <Badge variant="outline" className="font-mono tabular-nums">
                           {patient.bloodType || "N/A"}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant={patient.isActive ? "default" : "secondary"} className="border-2">
-                          {patient.isActive ? "Activo" : "Inactivo"}
-                        </Badge>
+                        {patient.isActive ? (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-success/15 text-success border border-success/30">
+                            <span className="w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true" />
+                            Activo
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
+                            <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground" aria-hidden="true" />
+                            Inactivo
+                          </span>
+                        )}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-2">

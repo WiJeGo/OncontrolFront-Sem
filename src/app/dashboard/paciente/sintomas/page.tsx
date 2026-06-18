@@ -15,7 +15,7 @@ import { useAuthContext } from "@/contexts/auth-context"
 import { symptoms } from "@/lib/api"
 import type { SymptomResponse } from "@/lib/api"
 import { isPatientUser } from "@/types/organization"
-import { Search, Plus, Activity, AlertTriangle, Clock, Calendar } from "lucide-react"
+import { Search, Plus, Activity, AlertTriangle, Clock, Calendar, CheckCircle } from "lucide-react"
 
 export default function SymptomsPage() {
   const { user } = useAuthContext()
@@ -103,33 +103,64 @@ export default function SymptomsPage() {
     setFilteredSymptoms(filtered)
   }, [symptomsList, searchTerm, severityFilter, dateFilter])
 
+  // Backend severity enum (MILD/MODERATE/SEVERE/CRITICAL) mapped to clinical tokens.
+  // Also accept Spanish strings for forward compatibility.
   const getSeverityColor = (severity: string) => {
-    switch (severity?.toLowerCase()) {
-      case 'crítico':
-        return 'bg-secondary/20 text-secondary-foreground border-secondary/30'
-      case 'severo':
-        return 'bg-secondary/10 text-secondary-foreground border-secondary/20'
-      case 'moderado':
-        return 'bg-primary/20 text-primary-foreground border-primary/30'
-      case 'leve':
-        return 'bg-primary/10 text-primary-foreground border-primary/20'
+    switch (severity?.toUpperCase()) {
+      case 'CRITICAL':
+      case 'CRÍTICO':
+      case 'CRITICO':
+        return 'bg-critical/15 text-critical border-critical/30'
+      case 'SEVERE':
+      case 'SEVERO':
+        return 'bg-severe/15 text-severe border-severe/30'
+      case 'MODERATE':
+      case 'MODERADO':
+        return 'bg-warning/20 text-warning-foreground border-warning/40'
+      case 'MILD':
+      case 'LEVE':
+        return 'bg-success/15 text-success border-success/30'
       default:
-        return 'bg-muted text-muted-foreground border-muted'
+        return 'bg-muted text-muted-foreground border-border'
     }
   }
 
   const getSeverityText = (severity: string) => {
-    switch (severity?.toLowerCase()) {
-      case 'crítico':
+    switch (severity?.toUpperCase()) {
+      case 'CRITICAL':
+      case 'CRÍTICO':
+      case 'CRITICO':
         return 'Crítico'
-      case 'severo':
+      case 'SEVERE':
+      case 'SEVERO':
         return 'Severo'
-      case 'moderado':
+      case 'MODERATE':
+      case 'MODERADO':
         return 'Moderado'
-      case 'leve':
+      case 'MILD':
+      case 'LEVE':
         return 'Leve'
       default:
         return severity || 'N/A'
+    }
+  }
+
+  const SeverityIcon = ({ severity, className }: { severity: string; className?: string }) => {
+    switch (severity?.toUpperCase()) {
+      case 'CRITICAL':
+      case 'CRÍTICO':
+      case 'CRITICO':
+      case 'SEVERE':
+      case 'SEVERO':
+        return <AlertTriangle className={className} aria-hidden="true" />
+      case 'MODERATE':
+      case 'MODERADO':
+        return <Activity className={className} aria-hidden="true" />
+      case 'MILD':
+      case 'LEVE':
+        return <CheckCircle className={className} aria-hidden="true" />
+      default:
+        return <Activity className={className} aria-hidden="true" />
     }
   }
 
@@ -188,14 +219,14 @@ export default function SymptomsPage() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Mis Síntomas
               </h1>
-              <p className="text-muted-foreground text-lg">
-                Registro y seguimiento de síntomas ({filteredSymptoms.length} {filteredSymptoms.length === 1 ? 'síntoma' : 'síntomas'})
+              <p className="text-muted-foreground">
+                Registro y seguimiento de síntomas (<span className="tabular-nums">{filteredSymptoms.length}</span> {filteredSymptoms.length === 1 ? 'síntoma' : 'síntomas'})
               </p>
             </div>
-            <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl">
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
               <Link href="/dashboard/paciente/sintomas/nuevo">
                 <Plus className="mr-2 h-5 w-5" />
                 Reportar Síntoma
@@ -227,7 +258,8 @@ export default function SymptomsPage() {
                           {formatDate(symptom.occurrenceDate)} a las {formatTime(symptom.occurrenceTime)}
                         </p>
                       </div>
-                      <Badge className={`${getSeverityColor(symptom.severity)} border-2 font-semibold`}>
+                      <Badge className={`${getSeverityColor(symptom.severity)} font-semibold inline-flex items-center gap-1`}>
+                        <SeverityIcon severity={symptom.severity} className="h-3.5 w-3.5" />
                         {getSeverityText(symptom.severity)}
                       </Badge>
                     </div>
@@ -244,8 +276,8 @@ export default function SymptomsPage() {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-primary/20 hover:border-primary/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Total Síntomas</CardTitle>
                 <div className="p-2 rounded-lg bg-primary/10">
@@ -253,15 +285,15 @@ export default function SymptomsPage() {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">{symptomsList.length}</div>
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">{symptomsList.length}</div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true"></span>
                   Síntomas reportados
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-destructive/20 hover:border-destructive/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-destructive/20 hover:border-destructive/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Críticos</CardTitle>
                 <div className="p-2 rounded-lg bg-destructive/10">
@@ -269,39 +301,39 @@ export default function SymptomsPage() {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-destructive mb-1">{criticalSymptoms.length}</div>
+                <div className="text-3xl font-bold text-destructive mb-1 tabular-nums">{criticalSymptoms.length}</div>
                 <p className="text-xs text-destructive font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse motion-reduce:animate-none" aria-hidden="true"></span>
                   Requieren atención
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Reportados al Doctor</CardTitle>
-                <div className="p-2 rounded-lg bg-secondary/10">
-                  <Activity className="h-5 w-5 text-secondary" />
+                <div className="p-2 rounded-lg bg-chart-2/10">
+                  <Activity className="h-5 w-5 text-chart-2" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">{reportedToDoctor.length}</div>
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">{reportedToDoctor.length}</div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-2" aria-hidden="true"></span>
                   Notificados
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Esta Semana</CardTitle>
-                <div className="p-2 rounded-lg bg-accent/10">
-                  <Calendar className="h-5 w-5 text-accent" />
+                <div className="p-2 rounded-lg bg-chart-5/10">
+                  <Calendar className="h-5 w-5 text-chart-5" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                   {symptomsList.filter(s => {
                     const symptomDate = new Date(s.occurrenceDate)
                     const weekStart = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
@@ -309,7 +341,7 @@ export default function SymptomsPage() {
                   }).length}
                 </div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-5" aria-hidden="true"></span>
                   Últimos 7 días
                 </p>
               </CardContent>
@@ -338,10 +370,10 @@ export default function SymptomsPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todas</SelectItem>
-                    <SelectItem value="Leve">Leve</SelectItem>
-                    <SelectItem value="Moderado">Moderado</SelectItem>
-                    <SelectItem value="Severo">Severo</SelectItem>
-                    <SelectItem value="Crítico">Crítico</SelectItem>
+                    <SelectItem value="MILD">Leve</SelectItem>
+                    <SelectItem value="MODERATE">Moderado</SelectItem>
+                    <SelectItem value="SEVERE">Severo</SelectItem>
+                    <SelectItem value="CRITICAL">Crítico</SelectItem>
                   </SelectContent>
                 </Select>
                 <Select value={dateFilter} onValueChange={setDateFilter}>
@@ -385,7 +417,7 @@ export default function SymptomsPage() {
                       : "Comienza reportando tus síntomas para ayudar a tu médico"}
                   </p>
                   {!searchTerm && severityFilter === "all" && dateFilter === "all" && (
-                    <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg">
+                    <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
                       <Link href="/dashboard/paciente/sintomas/nuevo">
                         <Plus className="mr-2 h-5 w-5" />
                         Reportar Primer Síntoma
@@ -424,7 +456,8 @@ export default function SymptomsPage() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge className={`${getSeverityColor(symptom.severity)} border-2 font-semibold`}>
+                          <Badge className={`${getSeverityColor(symptom.severity)} font-semibold inline-flex items-center gap-1`}>
+                            <SeverityIcon severity={symptom.severity} className="h-3.5 w-3.5" />
                             {getSeverityText(symptom.severity)}
                           </Badge>
                         </TableCell>
@@ -437,25 +470,32 @@ export default function SymptomsPage() {
                             </p>
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="tabular-nums">
                           {symptom.durationHours ? `${symptom.durationHours}h` : 'N/A'}
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center">
-                            {symptom.requiresMedicalAttention ? (
-                              <>
-                                <AlertTriangle className="h-4 w-4 text-secondary mr-1" />
-                                <span className="text-secondary font-medium">Sí</span>
-                              </>
-                            ) : (
-                              <span className="text-primary">No</span>
-                            )}
-                          </div>
+                          {symptom.requiresMedicalAttention ? (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-destructive/15 text-destructive border border-destructive/30">
+                              <AlertTriangle className="h-3 w-3" aria-hidden="true" />
+                              Sí
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
+                              No
+                            </span>
+                          )}
                         </TableCell>
                         <TableCell>
-                          <Badge variant={symptom.reportedToDoctor ? "default" : "secondary"} className="border-2">
-                            {symptom.reportedToDoctor ? "Sí" : "No"}
-                          </Badge>
+                          {symptom.reportedToDoctor ? (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-success/15 text-success border border-success/30">
+                              <CheckCircle className="h-3 w-3" aria-hidden="true" />
+                              Sí
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
+                              No
+                            </span>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
