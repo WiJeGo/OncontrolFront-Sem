@@ -71,7 +71,7 @@ export default function MedicoDashboard() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground">
                 Dashboard Médico
               </h1>
               <div className="flex items-center gap-2">
@@ -85,7 +85,7 @@ export default function MedicoDashboard() {
               </p>
             </div>
             <div className="flex gap-3">
-              <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg hover:shadow-xl">
+              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
                 <Link href="/dashboard/medico/pacientes/nuevo">
                   <Plus className="mr-2 h-5 w-5" />
                   Nuevo Paciente
@@ -102,8 +102,8 @@ export default function MedicoDashboard() {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-primary/20 hover:border-primary/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Total Pacientes</CardTitle>
                 <div className="p-2 rounded-lg bg-primary/10">
@@ -111,56 +111,56 @@ export default function MedicoDashboard() {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                   {dashboard.totalPatients}
                 </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <p className="text-xs text-muted-foreground flex items-center gap-1 tabular-nums">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true"></span>
                   {dashboard.activePatients} activos
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Citas Totales</CardTitle>
-                <div className="p-2 rounded-lg bg-secondary/10">
-                  <Calendar className="h-5 w-5 text-secondary" />
+                <div className="p-2 rounded-lg bg-chart-2/10">
+                  <Calendar className="h-5 w-5 text-chart-2" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                   {dashboard.totalAppointments}
                 </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                <p className="text-xs text-muted-foreground flex items-center gap-1 tabular-nums">
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-2" aria-hidden="true"></span>
                   {dashboard.completedAppointments} completadas
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Próximas Citas</CardTitle>
-                <div className="p-2 rounded-lg bg-accent/10">
-                  <Heart className="h-5 w-5 text-accent" />
+                <div className="p-2 rounded-lg bg-chart-5/10">
+                  <Clock className="h-5 w-5 text-chart-5" />
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                   {dashboard.upcomingAppointments}
                 </div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-chart-5" aria-hidden="true"></span>
                   Por confirmar
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-destructive/20 hover:border-destructive/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-destructive/20 hover:border-destructive/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Síntomas</CardTitle>
                 <div className="p-2 rounded-lg bg-destructive/10">
@@ -168,18 +168,18 @@ export default function MedicoDashboard() {
                 </div>
               </CardHeader>
               <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
+                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
                   {dashboard.totalSymptomsReported}
                 </div>
-                <p className="text-xs text-destructive font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse"></span>
+                <p className="text-xs text-destructive font-semibold flex items-center gap-1 tabular-nums">
+                  <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse motion-reduce:animate-none" aria-hidden="true"></span>
                   {dashboard.criticalSymptoms} críticos
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border border-primary/20 hover:border-primary/40 transition-colors hover:shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Organización</CardTitle>
                 <div className="p-2 rounded-lg bg-primary/10">
@@ -190,7 +190,7 @@ export default function MedicoDashboard() {
                 <div className="text-sm font-bold truncate text-foreground mb-1">
                   {dashboard.organizationName || 'Sin organización'}
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground tabular-nums">
                   ID: {dashboard.organizationId}
                 </p>
               </CardContent>
@@ -235,7 +235,7 @@ export default function MedicoDashboard() {
                         className="flex items-center justify-between p-4 border-2 rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
                       >
                         <div className="flex items-center space-x-4 flex-1">
-                          <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center border-2 border-primary/30">
+                          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
                             <Calendar className="h-6 w-6 text-primary" />
                           </div>
                           <div className="flex-1">
@@ -279,8 +279,8 @@ export default function MedicoDashboard() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <Users className="h-6 w-6 text-secondary" />
+                  <div className="p-2 rounded-lg bg-chart-2/10">
+                    <Users className="h-6 w-6 text-chart-2" />
                   </div>
                   Mis Pacientes
                 </CardTitle>
@@ -299,7 +299,7 @@ export default function MedicoDashboard() {
                       <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                         Comienza agregando pacientes para gestionar sus tratamientos y citas
                       </p>
-                      <Button asChild className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg">
+                      <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
                         <Link href="/dashboard/medico/pacientes/nuevo">
                           <Plus className="mr-2 h-5 w-5" />
                           Agregar Primer Paciente
@@ -312,8 +312,8 @@ export default function MedicoDashboard() {
                         key={patient.id}
                         className="flex items-center space-x-4 p-4 border-2 rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
                       >
-                        <Avatar className="h-12 w-12 ring-2 ring-primary/20">
-                          <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/20 font-bold">
+                        <Avatar className="h-12 w-12 ring-1 ring-primary/20">
+                          <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                             {patient.firstName[0]}{patient.lastName[0]}
                           </AvatarFallback>
                         </Avatar>
@@ -355,25 +355,25 @@ export default function MedicoDashboard() {
             </CardHeader>
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border-2 hover:shadow-md">
                   <Link href="/dashboard/medico/pacientes">
                     <Users className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Gestionar Pacientes</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-secondary hover:text-secondary-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-accent hover:text-accent-foreground transition-colors border-2 hover:shadow-md">
                   <Link href="/dashboard/medico/citas">
                     <Calendar className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Ver Citas</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-accent hover:text-accent-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-accent hover:text-accent-foreground transition-colors border-2 hover:shadow-md">
                   <Link href="/dashboard/medico/calendario">
                     <Calendar className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Calendario</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-all border-2 hover:scale-105 hover:shadow-lg">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border-2 hover:shadow-md">
                   <Link href="/dashboard/medico/reportes">
                     <Activity className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Reportes</span>
@@ -384,36 +384,36 @@ export default function MedicoDashboard() {
           </Card>
 
           {/* Doctor Info */}
-          <Card className="border-2 shadow-lg bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10">
+          <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="text-2xl font-bold">Tu Perfil Profesional</CardTitle>
+              <CardTitle className="text-xl font-semibold tracking-tight">Tu Perfil Profesional</CardTitle>
             </CardHeader>
-            <CardContent className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-muted-foreground">Especialización</p>
-                  <p className="font-bold text-lg">{dashboard.specialization}</p>
+            <CardContent className="p-0">
+              <dl className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x">
+                <div className="px-6 py-4">
+                  <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Especialización</dt>
+                  <dd className="mt-1 text-base font-medium text-foreground">{dashboard.specialization}</dd>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-muted-foreground">Organización</p>
-                  <p className="font-bold text-lg">{dashboard.organizationName}</p>
+                <div className="px-6 py-4">
+                  <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Organización</dt>
+                  <dd className="mt-1 text-base font-medium text-foreground">{dashboard.organizationName}</dd>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-muted-foreground">Pacientes</p>
-                  <p className="font-bold text-lg">
+                <div className="px-6 py-4 border-t sm:border-t-0">
+                  <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Pacientes</dt>
+                  <dd className="mt-1 text-base font-medium text-foreground tabular-nums">
                     {dashboard.totalPatients || 0} registrados
-                  </p>
+                  </dd>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-muted-foreground">Estado</p>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-                    <p className="font-bold text-lg text-primary">Activo</p>
-                  </div>
+                <div className="px-6 py-4 border-t sm:border-t-0">
+                  <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Estado</dt>
+                  <dd className="mt-1 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-success" aria-hidden="true"></span>
+                    <span className="text-base font-medium text-success">Activo</span>
+                  </dd>
                 </div>
-              </div>
-              <div className="pt-4 border-t">
-                <Button asChild variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors border-2">
+              </dl>
+              <div className="border-t px-6 py-4">
+                <Button asChild variant="outline" size="sm" className="hover:bg-primary hover:text-primary-foreground transition-colors">
                   <Link href="/dashboard/medico/perfil">
                     Ver Perfil Completo
                   </Link>
