@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { AuthGuard } from "@/components/auth-guard-updated"
 import { DashboardLayout } from "@/components/dashboard-layout"
@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge"
 import { Loading } from "@/components/loading"
 import { useAuthContext } from "@/contexts/auth-context"
 import { usePatientDashboard } from "@/hooks/use-patients"
+import { medications } from "@/lib/api"
+import type { UpcomingDoseResponse } from "@/lib/api"
 import { isPatientUser } from "@/types/organization"
 import { 
   Plus, 
@@ -26,7 +28,9 @@ import {
 export default function PacienteDashboard() {
   const { user } = useAuthContext()
   const [patientProfileId, setPatientProfileId] = useState<number | null>(null)
-  const [nextMedication, setNextMedication] = useState<{name: string, time: string, timeLeft: string} | null>(null)
+  const [nextDose, setNextDose] = useState<UpcomingDoseResponse | null>(null)
+  const [doseCountdown, setDoseCountdown] = useState<string>("")
+  const [markingDose, setMarkingDose] = useState(false)
 
   useEffect(() => {
     if (user && isPatientUser(user)) {
@@ -34,29 +38,57 @@ export default function PacienteDashboard() {
     }
   }, [user])
 
-  // Lógica para el contador de medicación
-  useEffect(() => {
-    const updateCountdown = () => {
-      // Datos simulados por ahora, en una app real esto vendría de la API
-      const now = new Date()
-      const nextTime = new Date()
-      nextTime.setHours(now.getHours() + 2, 30, 0) // Simular toma en 2h 30m
-
-      const diff = nextTime.getTime() - now.getTime()
-      const hours = Math.floor(diff / (1000 * 60 * 60))
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-
-      setNextMedication({
-        name: "Tamoxifeno 20mg",
-        time: nextTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
-        timeLeft: `${hours}h ${minutes}m`
-      })
+  // Real next-dose data from the API (was previously a hardcoded simulation).
+  const loadNextDose = useCallback(async () => {
+    if (!patientProfileId) return
+    try {
+      const doses = await medications.getUpcomingDoses(patientProfileId, 2)
+      const pending = doses
+        .filter((d) => !d.taken)
+        .sort((a, b) => new Date(a.scheduledTime).getTime() - new Date(b.scheduledTime).getTime())
+      setNextDose(pending[0] ?? null)
+    } catch {
+      setNextDose(null)
     }
+  }, [patientProfileId])
 
-    updateCountdown()
-    const timer = setInterval(updateCountdown, 60000)
+  useEffect(() => {
+    loadNextDose()
+  }, [loadNextDose])
+
+  // Live countdown to the next scheduled dose.
+  useEffect(() => {
+    if (!nextDose) {
+      setDoseCountdown("")
+      return
+    }
+    const tick = () => {
+      const diff = new Date(nextDose.scheduledTime).getTime() - Date.now()
+      if (diff <= 0) {
+        setDoseCountdown("Ahora")
+        return
+      }
+      const hours = Math.floor(diff / 3_600_000)
+      const minutes = Math.floor((diff % 3_600_000) / 60_000)
+      setDoseCountdown(hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`)
+    }
+    tick()
+    const timer = setInterval(tick, 60_000)
     return () => clearInterval(timer)
-  }, [])
+  }, [nextDose])
+
+  const handleMarkDoseTaken = async () => {
+    if (!nextDose) return
+    setMarkingDose(true)
+    try {
+      await medications.markDoseTaken(nextDose.medicationId, { takenAt: new Date().toISOString() })
+      await loadNextDose()
+    } catch (err) {
+      console.error("Error marking dose as taken:", err)
+    } finally {
+      setMarkingDose(false)
+    }
+  }
 
   const { dashboard, isLoading, error, refetch } = usePatientDashboard(patientProfileId)
 
@@ -214,34 +246,44 @@ export default function PacienteDashboard() {
             </Card>
           )}
 
-          {/* Next Medication Countdown - Redesigned Solid */}
-          {nextMedication && (
-            <Card className="border-2 border-primary shadow-xl overflow-hidden bg-card">
+          {/* Next Medication Countdown - real upcoming-dose data */}
+          {nextDose && (
+            <Card className="border border-primary/40 shadow-sm overflow-hidden bg-card">
               <CardContent className="p-0">
                 <div className="flex flex-col md:flex-row">
                   <div className="p-8 bg-primary text-primary-foreground flex flex-col items-center justify-center min-w-[240px] text-center">
                     <div className="p-3 rounded-full bg-white/20 mb-4">
-                      <Clock className="h-10 w-10" />
+                      <Clock className="h-10 w-10" aria-hidden="true" />
                     </div>
                     <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-80 mb-1">Próxima toma en</p>
-                    <p className="text-5xl font-black tabular-nums">{nextMedication.timeLeft}</p>
+                    <p className="text-5xl font-black tabular-nums">{doseCountdown || "—"}</p>
                   </div>
                   <div className="p-8 flex-1 flex flex-col md:flex-row items-center justify-between gap-6 bg-card">
                     <div className="flex items-center gap-6">
-                      <div className="p-4 rounded-2xl bg-primary/10 text-primary border-2 border-primary/20">
-                        <Pill className="h-10 w-10" />
+                      <div className="p-4 rounded-2xl bg-primary/10 text-primary border border-primary/20">
+                        <Pill className="h-10 w-10" aria-hidden="true" />
                       </div>
                       <div>
-                        <h3 className="text-3xl font-black text-foreground tracking-tight">{nextMedication.name}</h3>
-                        <div className="flex items-center gap-2 mt-1 text-muted-foreground font-semibold">
-                          <Calendar className="h-4 w-4" />
-                          <span>Hoy a las {nextMedication.time}</span>
+                        <h3 className="text-2xl font-bold text-foreground tracking-tight">{nextDose.medicationName}</h3>
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-muted-foreground font-medium">
+                          <span className="font-mono tabular-nums">{nextDose.dosage}</span>
+                          <span aria-hidden="true">•</span>
+                          <span className="inline-flex items-center gap-1.5">
+                            <Calendar className="h-4 w-4" aria-hidden="true" />
+                            <span className="tabular-nums">
+                              {new Date(nextDose.scheduledTime).toLocaleString('es-ES', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </span>
                         </div>
                       </div>
                     </div>
-                    <Button className="w-full md:w-auto bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] transition-all shadow-md rounded-2xl h-14 px-10 font-bold text-lg">
-                      <CheckCircle className="mr-2 h-6 w-6" />
-                      Marcar como tomada
+                    <Button
+                      onClick={handleMarkDoseTaken}
+                      disabled={markingDose}
+                      className="w-full md:w-auto bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] transition-all shadow-sm rounded-2xl h-14 px-10 font-bold text-lg disabled:opacity-60"
+                    >
+                      <CheckCircle className="mr-2 h-6 w-6" aria-hidden="true" />
+                      {markingDose ? "Guardando…" : "Marcar como tomada"}
                     </Button>
                   </div>
                 </div>

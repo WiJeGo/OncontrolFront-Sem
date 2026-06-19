@@ -19,7 +19,8 @@ import {
   Clock,
   MapPin,
   User,
-  Phone,
+  Pill,
+  FileText,
   CheckCircle,
   X,
   AlertTriangle,
@@ -387,23 +388,13 @@ export default function CitasPacientePage() {
                     </div>
                     <div className="flex flex-col gap-2">
                       {(appointment.status === "SCHEDULED" || appointment.status === "CONFIRMED") && (
-                        <>
-                          <Button variant="outline" size="sm" className="border-2 hover:bg-primary hover:text-primary-foreground">
-                            Reprogramar
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleCancelAppointment(appointment.id)}
-                            className="text-destructive hover:text-destructive border-2 border-destructive/20 hover:border-destructive hover:bg-destructive/10"
-                          >
-                            Cancelar
-                          </Button>
-                        </>
-                      )}
-                      {appointment.status === "COMPLETED" && (
-                        <Button variant="outline" size="sm" className="border-2 hover:bg-primary hover:text-primary-foreground">
-                          Ver Resumen
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleCancelAppointment(appointment.id)}
+                          className="text-destructive hover:text-destructive border-2 border-destructive/20 hover:border-destructive hover:bg-destructive/10"
+                        >
+                          Cancelar
                         </Button>
                       )}
                     </div>
@@ -447,13 +438,17 @@ export default function CitasPacientePage() {
                     <span className="font-semibold">Solicitar Nueva Cita</span>
                   </Link>
                 </Button>
-                <Button variant="outline" className="h-24 flex-col hover:bg-chart-2 hover:text-white transition-all border-2 hover:shadow-lg">
-                  <Phone className="h-7 w-7 mb-2" />
-                  <span className="font-semibold">Contactar Clínica</span>
+                <Button variant="outline" className="h-24 flex-col hover:bg-chart-2 hover:text-white transition-colors border-2 hover:shadow-md" asChild>
+                  <Link href="/dashboard/paciente/medicamentos">
+                    <Pill className="h-7 w-7 mb-2" />
+                    <span className="font-semibold">Mis Medicamentos</span>
+                  </Link>
                 </Button>
-                <Button variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-all border-2 hover:shadow-lg">
-                  <Calendar className="h-7 w-7 mb-2" />
-                  <span className="font-semibold">Ver Calendario</span>
+                <Button variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-colors border-2 hover:shadow-md" asChild>
+                  <Link href="/dashboard/paciente/historial">
+                    <FileText className="h-7 w-7 mb-2" />
+                    <span className="font-semibold">Mi Historial</span>
+                  </Link>
                 </Button>
               </div>
             </CardContent>

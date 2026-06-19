@@ -251,13 +251,9 @@ export default function LoginPage() {
           <div className="mt-8 text-center text-xs text-muted-foreground">
             <p>Al iniciar sesión, aceptas nuestros</p>
             <div className="space-x-2 mt-1">
-              <Link href="#" className="hover:underline">
-                Términos de Servicio
-              </Link>
+              <span className="font-medium text-foreground/70">Términos de Servicio</span>
               <span>y</span>
-              <Link href="#" className="hover:underline">
-                Política de Privacidad
-              </Link>
+              <span className="font-medium text-foreground/70">Política de Privacidad</span>
             </div>
           </div>
         </div>
