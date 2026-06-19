@@ -188,10 +188,10 @@ export default function AppointmentDetailsPage() {
         return 'bg-primary/20 text-primary-foreground border-primary/30'
       case 'programada':
       case 'scheduled':
-        return 'bg-chart-2/10 text-chart-2-foreground border-chart-2/20'
+        return 'bg-chart-2/10 text-chart-2 border-chart-2/20'
       case 'completada':
       case 'completed':
-        return 'bg-chart-5/10 text-chart-5-foreground border-chart-5/20'
+        return 'bg-chart-5/10 text-chart-5 border-chart-5/20'
       case 'cancelada':
       case 'cancelled':
         return 'bg-destructive/10 text-destructive-foreground border-destructive/20'

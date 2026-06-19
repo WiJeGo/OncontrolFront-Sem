@@ -334,7 +334,7 @@ export default function TratamientosPage() {
                         Ver
                       </Link>
                     </Button>
-                    <Button variant="outline" size="sm" className="border-2 hover:bg-chart-2 hover:text-chart-2-foreground" asChild>
+                    <Button variant="outline" size="sm" className="border-2 hover:bg-chart-2 hover:text-white" asChild>
                       <Link href={`/dashboard/medico/tratamientos/${tratamiento.id}/editar`}>
                         <Edit className="w-4 h-4 mr-1" />
                         Editar

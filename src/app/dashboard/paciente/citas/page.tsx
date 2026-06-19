@@ -447,11 +447,11 @@ export default function CitasPacientePage() {
                     <span className="font-semibold">Solicitar Nueva Cita</span>
                   </Link>
                 </Button>
-                <Button variant="outline" className="h-24 flex-col hover:bg-chart-2 hover:text-chart-2-foreground transition-all border-2 hover:shadow-lg">
+                <Button variant="outline" className="h-24 flex-col hover:bg-chart-2 hover:text-white transition-all border-2 hover:shadow-lg">
                   <Phone className="h-7 w-7 mb-2" />
                   <span className="font-semibold">Contactar Clínica</span>
                 </Button>
-                <Button variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-chart-5-foreground transition-all border-2 hover:shadow-lg">
+                <Button variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-all border-2 hover:shadow-lg">
                   <Calendar className="h-7 w-7 mb-2" />
                   <span className="font-semibold">Ver Calendario</span>
                 </Button>

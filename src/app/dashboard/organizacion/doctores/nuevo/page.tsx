@@ -395,7 +395,7 @@ export default function NewDoctorPage() {
                 <Button 
                   type="button" 
                   variant="outline"
-                  className="hover:bg-chart-5 hover:text-chart-5-foreground transition-colors border-2 h-11 px-6"
+                  className="hover:bg-chart-5 hover:text-white transition-colors border-2 h-11 px-6"
                 >
                   Cancelar
                 </Button>

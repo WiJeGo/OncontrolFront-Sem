@@ -469,13 +469,13 @@ export default function PacienteDashboard() {
                     <span className="font-semibold">Mis Citas</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-chart-5-foreground transition-all border-2 hover:shadow-md">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-all border-2 hover:shadow-md">
                   <Link href="/dashboard/paciente/sintomas">
                     <Activity className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mis Síntomas</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-chart-5-foreground transition-colors border-2 hover:shadow-md">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-colors border-2 hover:shadow-md">
                   <Link href="/dashboard/paciente/historial">
                     <Heart className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mi Historial</span>
