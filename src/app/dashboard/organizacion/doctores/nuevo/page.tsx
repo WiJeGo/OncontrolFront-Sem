@@ -141,7 +141,7 @@ export default function NewDoctorPage() {
             label="Volver a doctores"
             className="mb-2"
           />
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold text-foreground">
             Agregar Nuevo Doctor
           </h1>
           <p className="text-muted-foreground text-lg">Registra un médico en tu organización</p>
@@ -291,8 +291,8 @@ export default function NewDoctorPage() {
             {/* Información Profesional */}
             <div className="space-y-5 pt-6">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-secondary/10 flex items-center justify-center">
-                  <Award className="h-5 w-5 text-secondary" />
+                <div className="h-10 w-10 rounded-lg bg-chart-2/10 flex items-center justify-center">
+                  <Award className="h-5 w-5 text-chart-2" />
                 </div>
                 <h3 className="text-xl font-bold">Información Profesional</h3>
               </div>
@@ -376,7 +376,7 @@ export default function NewDoctorPage() {
             <div className="flex gap-4 pt-4 border-t">
               <Button
                 type="submit"
-                className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-11 px-6 shadow-lg disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg disabled:opacity-50"
                 disabled={isLoading || success}
               >
                 {isLoading ? (
@@ -395,7 +395,7 @@ export default function NewDoctorPage() {
                 <Button 
                   type="button" 
                   variant="outline"
-                  className="hover:bg-accent hover:text-accent-foreground transition-colors border-2 h-11 px-6"
+                  className="hover:bg-chart-5 hover:text-chart-5-foreground transition-colors border-2 h-11 px-6"
                 >
                   Cancelar
                 </Button>

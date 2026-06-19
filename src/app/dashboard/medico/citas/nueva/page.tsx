@@ -180,14 +180,14 @@ export default function NuevaCitaPage() {
                 <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-primary/20">
                   <CheckCircle className="h-10 w-10 text-primary" />
                 </div>
-                <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h2 className="text-3xl font-bold mb-3 text-foreground">
                   ¡Cita creada exitosamente!
                 </h2>
                 <p className="text-muted-foreground mb-8 text-lg font-medium">
                   La cita ha sido programada y se ha enviado una notificación al paciente.
                 </p>
                 <div className="space-y-3">
-                  <Button asChild className="w-full bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-12 px-6 text-lg font-semibold shadow-lg hover:shadow-xl">
+                  <Button asChild className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-6 text-lg font-semibold shadow-lg hover:shadow-xl">
                     <Link href="/dashboard/medico/calendario">Ver Calendario</Link>
                   </Button>
                   <Button variant="outline" asChild className="w-full h-12 px-6 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground">
@@ -215,7 +215,7 @@ export default function NuevaCitaPage() {
               </Link>
             </Button>
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold text-foreground">
                 Nueva Cita
               </h1>
               <p className="text-muted-foreground text-lg">Programa una nueva cita con un paciente</p>
@@ -275,8 +275,8 @@ export default function NuevaCitaPage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <CalendarIcon className="h-5 w-5 text-secondary" />
+                  <div className="p-2 rounded-lg bg-chart-2/10">
+                    <CalendarIcon className="h-5 w-5 text-chart-2" />
                   </div>
                   Fecha y Hora
                 </CardTitle>
@@ -355,8 +355,8 @@ export default function NuevaCitaPage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                  <div className="p-2 rounded-lg bg-accent/10">
-                    <FileText className="h-5 w-5 text-accent" />
+                  <div className="p-2 rounded-lg bg-chart-5/10">
+                    <FileText className="h-5 w-5 text-chart-5" />
                   </div>
                   Detalles de la Cita
                 </CardTitle>
@@ -451,7 +451,7 @@ export default function NuevaCitaPage() {
               <Button type="button" variant="outline" asChild className="h-12 px-8 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground">
                 <Link href="/dashboard/medico/calendario">Cancelar</Link>
               </Button>
-              <Button type="submit" disabled={isLoading} className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
+              <Button type="submit" disabled={isLoading} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
                 {isLoading ? "Creando..." : "Crear Cita"}
               </Button>
             </div>

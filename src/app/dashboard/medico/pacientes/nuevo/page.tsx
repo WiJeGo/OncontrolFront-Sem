@@ -231,7 +231,7 @@ export default function NuevoPacientePage() {
               </Button>
             </Link>
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold text-foreground">
                 Registrar Nuevo Paciente
               </h1>
               <p className="text-muted-foreground text-lg">Complete la información del paciente</p>
@@ -402,8 +402,8 @@ export default function NuevoPacientePage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <Activity className="h-6 w-6 text-secondary" />
+                  <div className="p-2 rounded-lg bg-chart-2/10">
+                    <Activity className="h-6 w-6 text-chart-2" />
                   </div>
                   Información Médica
                 </CardTitle>
@@ -646,8 +646,8 @@ export default function NuevoPacientePage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                  <div className="p-2 rounded-lg bg-accent/10">
-                    <UserPlus className="h-6 w-6 text-accent" />
+                  <div className="p-2 rounded-lg bg-chart-5/10">
+                    <UserPlus className="h-6 w-6 text-chart-5" />
                   </div>
                   Contacto de Emergencia
                 </CardTitle>
@@ -701,8 +701,8 @@ export default function NuevoPacientePage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <UserPlus className="h-6 w-6 text-secondary" />
+                  <div className="p-2 rounded-lg bg-chart-2/10">
+                    <UserPlus className="h-6 w-6 text-chart-2" />
                   </div>
                   Información de Seguro (Opcional)
                 </CardTitle>
@@ -736,7 +736,7 @@ export default function NuevoPacientePage() {
             <div className="flex gap-4 pt-4">
               <Button
                 type="submit"
-                className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
                 disabled={isLoading || success}
               >
                 {isLoading ? (

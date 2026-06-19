@@ -188,10 +188,10 @@ export default function AppointmentDetailsPage() {
         return 'bg-primary/20 text-primary-foreground border-primary/30'
       case 'programada':
       case 'scheduled':
-        return 'bg-secondary/10 text-secondary-foreground border-secondary/20'
+        return 'bg-chart-2/10 text-chart-2-foreground border-chart-2/20'
       case 'completada':
       case 'completed':
-        return 'bg-accent/10 text-accent-foreground border-accent/20'
+        return 'bg-chart-5/10 text-chart-5-foreground border-chart-5/20'
       case 'cancelada':
       case 'cancelled':
         return 'bg-destructive/10 text-destructive-foreground border-destructive/20'
@@ -258,7 +258,7 @@ export default function AppointmentDetailsPage() {
             </Link>
             <div className="flex items-start justify-between">
               <div className="space-y-2">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold text-foreground">
                   Detalles de Cita
                 </h1>
                 <p className="text-muted-foreground text-lg">Información completa de la cita médica</p>
@@ -293,8 +293,8 @@ export default function AppointmentDetailsPage() {
           <Card className="border-2 shadow-lg">
             <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                <div className="p-2 rounded-lg bg-secondary/10">
-                  <Calendar className="h-6 w-6 text-secondary" />
+                <div className="p-2 rounded-lg bg-chart-2/10">
+                  <Calendar className="h-6 w-6 text-chart-2" />
                 </div>
                 Detalles de la Cita
               </CardTitle>
@@ -364,8 +364,8 @@ export default function AppointmentDetailsPage() {
               )}
 
               {appointment.preparationInstructions && (
-                <div className="p-4 bg-accent/10 rounded-xl border-2 border-accent/20">
-                  <p className="text-sm font-semibold text-accent mb-2">Instrucciones de Preparación</p>
+                <div className="p-4 bg-chart-5/10 rounded-xl border-2 border-chart-5/20">
+                  <p className="text-sm font-semibold text-chart-5 mb-2">Instrucciones de Preparación</p>
                   <p className="text-base text-foreground">{appointment.preparationInstructions}</p>
                 </div>
               )}
@@ -383,7 +383,7 @@ export default function AppointmentDetailsPage() {
                   <>
                     <Button 
                       onClick={handleConfirmAppointment}
-                      className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90"
+                      className="bg-primary text-primary-foreground hover:opacity-90"
                     >
                       <CheckCircle className="mr-2 h-4 w-4" />
                       Confirmar Cita
@@ -429,7 +429,7 @@ export default function AppointmentDetailsPage() {
 
                 {appointment.status === 'COMPLETED' && (
                   <div className="text-center w-full py-4">
-                    <div className="inline-flex items-center gap-2 text-accent font-semibold">
+                    <div className="inline-flex items-center gap-2 text-chart-5 font-semibold">
                       <CheckCircle className="h-5 w-5" />
                       <span>Esta cita ha sido completada</span>
                     </div>
@@ -503,7 +503,7 @@ export default function AppointmentDetailsPage() {
                 <Button
                   onClick={handleRescheduleSubmit}
                   disabled={isRescheduling || !rescheduleDate || !rescheduleTime}
-                  className="bg-gradient-to-r from-primary to-secondary text-white"
+                  className="bg-primary text-primary-foreground"
                 >
                   {isRescheduling ? "Reprogramando..." : "Reprogramar"}
                 </Button>

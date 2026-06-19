@@ -108,12 +108,12 @@ export default function DoctorDetailsPage() {
             </Link>
             
             {/* Doctor Header Card */}
-            <Card className="border-2 shadow-lg bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10">
+            <Card className="border-2 shadow-lg ">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-6 flex-1">
                     <Avatar className="h-20 w-20 ring-4 ring-primary/20 shadow-lg">
-                      <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-primary/30 to-secondary/30 text-primary">
+                      <AvatarFallback className="text-2xl font-bold bg-primary/15 text-primary">
                         {doctor.firstName[0]}{doctor.lastName[0]}
                       </AvatarFallback>
                     </Avatar>
@@ -196,8 +196,8 @@ export default function DoctorDetailsPage() {
             </Card>
             
             {doctor.rating !== undefined && (
-              <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+              <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
                 <CardContent className="pt-6 relative z-10">
                   <div className="flex items-center justify-between">
                     <div>
@@ -207,8 +207,8 @@ export default function DoctorDetailsPage() {
                         {doctor.totalReviews || 0} {doctor.totalReviews === 1 ? 'reseña' : 'reseñas'}
                       </p>
                     </div>
-                    <div className="p-3 rounded-lg bg-secondary/10">
-                      <Award className="h-8 w-8 text-secondary" />
+                    <div className="p-3 rounded-lg bg-chart-2/10">
+                      <Award className="h-8 w-8 text-chart-2" />
                     </div>
                   </div>
                 </CardContent>
@@ -216,16 +216,16 @@ export default function DoctorDetailsPage() {
             )}
 
             {doctor.yearsOfExperience !== undefined && (
-              <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+              <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
                 <CardContent className="pt-6 relative z-10">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-semibold text-muted-foreground">Años de Experiencia</p>
                       <p className="text-3xl font-bold text-foreground">{doctor.yearsOfExperience}</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-accent/10">
-                      <GraduationCap className="h-8 w-8 text-accent" />
+                    <div className="p-3 rounded-lg bg-chart-5/10">
+                      <GraduationCap className="h-8 w-8 text-chart-5" />
                     </div>
                   </div>
                 </CardContent>
@@ -279,8 +279,8 @@ export default function DoctorDetailsPage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="text-xl font-bold flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <Users className="h-6 w-6 text-secondary" />
+                  <div className="p-2 rounded-lg bg-chart-2/10">
+                    <Users className="h-6 w-6 text-chart-2" />
                   </div>
                   Información Personal
                 </CardTitle>
@@ -322,8 +322,8 @@ export default function DoctorDetailsPage() {
               <Card className="border-2 shadow-lg lg:col-span-2">
                 <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                   <CardTitle className="text-xl font-bold flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-accent/10">
-                      <Building2 className="h-6 w-6 text-accent" />
+                    <div className="p-2 rounded-lg bg-chart-5/10">
+                      <Building2 className="h-6 w-6 text-chart-5" />
                     </div>
                     Información de la Organización
                   </CardTitle>
@@ -357,8 +357,8 @@ export default function DoctorDetailsPage() {
             <Card className="border-2 shadow-lg lg:col-span-2">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="text-xl font-bold flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-secondary/10">
-                    <Activity className="h-6 w-6 text-secondary" />
+                  <div className="p-2 rounded-lg bg-chart-2/10">
+                    <Activity className="h-6 w-6 text-chart-2" />
                   </div>
                   Estado y Calificación
                 </CardTitle>

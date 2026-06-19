@@ -119,7 +119,7 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
         href={href}
         className={`group flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 font-semibold relative overflow-hidden ${
           isActive 
-            ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/30 scale-105" 
+            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30 scale-105" 
             : "text-muted-foreground hover:text-foreground hover:bg-primary/10 hover:scale-105"
         } ${collapsed ? 'justify-center px-3' : ''}`}
         onClick={() => setSidebarOpen(false)}
@@ -189,7 +189,7 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
               </>
             ) : (
               <div className="flex flex-col items-center gap-4 w-full">
-                <Link href={`/dashboard/${userType}`} className="hover:scale-110 transition-transform">
+                <Link href={`/dashboard/${userType}`} className="transition-transform">
                   <OnControlLogo size="sm" hideText={true} />
                 </Link>
                 <Button 
@@ -228,7 +228,7 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
                 <Menu className="h-5 w-5" />
               </Button>
               <div className="hidden lg:block">
-                <h2 className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h2 className="text-xl font-bold text-foreground">
                   {userType === "organizacion" ? "Panel de Organización" : 
                    userType === "medico" ? "Panel Médico" : "Panel Paciente"}
                 </h2>
@@ -242,7 +242,7 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:ring-2 hover:ring-primary/20 transition-all">
                     <Avatar className="h-10 w-10 ring-2 ring-border/50">
                       <AvatarImage src="/hombre-62-a-os-profesional.jpg" alt="Usuario" />
-                      <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/20">
+                      <AvatarFallback className="bg-primary/10">
                         {user?.type === 'ORGANIZATION' && 'organizationName' in user
                           ? user.organizationName?.[0] || 'O'
                           : user?.type === 'DOCTOR' && 'profile' in user

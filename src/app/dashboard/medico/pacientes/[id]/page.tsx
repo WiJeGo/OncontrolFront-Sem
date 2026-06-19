@@ -328,8 +328,8 @@ export default function PatientDetailsPage() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
@@ -338,22 +338,22 @@ export default function PatientDetailsPage() {
                       {appointmentsData.length}
                     </p>
                   </div>
-                  <div className="p-3 rounded-2xl bg-secondary/10">
-                    <Calendar className="h-8 w-8 text-secondary" />
+                  <div className="p-3 rounded-2xl bg-chart-2/10">
+                    <Calendar className="h-8 w-8 text-chart-2" />
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold text-muted-foreground">Alergias Registradas</p>
                     <p className="text-3xl font-bold text-foreground">{allergies.length}</p>
                   </div>
-                  <div className="p-3 rounded-2xl bg-accent/10">
-                    <Shield className="h-8 w-8 text-accent" />
+                  <div className="p-3 rounded-2xl bg-chart-5/10">
+                    <Shield className="h-8 w-8 text-chart-5" />
                   </div>
                 </div>
               </CardContent>
@@ -410,8 +410,8 @@ export default function PatientDetailsPage() {
                 <Card className="border-2 shadow-lg">
                   <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                     <CardTitle className="text-xl font-bold flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-secondary/10">
-                        <Heart className="h-6 w-6 text-secondary" />
+                      <div className="p-2 rounded-lg bg-chart-2/10">
+                        <Heart className="h-6 w-6 text-chart-2" />
                       </div>
                       Información Médica General
                     </CardTitle>
@@ -441,8 +441,8 @@ export default function PatientDetailsPage() {
                   <Card className="border-2 shadow-lg">
                     <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                       <CardTitle className="text-xl font-bold flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-accent/10">
-                          <Shield className="h-6 w-6 text-accent" />
+                        <div className="p-2 rounded-lg bg-chart-5/10">
+                          <Shield className="h-6 w-6 text-chart-5" />
                         </div>
                         Seguro Médico
                       </CardTitle>
@@ -540,7 +540,7 @@ export default function PatientDetailsPage() {
                       Citas del Paciente
                     </CardTitle>
                     <Link href={`/dashboard/medico/citas/nueva?patientId=${patient.id}`}>
-                      <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white border-0">
+                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90 border-0">
                         <Calendar className="mr-2 h-4 w-4" />
                         Nueva Cita
                       </Button>
@@ -623,7 +623,7 @@ export default function PatientDetailsPage() {
                       Tratamientos del Paciente
                     </CardTitle>
                     <Link href={`/dashboard/medico/tratamientos/nuevo?patientId=${patient.id}`}>
-                      <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white border-0">
+                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90 border-0">
                         <Activity className="mr-2 h-4 w-4" />
                         Nuevo Tratamiento
                       </Button>

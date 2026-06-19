@@ -59,7 +59,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex">
       {/* Mitad izquierda - Diseño visual */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary via-primary/90 to-secondary/80 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary via-primary/90 to-chart-2/80 relative overflow-hidden">
         {/* Elementos decorativos */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl"></div>
@@ -232,7 +232,7 @@ export default function LoginPage() {
 
             <Button 
               type="submit" 
-              className="w-full h-12 text-base font-semibold bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity text-white" 
+              className="w-full h-12 text-base font-semibold bg-primary hover:opacity-90 transition-opacity text-white" 
               disabled={isSubmitting}
             >
               {isSubmitting ? "Iniciando sesión..." : "Iniciar Sesión"}

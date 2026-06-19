@@ -294,7 +294,7 @@ export default function EditarTratamientoPage() {
                 <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-primary/20">
                   <CheckCircle className="h-10 w-10 text-primary" />
                 </div>
-                <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h2 className="text-3xl font-bold mb-3 text-foreground">
                   ¡Tratamiento actualizado exitosamente!
                 </h2>
                 <p className="text-muted-foreground mb-8 text-lg font-medium">
@@ -327,7 +327,7 @@ export default function EditarTratamientoPage() {
               </Button>
               </Link>
               <div className="space-y-2">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h1 className="text-4xl font-bold text-foreground">
                   Editar Tratamiento
                 </h1>
                 <p className="text-muted-foreground text-lg">Actualiza la información del tratamiento de {treatment.patientName}</p>
@@ -354,7 +354,7 @@ export default function EditarTratamientoPage() {
                 </CardHeader>
                 <CardContent className="p-6">
                   {selectedPatient && (
-                    <div className="p-5 bg-gradient-to-br from-accent/10 to-accent/5 rounded-xl border-2 border-accent/20">
+                    <div className="p-5 bg-gradient-to-br from-accent/10 to-accent/5 rounded-xl border-2 border-chart-5/20">
                       <h4 className="font-bold text-lg mb-2">{selectedPatient.firstName} {selectedPatient.lastName}</h4>
                       <p className="text-sm text-muted-foreground font-semibold mb-1">
                         {selectedPatient.cancerType} {selectedPatient.cancerStage && `- ${selectedPatient.cancerStage}`}
@@ -369,8 +369,8 @@ export default function EditarTratamientoPage() {
               <Card className="border-2 shadow-lg bg-muted/30">
                 <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                   <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                    <div className="p-2 rounded-lg bg-secondary/10">
-                      <Activity className="h-5 w-5 text-secondary" />
+                    <div className="p-2 rounded-lg bg-chart-2/10">
+                      <Activity className="h-5 w-5 text-chart-2" />
                     </div>
                     Tipo y Protocolo
                   </CardTitle>
@@ -396,8 +396,8 @@ export default function EditarTratamientoPage() {
               <Card className="border-2 shadow-lg">
                 <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                   <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                    <div className="p-2 rounded-lg bg-secondary/10">
-                      <Activity className="h-5 w-5 text-secondary" />
+                    <div className="p-2 rounded-lg bg-chart-2/10">
+                      <Activity className="h-5 w-5 text-chart-2" />
                     </div>
                     Configuración del Tratamiento
                   </CardTitle>
@@ -534,8 +534,8 @@ export default function EditarTratamientoPage() {
             <Card className="border-2 shadow-lg">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                  <div className="p-2 rounded-lg bg-accent/10">
-                    <FileText className="h-5 w-5 text-accent" />
+                  <div className="p-2 rounded-lg bg-chart-5/10">
+                    <FileText className="h-5 w-5 text-chart-5" />
                   </div>
                   Información Adicional
                 </CardTitle>
@@ -573,7 +573,7 @@ export default function EditarTratamientoPage() {
               <Button type="button" variant="outline" asChild className="h-12 px-8 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground">
                 <Link href={`/dashboard/medico/tratamientos/${treatmentId}`}>Cancelar</Link>
               </Button>
-              <Button type="submit" disabled={isLoading} className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
+              <Button type="submit" disabled={isLoading} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
                 <Save className="mr-2 h-5 w-5" />
                 {isLoading ? "Actualizando..." : "Actualizar Tratamiento"}
               </Button>

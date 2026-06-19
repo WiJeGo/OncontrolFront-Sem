@@ -205,7 +205,7 @@ export default function TreatmentDetailsPage() {
             </Link>
             
             {/* Treatment Header Card */}
-            <Card className="border-2 shadow-lg bg-gradient-to-br from-primary/10 via-secondary/5 to-primary/10">
+            <Card className="border-2 shadow-lg ">
               <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-3 flex-1">
@@ -298,8 +298,8 @@ export default function TreatmentDetailsPage() {
               </CardContent>
             </Card>
             
-            <Card className="border-2 border-secondary/20 hover:border-secondary/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
@@ -308,15 +308,15 @@ export default function TreatmentDetailsPage() {
                       {sessions.filter(s => s.status === 'SCHEDULED' || s.status === 'PROGRAMADA').length}
                     </p>
                   </div>
-                  <div className="p-3 rounded-lg bg-secondary/10">
-                    <Calendar className="h-8 w-8 text-secondary" />
+                  <div className="p-3 rounded-lg bg-chart-2/10">
+                    <Calendar className="h-8 w-8 text-chart-2" />
                   </div>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="border-2 border-accent/20 hover:border-accent/40 transition-all hover:shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16"></div>
+            <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
@@ -325,8 +325,8 @@ export default function TreatmentDetailsPage() {
                       {sessions.filter(s => s.status === 'COMPLETED' || s.status === 'COMPLETADA').length}
                     </p>
                   </div>
-                  <div className="p-3 rounded-lg bg-accent/10">
-                    <CheckCircle className="h-8 w-8 text-accent" />
+                  <div className="p-3 rounded-lg bg-chart-5/10">
+                    <CheckCircle className="h-8 w-8 text-chart-5" />
                   </div>
                 </div>
               </CardContent>
@@ -388,8 +388,8 @@ export default function TreatmentDetailsPage() {
                 <Card className="border-2 shadow-lg">
                   <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                     <CardTitle className="text-xl font-bold flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-secondary/10">
-                        <Calendar className="h-6 w-6 text-secondary" />
+                      <div className="p-2 rounded-lg bg-chart-2/10">
+                        <Calendar className="h-6 w-6 text-chart-2" />
                       </div>
                       Fechas y Ubicación
                     </CardTitle>
@@ -425,8 +425,8 @@ export default function TreatmentDetailsPage() {
                   <Card className="lg:col-span-2 border-2 shadow-lg">
                     <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                       <CardTitle className="text-xl font-bold flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-accent/10">
-                          <FileText className="h-6 w-6 text-accent" />
+                        <div className="p-2 rounded-lg bg-chart-5/10">
+                          <FileText className="h-6 w-6 text-chart-5" />
                         </div>
                         Notas del Tratamiento
                       </CardTitle>
@@ -459,8 +459,8 @@ export default function TreatmentDetailsPage() {
                   <Card className="lg:col-span-2 border-2 shadow-lg">
                     <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
                       <CardTitle className="text-xl font-bold flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-secondary/10">
-                          <User className="h-6 w-6 text-secondary" />
+                        <div className="p-2 rounded-lg bg-chart-2/10">
+                          <User className="h-6 w-6 text-chart-2" />
                         </div>
                         Información del Paciente
                       </CardTitle>

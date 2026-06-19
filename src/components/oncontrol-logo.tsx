@@ -27,7 +27,7 @@ export function OnControlLogo({ className = "", size = "md", hideText = false }:
       </div>
       {!hideText && (
         <span className={`font-bold ${sizeClasses[size]}`}>
-          <span className="text-accent">ONCO</span>
+          <span className="text-chart-5">ONCO</span>
           <span className="text-primary">NTROL</span>
         </span>
       )}

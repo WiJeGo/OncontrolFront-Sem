@@ -98,7 +98,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex">
       {/* Mitad izquierda - Diseño visual */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-secondary via-secondary/90 to-primary/80 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-chart-2 via-chart-2/90 to-primary/80 relative overflow-hidden">
         {/* Elementos decorativos */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-72 h-72 bg-white rounded-full blur-3xl"></div>
@@ -365,7 +365,7 @@ export default function RegisterPage() {
 
             <Button 
               type="submit" 
-              className="w-full h-12 text-base font-semibold bg-gradient-to-r from-secondary to-primary hover:opacity-90 transition-opacity text-white"
+              className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Registrando...' : 'Crear Cuenta de Organización'}
