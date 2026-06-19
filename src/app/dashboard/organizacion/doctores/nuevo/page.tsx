@@ -155,13 +155,13 @@ export default function NewDoctorPage() {
         <CardContent className="pt-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <Alert variant="destructive">
+              <Alert variant="destructive" role="alert">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
             
             {actionError && (
-              <Alert variant="destructive">
+              <Alert variant="destructive" role="alert">
                 <AlertDescription>{actionError}</AlertDescription>
               </Alert>
             )}

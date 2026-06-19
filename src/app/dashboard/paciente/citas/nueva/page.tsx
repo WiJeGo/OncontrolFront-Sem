@@ -210,7 +210,7 @@ export default function NuevaCitaPage() {
           </div>
 
           {error && (
-            <Alert variant="destructive">
+            <Alert variant="destructive" role="alert">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
@@ -233,7 +233,7 @@ export default function NuevaCitaPage() {
                       value={formData.type} 
                       onValueChange={(value) => handleInputChange("type", value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger id="type">
                         <SelectValue placeholder="Selecciona el tipo de consulta" />
                       </SelectTrigger>
                       <SelectContent>
@@ -260,6 +260,7 @@ export default function NuevaCitaPage() {
                   <div className="space-y-2">
                     <Label htmlFor="notes">Motivo de la Consulta</Label>
                     <Textarea
+                      id="notes"
                       placeholder="Describe brevemente el motivo de tu consulta..."
                       value={formData.notes}
                       onChange={(e) => handleInputChange("notes", e.target.value)}
@@ -283,12 +284,13 @@ export default function NuevaCitaPage() {
                     <Label htmlFor="date">Fecha Preferida *</Label>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button 
-                          variant="outline" 
+                        <Button
+                          id="date"
+                          variant="outline"
                           className="w-full justify-start bg-transparent"
                           type="button"
                         >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          <CalendarIcon className="mr-2 h-4 w-4" aria-hidden="true" />
                           {formData.date ? format(formData.date, "dd/MM/yyyy", { locale: es }) : "Selecciona una fecha"}
                         </Button>
                       </PopoverTrigger>
@@ -308,7 +310,7 @@ export default function NuevaCitaPage() {
                   <div className="space-y-2">
                     <Label htmlFor="time">Hora Preferida *</Label>
                     <Select value={formData.time} onValueChange={(value) => handleInputChange("time", value)}>
-                      <SelectTrigger>
+                      <SelectTrigger id="time">
                         <SelectValue placeholder="Selecciona la hora" />
                       </SelectTrigger>
                       <SelectContent>
@@ -332,7 +334,7 @@ export default function NuevaCitaPage() {
                   <div className="space-y-2">
                     <Label htmlFor="location">Ubicación</Label>
                     <Select value={formData.location} onValueChange={(value) => handleInputChange("location", value)}>
-                      <SelectTrigger>
+                      <SelectTrigger id="location">
                         <SelectValue placeholder="Selecciona la ubicación" />
                       </SelectTrigger>
                       <SelectContent>
@@ -348,6 +350,7 @@ export default function NuevaCitaPage() {
                   <div className="space-y-2">
                     <Label htmlFor="preparationInstructions">Instrucciones de Preparación</Label>
                     <Textarea
+                      id="preparationInstructions"
                       placeholder="Si tienes alguna condición especial o necesitas preparación..."
                       value={formData.preparationInstructions}
                       onChange={(e) => handleInputChange("preparationInstructions", e.target.value)}

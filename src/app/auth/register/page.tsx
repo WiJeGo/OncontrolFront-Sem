@@ -211,7 +211,7 @@ export default function RegisterPage() {
           </div>
 
           {error && (
-            <Alert variant="destructive" className="mb-6">
+            <Alert variant="destructive" className="mb-6" role="alert">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}

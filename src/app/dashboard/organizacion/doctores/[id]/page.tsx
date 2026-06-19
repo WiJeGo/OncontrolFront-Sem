@@ -82,7 +82,7 @@ export default function DoctorDetailsPage() {
                 Volver a doctores
               </Button>
             </Link>
-            <Alert variant="destructive" className="border-2">
+            <Alert variant="destructive" className="border-2" role="alert">
               <AlertTriangle className="h-5 w-5" />
               <AlertDescription className="font-semibold">
                 {error || "Doctor no encontrado"}

@@ -141,7 +141,7 @@ export default function PacientePerfilPage() {
 
           {/* Alerts */}
           {error && (
-            <Alert variant="destructive" className="border-2">
+            <Alert variant="destructive" className="border-2" role="alert">
               <AlertDescription className="font-semibold">{error}</AlertDescription>
             </Alert>
           )}

@@ -94,7 +94,7 @@ export default function ForgotPasswordPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <Alert variant="destructive">
+                <Alert variant="destructive" role="alert">
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}

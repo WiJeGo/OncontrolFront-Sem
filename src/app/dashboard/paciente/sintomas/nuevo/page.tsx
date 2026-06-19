@@ -216,8 +216,8 @@ export default function NuevoSintomaPage() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {error && (
-              <Alert variant="destructive" className="border-2">
-                <AlertTriangle className="h-5 w-5" />
+              <Alert variant="destructive" className="border-2" role="alert">
+                <AlertTriangle className="h-5 w-5" aria-hidden="true" />
                 <AlertDescription className="font-semibold">{error}</AlertDescription>
               </Alert>
             )}
@@ -246,7 +246,7 @@ export default function NuevoSintomaPage() {
                         handleInputChange("symptom", value)
                       }
                     }}>
-                      <SelectTrigger className="h-12 text-base border-2">
+                      <SelectTrigger id="symptom" className="h-12 text-base border-2">
                         <SelectValue placeholder="Selecciona el síntoma" />
                       </SelectTrigger>
                       <SelectContent>
@@ -270,7 +270,7 @@ export default function NuevoSintomaPage() {
                   <div className="space-y-2">
                     <Label htmlFor="severity" className="text-base font-semibold">Severidad *</Label>
                     <Select value={formData.severity} onValueChange={(value) => handleInputChange("severity", value)}>
-                      <SelectTrigger className="h-12 text-base border-2">
+                      <SelectTrigger id="severity" className="h-12 text-base border-2">
                         <SelectValue placeholder="Selecciona la severidad" />
                       </SelectTrigger>
                       <SelectContent>
@@ -291,8 +291,8 @@ export default function NuevoSintomaPage() {
                       <Label htmlFor="date" className="text-base font-semibold">Fecha *</Label>
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button variant="outline" className="w-full justify-start h-12 text-base border-2 hover:bg-primary hover:text-primary-foreground">
-                            <CalendarIcon className="mr-2 h-5 w-5" />
+                          <Button id="date" variant="outline" className="w-full justify-start h-12 text-base border-2 hover:bg-primary hover:text-primary-foreground">
+                            <CalendarIcon className="mr-2 h-5 w-5" aria-hidden="true" />
                             {format(formData.date, "dd/MM/yyyy")}
                           </Button>
                         </PopoverTrigger>
@@ -311,6 +311,7 @@ export default function NuevoSintomaPage() {
                     <div className="space-y-2">
                       <Label htmlFor="time" className="text-base font-semibold">Hora *</Label>
                       <Input
+                        id="time"
                         type="time"
                         value={formData.time}
                         onChange={(e) => handleInputChange("time", e.target.value)}
@@ -322,7 +323,7 @@ export default function NuevoSintomaPage() {
                   <div className="space-y-2">
                     <Label htmlFor="duration" className="text-base font-semibold">Duración *</Label>
                     <Select value={formData.duration} onValueChange={(value) => handleInputChange("duration", value)}>
-                      <SelectTrigger className="h-12 text-base border-2">
+                      <SelectTrigger id="duration" className="h-12 text-base border-2">
                         <SelectValue placeholder="¿Cuánto duró?" />
                       </SelectTrigger>
                       <SelectContent>
@@ -357,6 +358,7 @@ export default function NuevoSintomaPage() {
                   <div className="space-y-2">
                     <Label htmlFor="notes" className="text-base font-semibold">Notas Adicionales</Label>
                     <Textarea
+                      id="notes"
                       placeholder="Describe el síntoma con más detalle, cómo te sentiste, qué lo empeoró o mejoró..."
                       value={formData.notes}
                       onChange={(e) => handleInputChange("notes", e.target.value)}

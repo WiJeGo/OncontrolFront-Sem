@@ -185,7 +185,7 @@ export default function CitasPacientePage() {
     return (
       <AuthGuard requiredRole="PATIENT">
         <DashboardLayout>
-          <Alert variant="destructive">
+          <Alert variant="destructive" role="alert">
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>{error}</AlertDescription>
           </Alert>
