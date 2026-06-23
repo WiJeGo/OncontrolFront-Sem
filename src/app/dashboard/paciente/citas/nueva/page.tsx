@@ -250,7 +250,7 @@ export default function NuevaCitaPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="doctor">Doctor Asignado</Label>
+                    <Label>Doctor Asignado</Label>
                     <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                       <User className="h-5 w-5 text-primary" />
                       <span className="font-medium">{doctorName}</span>
@@ -324,7 +324,7 @@ export default function NuevaCitaPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="duration">Duración Estimada</Label>
+                    <Label>Duración Estimada</Label>
                     <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                       <Clock className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">{formData.durationMinutes} minutos</span>

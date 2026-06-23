@@ -374,7 +374,7 @@ export default function NuevoPacientePage() {
                       value={formData.bloodType} 
                       onValueChange={(value) => handleInputChange("bloodType", value)}
                     >
-                      <SelectTrigger className="h-12 text-base border-2">
+                      <SelectTrigger id="bloodType" className="h-12 text-base border-2">
                         <SelectValue placeholder="Seleccionar" />
                       </SelectTrigger>
                       <SelectContent>
