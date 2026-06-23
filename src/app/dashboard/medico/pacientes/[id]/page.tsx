@@ -171,18 +171,18 @@ export default function PatientDetailsPage() {
     switch (status?.toUpperCase()) {
       case "SCHEDULED":
       case "PROGRAMADA":
-        return "bg-blue-500/10 text-blue-500"
+        return "bg-chart-2/10 text-chart-2"
       case "CONFIRMED":
       case "CONFIRMADA":
-        return "bg-green-500/10 text-green-500"
+        return "bg-success/10 text-success"
       case "COMPLETED":
       case "COMPLETADA":
-        return "bg-gray-500/10 text-gray-500"
+        return "bg-muted text-muted-foreground"
       case "CANCELLED":
       case "CANCELADA":
-        return "bg-red-500/10 text-red-500"
+        return "bg-destructive/10 text-destructive"
       default:
-        return "bg-gray-500/10 text-gray-500"
+        return "bg-muted text-muted-foreground"
     }
   }
 
@@ -194,13 +194,13 @@ export default function PatientDetailsPage() {
         return <Stethoscope className="h-5 w-5 text-primary" />
       case "DIAGNOSIS":
       case "DIAGNÓSTICO":
-        return <AlertTriangle className="h-5 w-5 text-yellow-500" />
+        return <AlertTriangle className="h-5 w-5 text-warning-foreground" />
       case "TREATMENT":
       case "TRATAMIENTO":
-        return <Activity className="h-5 w-5 text-blue-500" />
+        return <Activity className="h-5 w-5 text-chart-2" />
       case "LAB_RESULT":
       case "RESULTADO_LABORATORIO":
-        return <FileText className="h-5 w-5 text-green-500" />
+        return <FileText className="h-5 w-5 text-success" />
       default:
         return <FileText className="h-5 w-5 text-muted-foreground" />
     }

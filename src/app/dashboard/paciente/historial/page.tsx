@@ -115,30 +115,30 @@ export default function HistorialPage() {
   const getTypeIcon = (type: string) => {
     switch (type) {
       case "CONSULTATION":
-        return <Stethoscope className="w-5 h-5 text-blue-600" />
+        return <Stethoscope className="w-5 h-5 text-chart-2" />
       case "PROCEDURE":
-        return <Activity className="w-5 h-5 text-purple-600" />
+        return <Activity className="w-5 h-5 text-chart-3" />
       case "SURGERY":
-        return <Heart className="w-5 h-5 text-red-600" />
+        return <Heart className="w-5 h-5 text-destructive" />
       case "LAB_RESULT":
-        return <FileText className="w-5 h-5 text-green-600" />
+        return <FileText className="w-5 h-5 text-success" />
       default:
-        return <FileText className="w-5 h-5 text-gray-600" />
+        return <FileText className="w-5 h-5 text-muted-foreground" />
     }
   }
 
   const getTypeColor = (type: string) => {
     switch (type) {
       case "CONSULTATION":
-        return "bg-blue-100 text-blue-700"
+        return "bg-chart-2/15 text-chart-2"
       case "PROCEDURE":
-        return "bg-purple-100 text-purple-700"
+        return "bg-chart-3/15 text-chart-3"
       case "SURGERY":
-        return "bg-red-100 text-red-700"
+        return "bg-destructive/15 text-destructive"
       case "LAB_RESULT":
-        return "bg-green-100 text-green-700"
+        return "bg-success/15 text-success"
       default:
-        return "bg-gray-100 text-gray-700"
+        return "bg-muted text-muted-foreground"
     }
   }
 

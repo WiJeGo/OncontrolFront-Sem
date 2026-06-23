@@ -139,18 +139,18 @@ export default function TreatmentDetailsPage() {
     switch (status?.toUpperCase()) {
       case "SCHEDULED":
       case "PROGRAMADA":
-        return "bg-blue-500/10 text-blue-500"
+        return "bg-chart-2/10 text-chart-2"
       case "COMPLETED":
       case "COMPLETADA":
-        return "bg-green-500/10 text-green-500"
+        return "bg-success/10 text-success"
       case "CANCELLED":
       case "CANCELADA":
-        return "bg-red-500/10 text-red-500"
+        return "bg-destructive/10 text-destructive"
       case "IN_PROGRESS":
       case "EN_PROGRESO":
-        return "bg-yellow-500/10 text-yellow-500"
+        return "bg-warning/15 text-warning-foreground"
       default:
-        return "bg-gray-500/10 text-gray-500"
+        return "bg-muted text-muted-foreground"
     }
   }
 
@@ -552,13 +552,13 @@ export default function TreatmentDetailsPage() {
                                   </div>
                                   <div className="p-2 rounded-lg bg-muted/50">
                                     {session.status === 'COMPLETED' || session.status === 'COMPLETADA' ? (
-                                      <CheckCircle className="h-6 w-6 text-green-500" />
+                                      <CheckCircle className="h-6 w-6 text-success" />
                                     ) : session.status === 'IN_PROGRESS' || session.status === 'EN_PROGRESO' ? (
-                                      <PlayCircle className="h-6 w-6 text-yellow-500" />
+                                      <PlayCircle className="h-6 w-6 text-warning-foreground" />
                                     ) : session.status === 'CANCELLED' || session.status === 'CANCELADA' ? (
-                                      <AlertTriangle className="h-6 w-6 text-red-500" />
+                                      <AlertTriangle className="h-6 w-6 text-destructive" />
                                     ) : (
-                                      <PauseCircle className="h-6 w-6 text-blue-500" />
+                                      <PauseCircle className="h-6 w-6 text-chart-2" />
                                     )}
                                   </div>
                                 </div>

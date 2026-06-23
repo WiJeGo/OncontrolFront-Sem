@@ -369,12 +369,12 @@ export default function DoctorDetailsPage() {
                     <p className="text-sm font-semibold text-muted-foreground mb-2">Estado</p>
                     <div className="flex items-center gap-2">
                       {doctor.isActive ? (
-                        <Badge className="border-2 font-semibold bg-green-500/10 text-green-600 border-green-500/20">
+                        <Badge className="border-2 font-semibold bg-success/10 text-success border-success/30/20">
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Activo
                         </Badge>
                       ) : (
-                        <Badge className="border-2 font-semibold bg-red-500/10 text-red-600 border-red-500/20">
+                        <Badge className="border-2 font-semibold bg-destructive/10 text-destructive border-destructive/30/20">
                           <AlertTriangle className="h-3 w-3 mr-1" />
                           Inactivo
                         </Badge>
