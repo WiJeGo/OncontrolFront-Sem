@@ -81,6 +81,23 @@ export interface CreateDoctorRequest {
   isAvailable?: boolean;
 }
 
+// Partial update of a doctor's own profile — every field optional (omit = unchanged).
+export interface UpdateDoctorRequest {
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  birthDate?: string; // LocalDate in backend
+  city?: string;
+  address?: string;
+  specialization?: string;
+  licenseNumber?: string;
+  yearsOfExperience?: number;
+  hospitalAffiliation?: string;
+  consultationFee?: string; // BigDecimal in backend, send as string
+  bio?: string;
+  isAvailable?: boolean;
+}
+
 export interface CreatePatientRequest {
   email: string;
   password: string;
@@ -892,6 +909,17 @@ class ApiClient {
     return response.patient;
   }
 
+  async updateDoctorProfile(doctorProfileId: number, data: UpdateDoctorRequest): Promise<DoctorProfileResponse> {
+    const response = await this.request<{ doctor: DoctorProfileResponse; message: string }>(
+      `/api/doctors/${doctorProfileId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }
+    );
+    return response.doctor;
+  }
+
   // ============================================
   // APPOINTMENT ENDPOINTS
   // ============================================
@@ -1314,8 +1342,10 @@ export const doctors = {
     apiClient.getDoctorPatient(doctorProfileId, patientId),
   getPatientSymptoms: (doctorProfileId: number, patientId: number) => 
     apiClient.getDoctorPatientSymptoms(doctorProfileId, patientId),
-  createPatient: (doctorProfileId: number, data: CreatePatientRequest) => 
+  createPatient: (doctorProfileId: number, data: CreatePatientRequest) =>
     apiClient.createPatient(doctorProfileId, data),
+  updateProfile: (doctorProfileId: number, data: UpdateDoctorRequest) =>
+    apiClient.updateDoctorProfile(doctorProfileId, data),
 };
 
 export const appointments = {

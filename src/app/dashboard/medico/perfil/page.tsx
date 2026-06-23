@@ -12,7 +12,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Loading } from "@/components/loading"
 import { useAuthContext } from "@/contexts/auth-context"
-import type { DoctorProfileResponse } from "@/lib/api"
+import { doctors } from "@/lib/api"
+import type { DoctorProfileResponse, UpdateDoctorRequest } from "@/lib/api"
 import { isDoctorUser } from "@/types/organization"
 import { 
   User, 
@@ -50,21 +51,35 @@ export default function MedicoPerfilPage() {
     setSuccess("")
 
     try {
-      // TODO: Implement profile update endpoint
-      // const updatedProfile = await doctors.updateProfile(user.profile.id, {
-      //   specialty: doctorData.specialty,
-      //   licenseNumber: doctorData.licenseNumber,
-      //   phone: doctorData.phone,
-      //   bio: doctorData.bio || undefined,
-      //   officeAddress: doctorData.officeAddress || undefined
-      // })
-      
-      // setDoctorData(updatedProfile)
-      setError("La actualización de perfil aún no está implementada en el backend")
+      const payload: UpdateDoctorRequest = {
+        phone: doctorData.phone,
+        specialization: doctorData.specialization,
+        licenseNumber: doctorData.licenseNumber,
+        bio: doctorData.bio || undefined,
+        address: doctorData.address || undefined,
+      }
+
+      const updated = await doctors.updateProfile(doctorData.id, payload)
+      setDoctorData(updated)
+
+      // The auth state is hydrated from localStorage 'userData' on navigation,
+      // so sync the refreshed profile back into it (best-effort).
+      try {
+        const stored = localStorage.getItem("userData")
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          parsed.profile = updated
+          localStorage.setItem("userData", JSON.stringify(parsed))
+        }
+      } catch {
+        /* non-fatal: localStorage sync is best-effort */
+      }
+
+      setSuccess("Perfil actualizado correctamente")
       setIsEditing(false)
     } catch (err) {
       console.error('Error updating profile:', err)
-      setError("Error al actualizar el perfil")
+      setError(err instanceof Error ? err.message : "Error al actualizar el perfil")
     } finally {
       setIsSaving(false)
     }
