@@ -78,6 +78,9 @@ export default function MedicoDashboard() {
     return null
   }
 
+  const rawDate = new Date().toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" })
+  const dateLabel = rawDate.charAt(0).toUpperCase() + rawDate.slice(1)
+
   const kpis = [
     {
       label: "Pacientes activos",
@@ -125,36 +128,43 @@ export default function MedicoDashboard() {
     <AuthGuard requiredRole="DOCTOR">
       <DashboardLayout>
         <div className="space-y-7">
-          {/* Header */}
-          <div className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h1 className="text-2xl font-semibold tracking-tight text-foreground">Panel médico</h1>
-              <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Dr. {dashboard.doctorName}</span>
-                <span className="text-border">·</span>
-                <span>{dashboard.specialization}</span>
-                <span className="text-border">·</span>
-                <span>{dashboard.organizationName}</span>
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button asChild className="h-10 bg-primary px-4 text-primary-foreground hover:bg-primary/90">
-                <Link href="/dashboard/medico/pacientes/nuevo">
-                  <Plus className="mr-1.5 h-4 w-4" />
-                  Nuevo paciente
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="h-10 border-border px-4 hover:bg-muted/60">
-                <Link href="/dashboard/medico/citas/nueva">
-                  <Calendar className="mr-1.5 h-4 w-4" />
-                  Nueva cita
-                </Link>
-              </Button>
+          {/* Welcome banner */}
+          <div className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary/10 via-card to-chart-2/10 px-5 py-5 shadow-sm sm:px-6">
+            <div
+              className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-primary/10 blur-3xl"
+              aria-hidden="true"
+            />
+            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">{dateLabel}</p>
+                <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
+                  Hola, Dr. {dashboard.doctorName}
+                </h1>
+                <p className="mt-1 flex flex-wrap items-center gap-x-1.5 text-sm text-muted-foreground">
+                  <span>{dashboard.specialization}</span>
+                  <span className="text-border">·</span>
+                  <span>{dashboard.organizationName}</span>
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Button asChild className="h-10 bg-primary px-4 text-primary-foreground shadow-sm hover:bg-primary/90">
+                  <Link href="/dashboard/medico/pacientes/nuevo">
+                    <Plus className="mr-1.5 h-4 w-4" />
+                    Nuevo paciente
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="h-10 border-border bg-background/70 px-4 hover:bg-muted">
+                  <Link href="/dashboard/medico/citas/nueva">
+                    <Calendar className="mr-1.5 h-4 w-4" />
+                    Nueva cita
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
 
           {/* KPI strip — connected hairline tiles */}
-          <div className="grid grid-cols-2 divide-x divide-y divide-border overflow-hidden rounded-xl border border-border bg-card lg:grid-cols-4 lg:divide-y-0">
+          <div className="grid grid-cols-2 divide-x divide-y divide-border overflow-hidden rounded-xl border border-border bg-card shadow-sm lg:grid-cols-4 lg:divide-y-0">
             {kpis.map((kpi) => (
               <div key={kpi.label} className={`p-5 ${kpi.tile}`}>
                 <div className="mb-3 flex items-center gap-2 text-[13px] text-muted-foreground">
@@ -177,7 +187,7 @@ export default function MedicoDashboard() {
 
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
             {/* Upcoming appointments */}
-            <section className="overflow-hidden rounded-xl border border-border bg-card">
+            <section className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
               <header className="flex items-center justify-between border-b border-border px-5 py-4">
                 <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
                   <Clock className="h-4 w-4 text-primary" />
@@ -246,7 +256,7 @@ export default function MedicoDashboard() {
             </section>
 
             {/* Patients */}
-            <section className="overflow-hidden rounded-xl border border-border bg-card">
+            <section className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
               <header className="flex items-center justify-between border-b border-border px-5 py-4">
                 <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
                   <Users className="h-4 w-4 text-chart-2" />
@@ -323,7 +333,7 @@ export default function MedicoDashboard() {
                 <Link
                   key={action.href}
                   href={action.href}
-                  className="group flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/40 hover:bg-muted/30"
+                  className="group flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
                 >
                   <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     <action.icon className="h-5 w-5" />
