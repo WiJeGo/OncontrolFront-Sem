@@ -1,42 +1,41 @@
 "use client"
 
-import { useEffect, useState } from 'react'
-import { useAuthContext } from '@/contexts/auth-context'
-import { useOrganizationDoctors } from '@/hooks/use-organizations'
-import { isOrganizationUser } from '@/types/organization'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { DashboardLayout } from '@/components/dashboard-layout'
-import { Loading } from '@/components/loading'
-import { BackButton } from '@/components/ui/back-button'
-import { Stethoscope, Search, UserPlus, Mail, Phone, Award, Activity } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from "react"
+import { useAuthContext } from "@/contexts/auth-context"
+import { useOrganizationDoctors } from "@/hooks/use-organizations"
+import { isOrganizationUser } from "@/types/organization"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { DashboardLayout } from "@/components/dashboard-layout"
+import { Loading } from "@/components/loading"
+import { BackButton } from "@/components/ui/back-button"
+import { Stethoscope, Search, UserPlus, Mail, Phone, Award, Star } from "lucide-react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function DoctorsListPage() {
   const { user, isLoading: authLoading } = useAuthContext()
   const router = useRouter()
-  const [searchTerm, setSearchTerm] = useState('')
-  
-  // Get organization ID directly from user
+  const [searchTerm, setSearchTerm] = useState("")
+
   const organizationId = user && isOrganizationUser(user) ? user.id : null
 
   useEffect(() => {
     if (!authLoading && user && !isOrganizationUser(user)) {
-      router.push('/dashboard')
+      router.replace("/dashboard")
     }
   }, [user, authLoading, router])
 
   const { doctors, isLoading, error, refetch } = useOrganizationDoctors(organizationId)
 
   const filteredDoctors = doctors.filter((doctor) => {
-    const searchLower = searchTerm.toLowerCase()
+    const s = searchTerm.toLowerCase()
     return (
-      doctor.firstName.toLowerCase().includes(searchLower) ||
-      doctor.lastName.toLowerCase().includes(searchLower) ||
-      doctor.email.toLowerCase().includes(searchLower) ||
-      doctor.specialization.toLowerCase().includes(searchLower)
+      doctor.firstName.toLowerCase().includes(s) ||
+      doctor.lastName.toLowerCase().includes(s) ||
+      doctor.email.toLowerCase().includes(s) ||
+      doctor.specialization.toLowerCase().includes(s)
     )
   })
 
@@ -51,16 +50,11 @@ export default function DoctorsListPage() {
   if (error) {
     return (
       <DashboardLayout>
-        <div className="flex items-center justify-center h-64">
-          <Card className="max-w-md">
-            <CardHeader>
-              <CardTitle className="text-destructive">Error</CardTitle>
-              <CardDescription>{error}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button onClick={() => refetch()}>Intentar de nuevo</Button>
-            </CardContent>
-          </Card>
+        <div className="flex h-64 items-center justify-center">
+          <div className="text-center">
+            <p className="mb-4 text-destructive">{error}</p>
+            <Button onClick={() => refetch()}>Intentar de nuevo</Button>
+          </div>
         </div>
       </DashboardLayout>
     )
@@ -68,165 +62,134 @@ export default function DoctorsListPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8">
+      <div className="space-y-6">
         <BackButton fallbackUrl="/dashboard/organizacion" label="Volver al dashboard" />
-        
+
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">
-              Doctores
-            </h1>
-            <p className="text-muted-foreground text-lg">Gestiona los médicos de tu organización</p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Médicos</h1>
+            <p className="mt-1 text-sm tabular-nums text-muted-foreground">
+              {filteredDoctors.length} de {doctors.length} ·{" "}
+              <span className="text-success">{doctors.filter((d) => d.isAvailable).length} disponibles</span>
+            </p>
           </div>
-          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
+          <Button asChild className="h-10 bg-primary px-4 text-primary-foreground shadow-sm hover:bg-primary/90">
             <Link href="/dashboard/organizacion/doctores/nuevo">
-              <UserPlus className="mr-2 h-5 w-5" />
-              Agregar Doctor
+              <UserPlus className="mr-1.5 h-4 w-4" />
+              Agregar médico
             </Link>
           </Button>
         </div>
 
-        {/* Search and Filters */}
-        <Card className="border shadow-sm">
-          <CardContent className="pt-6">
-            <div className="flex gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  placeholder="Buscar por nombre, email o especialización..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 h-12 text-base border focus:border-primary"
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Toolbar */}
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Buscar por nombre, email o especialización…"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="h-10 border-border pl-9"
+              aria-label="Buscar médicos"
+            />
+          </div>
+        </div>
 
-      {/* Doctors Grid */}
-      {filteredDoctors.length === 0 && searchTerm && (
-        <Card className="border shadow-sm">
-          <CardContent className="py-16 text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
-              <Search className="h-10 w-10 text-muted-foreground" />
+        {/* Empty states */}
+        {filteredDoctors.length === 0 ? (
+          <div className="rounded-xl border border-border bg-card px-5 py-16 text-center shadow-sm">
+            <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+              <span className="absolute inset-0 rounded-full bg-primary/5" aria-hidden="true" />
+              <span className="absolute inset-[10px] rounded-full bg-primary/10" aria-hidden="true" />
+              <Stethoscope className="relative h-8 w-8 text-primary/70" aria-hidden="true" />
             </div>
-            <h3 className="text-xl font-bold mb-2">No se encontraron resultados</h3>
-            <p className="text-muted-foreground">
-              Intenta con otros términos de búsqueda
+            <h3 className="mb-1 font-semibold text-foreground">
+              {searchTerm ? "Sin resultados" : "Aún no hay médicos"}
+            </h3>
+            <p className="mx-auto mb-5 max-w-sm text-sm text-muted-foreground">
+              {searchTerm
+                ? "Prueba con otros términos de búsqueda."
+                : "Agrega médicos a tu organización para gestionar pacientes y citas."}
             </p>
-          </CardContent>
-        </Card>
-      )}
-
-      {filteredDoctors.length === 0 && !searchTerm && (
-        <Card className="border shadow-sm">
-          <CardContent className="py-16 text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-6">
-              <Stethoscope className="h-10 w-10 text-primary" />
-            </div>
-            <h3 className="text-xl font-bold mb-2">No hay doctores registrados</h3>
-            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              Comienza agregando doctores a tu organización para gestionar pacientes y citas
-            </p>
-            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
-              <Link href="/dashboard/organizacion/doctores/nuevo">
-                <UserPlus className="mr-2 h-5 w-5" />
-                Agregar Primer Doctor
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
-      {filteredDoctors.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredDoctors.map((doctor) => (
-            <Card key={doctor.id} className="border hover:border-primary/40 hover:shadow-md transition-all overflow-hidden relative group">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 group-hover:bg-primary/10 transition-colors"></div>
-              <CardHeader className="relative z-10">
-                <div className="flex items-center space-x-4">
-                  <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30 transition-transform">
-                    <Stethoscope className="h-7 w-7 text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="text-lg font-bold truncate">
+            {!searchTerm && (
+              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+                <Link href="/dashboard/organizacion/doctores/nuevo">
+                  <UserPlus className="mr-1.5 h-4 w-4" />
+                  Agregar primer médico
+                </Link>
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {filteredDoctors.map((doctor) => (
+              <div
+                key={doctor.id}
+                className="flex flex-col rounded-xl border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+              >
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-11 w-11">
+                    <AvatarFallback className="bg-primary/10 text-sm font-medium text-primary">
+                      {doctor.firstName?.[0]}
+                      {doctor.lastName?.[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-semibold text-foreground">
                       Dr. {doctor.firstName} {doctor.lastName}
-                    </CardTitle>
-                    <CardDescription className="truncate">{doctor.specialization}</CardDescription>
+                    </p>
+                    <p className="truncate text-xs text-muted-foreground">{doctor.specialization}</p>
                   </div>
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-4 relative z-10">
-                <div className="flex items-center space-x-3 text-sm">
-                  <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                  <span className="text-muted-foreground truncate">{doctor.email}</span>
-                </div>
-                
-                {doctor.phone && (
-                  <div className="flex items-center space-x-3 text-sm">
-                    <Phone className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                    <span className="text-muted-foreground">{doctor.phone}</span>
-                  </div>
-                )}
 
-                {doctor.licenseNumber && (
-                  <div className="flex items-center space-x-3 text-sm">
-                    <Award className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                    <span className="text-muted-foreground">{doctor.licenseNumber}</span>
+                <dl className="mt-4 space-y-2 text-sm">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Mail className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                    <span className="truncate">{doctor.email}</span>
                   </div>
-                )}
-
-                <div className="flex items-center justify-between pt-3 border-t">
-                  <div className="flex items-center gap-2">
-                    {doctor.isAvailable ? (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                        Disponible
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-muted text-muted-foreground">
-                        <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground" />
-                        No disponible
-                      </span>
-                    )}
-                  </div>
-                  {doctor.rating && (
-                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
-                      <Activity className="h-3.5 w-3.5" />
-                      <span>{doctor.rating.toFixed(1)} ({doctor.totalReviews || 0})</span>
+                  {doctor.phone && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Phone className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <span className="tabular-nums">{doctor.phone}</span>
                     </div>
                   )}
+                  {doctor.licenseNumber && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Award className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                      <span className="font-mono text-xs">{doctor.licenseNumber}</span>
+                    </div>
+                  )}
+                </dl>
+
+                <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
+                  <span
+                    className={`inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-medium ${
+                      doctor.isAvailable ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${doctor.isAvailable ? "bg-success" : "bg-muted-foreground"}`}
+                      aria-hidden="true"
+                    />
+                    {doctor.isAvailable ? "Disponible" : "No disponible"}
+                  </span>
+                  {doctor.rating ? (
+                    <span className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground">
+                      <Star className="h-3.5 w-3.5 text-warning-foreground" aria-hidden="true" />
+                      {doctor.rating.toFixed(1)} ({doctor.totalReviews || 0})
+                    </span>
+                  ) : null}
                 </div>
 
-                <Button asChild variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors border mt-2">
-                  <Link href={`/dashboard/organizacion/doctores/${doctor.id}`}>
-                    Ver Dashboard
-                  </Link>
+                <Button asChild variant="outline" className="mt-4 w-full border-border hover:bg-muted">
+                  <Link href={`/dashboard/organizacion/doctores/${doctor.id}`}>Ver perfil</Link>
                 </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
-
-      {/* Stats Footer */}
-      {doctors.length > 0 && (
-        <Card className="border">
-          <CardContent className="py-5">
-            <div className="flex justify-between items-center text-sm font-medium">
-              <span className="text-foreground">
-                Mostrando <span className="font-bold">{filteredDoctors.length}</span> de <span className="font-bold">{doctors.length}</span> doctores
-              </span>
-              <span className="text-muted-foreground">
-                <span className="font-bold text-primary">{doctors.filter(d => d.isAvailable).length}</span> disponibles
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </DashboardLayout>
   )
 }
-
