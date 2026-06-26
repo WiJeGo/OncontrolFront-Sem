@@ -140,21 +140,21 @@ export default function LoginPage() {
         </div>
 
         <div className="w-full max-w-md">
-          {/* Logo móvil */}
-          <div className="lg:hidden text-center mb-8">
-            <OnControlLogo size="lg" className="justify-center mb-4" />
-          </div>
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+            <div className="mb-6 flex justify-center">
+              <OnControlLogo size="md" />
+            </div>
 
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Iniciar Sesión</h2>
-            <p className="text-muted-foreground">Ingresa tus credenciales para continuar</p>
-          </div>
+            <div className="mb-6 text-center">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">Iniciar sesión</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Ingresa tus credenciales para continuar</p>
+            </div>
 
-          {error && (
-            <Alert variant="destructive" className="mb-6" role="alert">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+            {error && (
+              <Alert variant="destructive" className="mb-6" role="alert">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
@@ -223,23 +223,19 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="mt-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              ¿No tienes una cuenta?{" "}
-              <Link href="/auth/register" className="text-primary hover:underline font-semibold">
-                Regístrate aquí
-              </Link>
-            </p>
-          </div>
-
-          <div className="mt-8 text-center text-xs text-muted-foreground">
-            <p>Al iniciar sesión, aceptas nuestros</p>
-            <div className="space-x-2 mt-1">
-              <span className="font-medium text-foreground/70">Términos de Servicio</span>
-              <span>y</span>
-              <span className="font-medium text-foreground/70">Política de Privacidad</span>
+            <div className="mt-6 text-center">
+              <p className="text-sm text-muted-foreground">
+                ¿No tienes una cuenta?{" "}
+                <Link href="/auth/register" className="font-semibold text-primary hover:underline">
+                  Regístrate aquí
+                </Link>
+              </p>
             </div>
           </div>
+
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            Al iniciar sesión, aceptas nuestros Términos de Servicio y Política de Privacidad.
+          </p>
         </div>
       </div>
     </div>

@@ -184,21 +184,21 @@ export default function RegisterPage() {
       {/* Mitad derecha - Formulario */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-background overflow-y-auto">
         <div className="w-full max-w-2xl">
-          {/* Logo móvil */}
-          <div className="lg:hidden text-center mb-8">
-            <OnControlLogo size="lg" className="justify-center mb-4" />
-          </div>
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+            <div className="mb-6 flex justify-center">
+              <OnControlLogo size="md" />
+            </div>
 
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Registrar Organización</h2>
-            <p className="text-muted-foreground">Completa el formulario para registrar tu organización médica</p>
-          </div>
+            <div className="mb-6 text-center">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">Registrar organización</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Completa el formulario para registrar tu organización médica</p>
+            </div>
 
-          {error && (
-            <Alert variant="destructive" className="mb-6" role="alert">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+            {error && (
+              <Alert variant="destructive" className="mb-6" role="alert">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
 
           <form onSubmit={handleRegister} className="space-y-5">
             {/* Nombre de la Organización */}
@@ -356,13 +356,14 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-          <div className="mt-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              ¿Ya tienes una cuenta?{' '}
-              <Link href="/auth/login" className="text-primary hover:underline font-semibold">
-                Inicia sesión aquí
-              </Link>
-            </p>
+            <div className="mt-6 text-center">
+              <p className="text-sm text-muted-foreground">
+                ¿Ya tienes una cuenta?{' '}
+                <Link href="/auth/login" className="font-semibold text-primary hover:underline">
+                  Inicia sesión aquí
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
