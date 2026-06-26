@@ -4,10 +4,8 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { AuthGuard } from "@/components/auth-guard-updated"
 import { DashboardLayout } from "@/components/dashboard-layout"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -22,6 +20,51 @@ import { isDoctorUser } from "@/types/organization"
 import { Search, Plus, MoreHorizontal, Eye, Calendar, Clock, MapPin, Check, CheckCircle, X } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
+function CountUp({ value, className }: { value: number; className?: string }) {
+  const [display, setDisplay] = useState(0)
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduce || value <= 0) {
+      setDisplay(value)
+      return
+    }
+    const duration = 700
+    const start = performance.now()
+    let raf = 0
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration)
+      setDisplay(Math.round(value * (1 - Math.pow(1 - p, 3))))
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [value])
+  return <span className={className}>{display}</span>
+}
+
+function statusPill(status?: string) {
+  switch ((status || "").toUpperCase()) {
+    case "CONFIRMED":
+    case "CONFIRMADA":
+      return { label: "Confirmada", className: "bg-success/15 text-success" }
+    case "SCHEDULED":
+    case "PROGRAMADA":
+    case "PENDIENTE":
+      return { label: "Programada", className: "bg-chart-2/15 text-chart-2" }
+    case "COMPLETED":
+    case "COMPLETADA":
+      return { label: "Completada", className: "bg-muted text-muted-foreground" }
+    case "CANCELLED":
+    case "CANCELADA":
+      return { label: "Cancelada", className: "bg-destructive/15 text-destructive" }
+    case "IN_PROGRESS":
+      return { label: "En curso", className: "bg-warning/20 text-warning-foreground" }
+    default:
+      return { label: status || "N/A", className: "bg-muted text-muted-foreground" }
+  }
+}
+
 export default function AppointmentsPage() {
   const { user } = useAuthContext()
   const { toast } = useToast()
@@ -33,8 +76,7 @@ export default function AppointmentsPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [dateFilter, setDateFilter] = useState("all")
-  
-  // Reschedule dialog state
+
   const [rescheduleDialogOpen, setRescheduleDialogOpen] = useState(false)
   const [selectedAppointmentId, setSelectedAppointmentId] = useState<number | null>(null)
   const [rescheduleDate, setRescheduleDate] = useState("")
@@ -51,124 +93,95 @@ export default function AppointmentsPage() {
   useEffect(() => {
     const loadAppointments = async () => {
       if (!doctorProfileId) return
-      
       try {
         setIsLoading(true)
         setError(null)
-        
         const data = await appointments.getDoctorAppointments(doctorProfileId)
         setAppointmentsList(data)
         setFilteredAppointments(data)
       } catch (err) {
-        console.error('Error loading appointments:', err)
-        setError('Error al cargar las citas')
+        console.error("Error loading appointments:", err)
+        setError("Error al cargar las citas")
       } finally {
         setIsLoading(false)
       }
     }
-
     loadAppointments()
   }, [doctorProfileId])
 
   useEffect(() => {
     let filtered = appointmentsList
-
-    // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(appointment =>
-        appointment.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        appointment.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        appointment.notes?.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        (appointment) =>
+          appointment.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          appointment.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          appointment.notes?.toLowerCase().includes(searchTerm.toLowerCase()),
       )
     }
-
-    // Filter by status
     if (statusFilter !== "all") {
-      filtered = filtered.filter(appointment => appointment.status === statusFilter)
+      filtered = filtered.filter((appointment) => appointment.status === statusFilter)
     }
-
-    // Filter by date
     if (dateFilter !== "all") {
       const today = new Date()
-      filtered = filtered.filter(appointment => {
+      filtered = filtered.filter((appointment) => {
         const appointmentDate = new Date(appointment.appointmentDate)
         switch (dateFilter) {
           case "today":
             return appointmentDate.toDateString() === today.toDateString()
-          case "tomorrow":
+          case "tomorrow": {
             const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000)
             return appointmentDate.toDateString() === tomorrow.toDateString()
-          case "thisWeek":
+          }
+          case "thisWeek": {
             const weekEnd = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)
             return appointmentDate >= today && appointmentDate <= weekEnd
+          }
           default:
             return true
         }
       })
     }
-
-    // Sort by appointment date
-    filtered.sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime())
-
+    filtered = [...filtered].sort(
+      (a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime(),
+    )
     setFilteredAppointments(filtered)
   }, [appointmentsList, searchTerm, statusFilter, dateFilter])
 
+  const refreshList = async () => {
+    if (!doctorProfileId) return
+    const updatedList = await appointments.getDoctorAppointments(doctorProfileId)
+    setAppointmentsList(updatedList)
+  }
+
   const handleConfirmAppointment = async (id: number) => {
     try {
-      await appointments.updateStatus(id, 'CONFIRMED')
-      const updatedList = await appointments.getDoctorAppointments(doctorProfileId!)
-      setAppointmentsList(updatedList)
-      toast({
-        title: "Cita confirmada",
-        description: "La cita ha sido confirmada exitosamente",
-      })
-    } catch (err) {
-      console.error('Error confirming appointment:', err)
-      toast({
-        title: "Error",
-        description: "No se pudo confirmar la cita",
-        variant: "destructive",
-      })
+      await appointments.updateStatus(id, "CONFIRMED")
+      await refreshList()
+      toast({ title: "Cita confirmada", description: "La cita ha sido confirmada exitosamente" })
+    } catch {
+      toast({ title: "Error", description: "No se pudo confirmar la cita", variant: "destructive" })
     }
   }
 
   const handleCompleteAppointment = async (id: number) => {
     try {
-      await appointments.updateStatus(id, 'COMPLETED')
-      const updatedList = await appointments.getDoctorAppointments(doctorProfileId!)
-      setAppointmentsList(updatedList)
-      toast({
-        title: "Cita completada",
-        description: "La cita ha sido marcada como completada",
-      })
-    } catch (err) {
-      console.error('Error completing appointment:', err)
-      toast({
-        title: "Error",
-        description: "No se pudo completar la cita",
-        variant: "destructive",
-      })
+      await appointments.updateStatus(id, "COMPLETED")
+      await refreshList()
+      toast({ title: "Cita completada", description: "La cita ha sido marcada como completada" })
+    } catch {
+      toast({ title: "Error", description: "No se pudo completar la cita", variant: "destructive" })
     }
   }
 
   const handleCancelAppointment = async (id: number) => {
-    if (!confirm('¿Estás seguro de que deseas cancelar esta cita?')) return
-    
+    if (!confirm("¿Estás seguro de que deseas cancelar esta cita?")) return
     try {
-      await appointments.updateStatus(id, 'CANCELLED')
-      const updatedList = await appointments.getDoctorAppointments(doctorProfileId!)
-      setAppointmentsList(updatedList)
-      toast({
-        title: "Cita cancelada",
-        description: "La cita ha sido cancelada",
-      })
-    } catch (err) {
-      console.error('Error cancelling appointment:', err)
-      toast({
-        title: "Error",
-        description: "No se pudo cancelar la cita",
-        variant: "destructive",
-      })
+      await appointments.updateStatus(id, "CANCELLED")
+      await refreshList()
+      toast({ title: "Cita cancelada", description: "La cita ha sido cancelada" })
+    } catch {
+      toast({ title: "Error", description: "No se pudo cancelar la cita", variant: "destructive" })
     }
   }
 
@@ -179,93 +192,33 @@ export default function AppointmentsPage() {
 
   const handleRescheduleSubmit = async () => {
     if (!selectedAppointmentId || !rescheduleDate || !rescheduleTime) {
-      toast({
-        title: "Error",
-        description: "Por favor completa la fecha y hora",
-        variant: "destructive",
-      })
+      toast({ title: "Error", description: "Por favor completa la fecha y hora", variant: "destructive" })
       return
     }
-
     setIsRescheduling(true)
     try {
-      const [hours, minutes] = rescheduleTime.split(':')
+      const [hours, minutes] = rescheduleTime.split(":")
       const newDateTime = new Date(rescheduleDate)
       newDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0)
-
       await appointments.reschedule(selectedAppointmentId, newDateTime.toISOString(), rescheduleReason)
-      const updatedList = await appointments.getDoctorAppointments(doctorProfileId!)
-      setAppointmentsList(updatedList)
-      
-      toast({
-        title: "Cita reprogramada",
-        description: "La cita ha sido reprogramada exitosamente",
-      })
-      
+      await refreshList()
+      toast({ title: "Cita reprogramada", description: "La cita ha sido reprogramada exitosamente" })
       setRescheduleDialogOpen(false)
       setSelectedAppointmentId(null)
       setRescheduleDate("")
       setRescheduleTime("")
       setRescheduleReason("")
-    } catch (err) {
-      console.error('Error rescheduling appointment:', err)
-      toast({
-        title: "Error",
-        description: "No se pudo reprogramar la cita",
-        variant: "destructive",
-      })
+    } catch {
+      toast({ title: "Error", description: "No se pudo reprogramar la cita", variant: "destructive" })
     } finally {
       setIsRescheduling(false)
     }
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case 'confirmada':
-        return 'bg-primary/20 text-primary-foreground border-primary/30'
-      case 'programada':
-        return 'bg-primary/10 text-primary-foreground border-primary/20'
-      case 'completada':
-        return 'bg-muted text-muted-foreground border-muted'
-      case 'cancelada':
-        return 'bg-muted text-muted-foreground border-border'
-      default:
-        return 'bg-muted text-muted-foreground border-muted'
-    }
-  }
-
-  const getStatusText = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case 'confirmada':
-        return 'Confirmada'
-      case 'programada':
-        return 'Programada'
-      case 'completada':
-        return 'Completada'
-      case 'cancelada':
-        return 'Cancelada'
-      default:
-        return status || 'N/A'
-    }
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('es-ES', {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    })
-  }
-
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleTimeString('es-ES', {
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString("es-ES", { weekday: "short", month: "short", day: "numeric" })
+  const formatTime = (dateString: string) =>
+    new Date(dateString).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })
 
   if (isLoading) {
     return (
@@ -281,12 +234,10 @@ export default function AppointmentsPage() {
     return (
       <AuthGuard requiredRole="DOCTOR">
         <DashboardLayout>
-          <div className="flex items-center justify-center h-64">
+          <div className="flex h-64 items-center justify-center">
             <div className="text-center">
-              <p className="text-destructive mb-4">{error}</p>
-              <Button onClick={() => window.location.reload()}>
-                Reintentar
-              </Button>
+              <p className="mb-4 text-destructive">{error}</p>
+              <Button onClick={() => window.location.reload()}>Reintentar</Button>
             </div>
           </div>
         </DashboardLayout>
@@ -294,196 +245,157 @@ export default function AppointmentsPage() {
     )
   }
 
+  const today = new Date()
+  const kpis = [
+    {
+      label: "Total citas",
+      value: appointmentsList.length,
+      sub: "Registradas",
+      icon: Calendar,
+      tint: "bg-primary/10 text-primary",
+      tile: "bg-primary/[0.06]",
+    },
+    {
+      label: "Hoy",
+      value: appointmentsList.filter((a) => new Date(a.appointmentDate).toDateString() === today.toDateString()).length,
+      sub: "Citas de hoy",
+      icon: Clock,
+      tint: "bg-chart-2/10 text-chart-2",
+      tile: "bg-chart-2/[0.06]",
+    },
+    {
+      label: "Confirmadas",
+      value: appointmentsList.filter((a) => a.status === "CONFIRMED").length,
+      sub: "Listas",
+      icon: CheckCircle,
+      tint: "bg-success/10 text-success",
+      tile: "bg-success/[0.06]",
+    },
+    {
+      label: "Pendientes",
+      value: appointmentsList.filter((a) => a.status === "SCHEDULED").length,
+      sub: "Por confirmar",
+      icon: Clock,
+      tint: "bg-warning/15 text-warning-foreground",
+      tile: "bg-warning/[0.06]",
+    },
+  ]
+
   return (
     <AuthGuard requiredRole="DOCTOR">
       <DashboardLayout>
-        <div className="space-y-8">
+        <div className="space-y-6">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight text-foreground">
-                Gestión de Citas
-              </h1>
-              <p className="text-muted-foreground text-lg">
-                Administra tus citas médicas ({filteredAppointments.length} {filteredAppointments.length === 1 ? 'cita' : 'citas'})
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">Citas</h1>
+              <p className="mt-1 text-sm tabular-nums text-muted-foreground">
+                {filteredAppointments.length} {filteredAppointments.length === 1 ? "cita" : "citas"}
               </p>
             </div>
-            <div className="flex gap-3">
-              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
-                <Link href="/dashboard/medico/citas/nueva">
-                  <Plus className="mr-2 h-5 w-5" />
-                  Nueva Cita
+            <div className="flex gap-2">
+              <Button asChild variant="outline" className="h-10 border-border px-4 hover:bg-muted">
+                <Link href="/dashboard/medico/calendario">
+                  <Calendar className="mr-1.5 h-4 w-4" />
+                  Calendario
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors border h-11 px-6">
-                <Link href="/dashboard/medico/calendario">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  Ver Calendario
+              <Button asChild className="h-10 bg-primary px-4 text-primary-foreground shadow-sm hover:bg-primary/90">
+                <Link href="/dashboard/medico/citas/nueva">
+                  <Plus className="mr-1.5 h-4 w-4" />
+                  Nueva cita
                 </Link>
               </Button>
             </div>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Total Citas</CardTitle>
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <Calendar className="h-5 w-5 text-primary" />
+          {/* KPI strip */}
+          <div className="grid grid-cols-2 divide-x divide-y divide-border overflow-hidden rounded-xl border border-border bg-card shadow-sm lg:grid-cols-4 lg:divide-y-0">
+            {kpis.map((kpi) => (
+              <div key={kpi.label} className={`p-5 ${kpi.tile}`}>
+                <div className="mb-3 flex items-center gap-2 text-[13px] text-muted-foreground">
+                  <span className={`grid h-7 w-7 place-items-center rounded-lg ${kpi.tint}`}>
+                    <kpi.icon className="h-4 w-4" />
+                  </span>
+                  {kpi.label}
                 </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">{appointmentsList.length}</div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                  Citas totales
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Hoy</CardTitle>
-                <div className="p-2 rounded-lg bg-chart-2/10">
-                  <Clock className="h-5 w-5 text-chart-2" />
-                </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
-                  {appointmentsList.filter(apt => {
-                    const aptDate = new Date(apt.appointmentDate)
-                    const today = new Date()
-                    return aptDate.toDateString() === today.toDateString()
-                  }).length}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-chart-2"></span>
-                  Citas hoy
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Confirmadas</CardTitle>
-                <div className="p-2 rounded-lg bg-chart-5/10">
-                  <CheckCircle className="h-5 w-5 text-chart-5" />
-                </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
-                  {appointmentsList.filter(apt => apt.status === 'CONFIRMED').length}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-chart-5"></span>
-                  Confirmadas
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border border-destructive/20 hover:border-destructive/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/5 rounded-full -mr-16 -mt-16"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Pendientes</CardTitle>
-                <div className="p-2 rounded-lg bg-destructive/10">
-                  <Clock className="h-5 w-5 text-destructive" />
-                </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1">
-                  {appointmentsList.filter(apt => apt.status === 'SCHEDULED').length}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-destructive"></span>
-                  Pendientes
-                </p>
-              </CardContent>
-            </Card>
+                <CountUp value={kpi.value} className="font-mono text-3xl font-semibold tabular-nums text-foreground" />
+                <div className="mt-1 text-xs text-muted-foreground">{kpi.sub}</div>
+              </div>
+            ))}
           </div>
 
-          {/* Filters */}
-          <Card className="border shadow-sm">
-            <CardHeader className="border-b">
-              <CardTitle className="text-xl font-bold">Filtros de Búsqueda</CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    placeholder="Buscar por paciente, tipo o notas..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-12 h-12 text-base border focus:border-primary"
-                  />
-                </div>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-[200px] h-12 border">
-                    <SelectValue placeholder="Filtrar por estado" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos</SelectItem>
-                    <SelectItem value="SCHEDULED">Programadas</SelectItem>
-                    <SelectItem value="CONFIRMED">Confirmadas</SelectItem>
-                    <SelectItem value="COMPLETED">Completadas</SelectItem>
-                    <SelectItem value="CANCELLED">Canceladas</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select value={dateFilter} onValueChange={setDateFilter}>
-                  <SelectTrigger className="w-full sm:w-[200px] h-12 border">
-                    <SelectValue placeholder="Filtrar por fecha" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas las fechas</SelectItem>
-                    <SelectItem value="today">Hoy</SelectItem>
-                    <SelectItem value="tomorrow">Mañana</SelectItem>
-                    <SelectItem value="thisWeek">Esta semana</SelectItem>
-                  </SelectContent>
-                </Select>
+          {/* Table panel */}
+          <section className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+            <div className="flex flex-col gap-3 border-b border-border p-4 sm:flex-row sm:items-center">
+              <div className="relative flex-1">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar por paciente, tipo o notas…"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="h-10 border-border pl-9"
+                  aria-label="Buscar citas"
+                />
               </div>
-            </CardContent>
-          </Card>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="h-10 w-full border-border sm:w-44">
+                  <SelectValue placeholder="Estado" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos los estados</SelectItem>
+                  <SelectItem value="SCHEDULED">Programadas</SelectItem>
+                  <SelectItem value="CONFIRMED">Confirmadas</SelectItem>
+                  <SelectItem value="COMPLETED">Completadas</SelectItem>
+                  <SelectItem value="CANCELLED">Canceladas</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={dateFilter} onValueChange={setDateFilter}>
+                <SelectTrigger className="h-10 w-full border-border sm:w-40">
+                  <SelectValue placeholder="Fecha" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas las fechas</SelectItem>
+                  <SelectItem value="today">Hoy</SelectItem>
+                  <SelectItem value="tomorrow">Mañana</SelectItem>
+                  <SelectItem value="thisWeek">Esta semana</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-          {/* Appointments Table */}
-          <Card className="border shadow-sm">
-            <CardHeader className="border-b">
-              <CardTitle className="text-2xl font-bold">Lista de Citas</CardTitle>
-              <CardDescription className="mt-1">
-                {filteredAppointments.length} {filteredAppointments.length === 1 ? 'cita encontrada' : 'citas encontradas'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              {filteredAppointments.length === 0 ? (
-                <div className="text-center py-16">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
-                    <Calendar className="h-10 w-10 text-muted-foreground" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">
-                    {searchTerm || statusFilter !== "all" || dateFilter !== "all"
-                      ? "No se encontraron citas" 
-                      : "No hay citas programadas"}
-                  </h3>
-                  <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                    {searchTerm || statusFilter !== "all" || dateFilter !== "all"
-                      ? "Intenta cambiar los filtros de búsqueda" 
-                      : "Comienza programando citas para tus pacientes"}
-                  </p>
-                  {!searchTerm && statusFilter === "all" && dateFilter === "all" && (
-                    <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
-                      <Link href="/dashboard/medico/citas/nueva">
-                        <Plus className="mr-2 h-5 w-5" />
-                        Programar Primera Cita
-                      </Link>
-                    </Button>
-                  )}
+            {filteredAppointments.length === 0 ? (
+              <div className="px-5 py-16 text-center">
+                <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+                  <span className="absolute inset-0 rounded-full bg-primary/5" aria-hidden="true" />
+                  <span className="absolute inset-[10px] rounded-full bg-primary/10" aria-hidden="true" />
+                  <Calendar className="relative h-8 w-8 text-primary/70" aria-hidden="true" />
                 </div>
-              ) : (
+                <h3 className="mb-1 font-semibold text-foreground">
+                  {searchTerm || statusFilter !== "all" || dateFilter !== "all"
+                    ? "Sin resultados"
+                    : "No hay citas programadas"}
+                </h3>
+                <p className="mx-auto mb-5 max-w-sm text-sm text-muted-foreground">
+                  {searchTerm || statusFilter !== "all" || dateFilter !== "all"
+                    ? "Prueba cambiando los filtros de búsqueda."
+                    : "Programa una cita para tus pacientes."}
+                </p>
+                {!searchTerm && statusFilter === "all" && dateFilter === "all" && (
+                  <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+                    <Link href="/dashboard/medico/citas/nueva">
+                      <Plus className="mr-1.5 h-4 w-4" />
+                      Programar primera cita
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow>
+                    <TableRow className="hover:bg-transparent">
                       <TableHead>Paciente</TableHead>
-                      <TableHead>Fecha y Hora</TableHead>
+                      <TableHead>Fecha y hora</TableHead>
                       <TableHead>Tipo</TableHead>
                       <TableHead>Duración</TableHead>
                       <TableHead>Ubicación</TableHead>
@@ -492,121 +404,122 @@ export default function AppointmentsPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredAppointments.map((appointment) => (
-                      <TableRow key={appointment.id}>
-                        <TableCell>
-                          <div>
-                            <p className="font-medium">{appointment.patientName}</p>
+                    {filteredAppointments.map((appointment) => {
+                      const pill = statusPill(appointment.status)
+                      return (
+                        <TableRow key={appointment.id}>
+                          <TableCell>
+                            <p className="font-medium text-foreground">{appointment.patientName}</p>
                             {appointment.notes && (
-                              <p className="text-sm text-muted-foreground truncate max-w-[200px]">
-                                {appointment.notes}
-                              </p>
+                              <p className="max-w-[200px] truncate text-xs text-muted-foreground">{appointment.notes}</p>
                             )}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div>
-                            <p className="font-medium">{formatDate(appointment.appointmentDate)}</p>
-                            <p className="text-sm text-muted-foreground flex items-center">
-                              <Clock className="h-3 w-3 mr-1" />
-                              {formatTime(appointment.appointmentDate)}
+                          </TableCell>
+                          <TableCell>
+                            <p className="font-medium text-foreground">{formatDate(appointment.appointmentDate)}</p>
+                            <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <Clock className="h-3 w-3" aria-hidden="true" />
+                              <span className="font-mono tabular-nums">{formatTime(appointment.appointmentDate)}</span>
                             </p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="border font-semibold">{appointment.type}</Badge>
-                        </TableCell>
-                        <TableCell className="font-semibold">{appointment.durationMinutes} min</TableCell>
-                        <TableCell>
-                          {appointment.location ? (
-                            <div className="flex items-center text-sm text-muted-foreground font-medium">
-                              <MapPin className="h-4 w-4 mr-1 text-primary" />
-                              <span className="truncate max-w-[150px]">{appointment.location}</span>
-                            </div>
-                          ) : (
-                            <span className="text-muted-foreground font-medium">No especificada</span>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <Badge className={`${getStatusColor(appointment.status)} border font-semibold`}>
-                            {getStatusText(appointment.status)}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem asChild>
-                                <Link href={`/dashboard/medico/citas/${appointment.id}`}>
-                                  <Eye className="mr-2 h-4 w-4" />
-                                  Ver Detalles
-                                </Link>
-                              </DropdownMenuItem>
-                              {appointment.status === 'SCHEDULED' && (
-                                <>
-                                  <DropdownMenuItem onClick={() => handleConfirmAppointment(appointment.id)}>
-                                    <Check className="mr-2 h-4 w-4" />
-                                    Confirmar Cita
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => handleRescheduleAppointment(appointment.id)}>
-                                    <Calendar className="mr-2 h-4 w-4" />
-                                    Reprogramar
-                                  </DropdownMenuItem>
-                                </>
-                              )}
-                              {appointment.status === 'CONFIRMED' && (
-                                <>
-                                  <DropdownMenuItem onClick={() => handleCompleteAppointment(appointment.id)}>
-                                    <CheckCircle className="mr-2 h-4 w-4" />
-                                    Marcar como Completada
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => handleRescheduleAppointment(appointment.id)}>
-                                    <Calendar className="mr-2 h-4 w-4" />
-                                    Reprogramar
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem className="text-destructive hover:text-destructive" onClick={() => handleCancelAppointment(appointment.id)}>
-                                    <X className="mr-2 h-4 w-4" />
-                                    Cancelar Cita
-                                  </DropdownMenuItem>
-                                </>
-                              )}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-sm text-foreground">{appointment.type}</span>
+                          </TableCell>
+                          <TableCell className="tabular-nums text-muted-foreground">
+                            {appointment.durationMinutes} min
+                          </TableCell>
+                          <TableCell>
+                            {appointment.location ? (
+                              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
+                                <span className="max-w-[150px] truncate">{appointment.location}</span>
+                              </div>
+                            ) : (
+                              <span className="text-xs text-muted-foreground">—</span>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <span className={`inline-flex rounded-md px-2 py-0.5 text-[11px] font-medium ${pill.className}`}>
+                              {pill.label}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-muted">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                  <span className="sr-only">Acciones</span>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="rounded-xl">
+                                <DropdownMenuItem asChild>
+                                  <Link href={`/dashboard/medico/citas/${appointment.id}`}>
+                                    <Eye className="mr-2 h-4 w-4" />
+                                    Ver detalles
+                                  </Link>
+                                </DropdownMenuItem>
+                                {appointment.status === "SCHEDULED" && (
+                                  <>
+                                    <DropdownMenuItem onClick={() => handleConfirmAppointment(appointment.id)}>
+                                      <Check className="mr-2 h-4 w-4" />
+                                      Confirmar cita
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleRescheduleAppointment(appointment.id)}>
+                                      <Calendar className="mr-2 h-4 w-4" />
+                                      Reprogramar
+                                    </DropdownMenuItem>
+                                  </>
+                                )}
+                                {appointment.status === "CONFIRMED" && (
+                                  <>
+                                    <DropdownMenuItem onClick={() => handleCompleteAppointment(appointment.id)}>
+                                      <CheckCircle className="mr-2 h-4 w-4" />
+                                      Marcar completada
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleRescheduleAppointment(appointment.id)}>
+                                      <Calendar className="mr-2 h-4 w-4" />
+                                      Reprogramar
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      className="text-destructive focus:text-destructive"
+                                      onClick={() => handleCancelAppointment(appointment.id)}
+                                    >
+                                      <X className="mr-2 h-4 w-4" />
+                                      Cancelar cita
+                                    </DropdownMenuItem>
+                                  </>
+                                )}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
                   </TableBody>
                 </Table>
-              )}
-            </CardContent>
-          </Card>
+              </div>
+            )}
+          </section>
 
-          {/* Reschedule Dialog */}
+          {/* Reschedule dialog */}
           <Dialog open={rescheduleDialogOpen} onOpenChange={setRescheduleDialogOpen}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Reprogramar Cita</DialogTitle>
-                <DialogDescription>
-                  Selecciona la nueva fecha y hora para la cita
-                </DialogDescription>
+                <DialogTitle>Reprogramar cita</DialogTitle>
+                <DialogDescription>Selecciona la nueva fecha y hora para la cita.</DialogDescription>
               </DialogHeader>
-              <div className="space-y-4 py-4">
+              <div className="space-y-4 py-2">
                 <div className="space-y-2">
-                  <Label htmlFor="reschedule-date">Nueva Fecha</Label>
+                  <Label htmlFor="reschedule-date">Nueva fecha</Label>
                   <Input
                     id="reschedule-date"
                     type="date"
                     value={rescheduleDate}
                     onChange={(e) => setRescheduleDate(e.target.value)}
-                    min={new Date().toISOString().split('T')[0]}
+                    min={new Date().toISOString().split("T")[0]}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="reschedule-time">Nueva Hora</Label>
+                  <Label htmlFor="reschedule-time">Nueva hora</Label>
                   <Input
                     id="reschedule-time"
                     type="time"
@@ -618,7 +531,7 @@ export default function AppointmentsPage() {
                   <Label htmlFor="reschedule-reason">Razón (opcional)</Label>
                   <Textarea
                     id="reschedule-reason"
-                    placeholder="Explica el motivo de la reprogramación..."
+                    placeholder="Motivo de la reprogramación…"
                     value={rescheduleReason}
                     onChange={(e) => setRescheduleReason(e.target.value)}
                     rows={3}
@@ -640,9 +553,9 @@ export default function AppointmentsPage() {
                 <Button
                   onClick={handleRescheduleSubmit}
                   disabled={isRescheduling || !rescheduleDate || !rescheduleTime}
-                  className="bg-primary text-primary-foreground"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
                 >
-                  {isRescheduling ? "Reprogramando..." : "Reprogramar"}
+                  {isRescheduling ? "Reprogramando…" : "Reprogramar"}
                 </Button>
               </DialogFooter>
             </DialogContent>
