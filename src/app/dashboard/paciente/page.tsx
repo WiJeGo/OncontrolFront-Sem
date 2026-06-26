@@ -199,7 +199,7 @@ export default function PacienteDashboard() {
                   Reportar Síntoma
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors border-2 h-11 px-6">
+              <Button asChild variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors border h-11 px-6">
                 <Link href="/dashboard/paciente/citas/nueva">
                   <Calendar className="mr-2 h-5 w-5" />
                   Solicitar Cita
@@ -210,7 +210,7 @@ export default function PacienteDashboard() {
 
           {/* Critical Symptoms Alert */}
           {criticalSymptoms.length > 0 && (
-            <Card className="border-2 border-destructive shadow-lg bg-gradient-to-br from-destructive/10 to-destructive/5">
+            <Card className="border border-destructive shadow-sm bg-gradient-to-br from-destructive/10 to-destructive/5">
               <CardHeader className="border-b border-destructive/30">
                 <CardTitle className="text-destructive flex items-center gap-3 text-2xl font-bold">
                   <div className="p-2 rounded-lg bg-destructive/20">
@@ -222,7 +222,7 @@ export default function PacienteDashboard() {
               <CardContent className="p-6">
                 <div className="space-y-3">
                   {criticalSymptoms.map((symptom) => (
-                    <div key={symptom.id} className="flex items-center justify-between p-4 bg-card border-2 border-destructive/20 rounded-xl hover:border-destructive/40 transition-all">
+                    <div key={symptom.id} className="flex items-center justify-between p-4 bg-card border border-destructive/20 rounded-xl hover:border-destructive/40 transition-all">
                       <div>
                         <p className="font-bold text-lg">{symptom.symptomName}</p>
                         <p className="text-sm text-muted-foreground font-medium">
@@ -293,7 +293,7 @@ export default function PacienteDashboard() {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Próximas Citas</CardTitle>
@@ -312,7 +312,7 @@ export default function PacienteDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Síntomas Recientes</CardTitle>
@@ -331,7 +331,7 @@ export default function PacienteDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-destructive/20 hover:border-destructive/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-destructive/20 hover:border-destructive/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Síntomas Severos</CardTitle>
@@ -353,8 +353,8 @@ export default function PacienteDashboard() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Upcoming Appointments */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <Clock className="h-6 w-6 text-primary" />
@@ -376,7 +376,7 @@ export default function PacienteDashboard() {
                       <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                         Solicita una cita con tu médico para continuar con tu tratamiento
                       </p>
-                      <Button asChild variant="outline" className="border-2 hover:bg-primary hover:text-primary-foreground h-11 px-6">
+                      <Button asChild variant="outline" className="border hover:bg-primary hover:text-primary-foreground h-11 px-6">
                         <Link href="/dashboard/paciente/citas/nueva">
                           <Calendar className="mr-2 h-5 w-5" />
                           Solicitar Cita
@@ -387,7 +387,7 @@ export default function PacienteDashboard() {
                     dashboard.upcomingAppointmentsList.slice(0, 3).map((appointment) => (
                       <div
                         key={appointment.id}
-                        className="flex items-center justify-between p-4 border-2 rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
+                        className="flex items-center justify-between p-4 border rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
                       >
                         <div className="flex items-center space-x-4 flex-1">
                           <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
@@ -420,7 +420,7 @@ export default function PacienteDashboard() {
                 </div>
                 {dashboard.upcomingAppointmentsList && dashboard.upcomingAppointmentsList.length > 0 && (
                   <div className="mt-6">
-                    <Button asChild variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors border-2">
+                    <Button asChild variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors border">
                       <Link href="/dashboard/paciente/citas">
                         Ver Todas las Citas
                       </Link>
@@ -431,8 +431,8 @@ export default function PacienteDashboard() {
             </Card>
 
             {/* Recent Symptoms */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Activity className="h-6 w-6 text-chart-2" />
@@ -465,7 +465,7 @@ export default function PacienteDashboard() {
                     dashboard.recentSymptoms.slice(0, 5).map((symptom) => (
                       <div
                         key={symptom.id}
-                        className="flex items-center justify-between p-4 border-2 rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
+                        className="flex items-center justify-between p-4 border rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
                       >
                         <div className="flex-1">
                           <p className="font-bold text-lg">{symptom.symptomName}</p>
@@ -484,7 +484,7 @@ export default function PacienteDashboard() {
                 </div>
                 {dashboard.recentSymptoms.length > 0 && (
                   <div className="mt-6">
-                    <Button asChild variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors border-2">
+                    <Button asChild variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors border">
                       <Link href="/dashboard/paciente/sintomas">
                         Ver Todos los Síntomas
                       </Link>
@@ -496,8 +496,8 @@ export default function PacienteDashboard() {
           </div>
 
           {/* Quick Actions */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="text-2xl font-bold">Acciones Rápidas</CardTitle>
               <CardDescription className="mt-1">
                 Accesos directos a las funciones más utilizadas
@@ -505,25 +505,25 @@ export default function PacienteDashboard() {
             </CardHeader>
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border-2 hover:shadow-md">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border hover:shadow-md">
                   <Link href="/dashboard/paciente/citas">
                     <Calendar className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mis Citas</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-all border-2 hover:shadow-md">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-all border hover:shadow-md">
                   <Link href="/dashboard/paciente/sintomas">
                     <Activity className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mis Síntomas</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-colors border-2 hover:shadow-md">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-colors border hover:shadow-md">
                   <Link href="/dashboard/paciente/historial">
                     <Heart className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mi Historial</span>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border-2 hover:shadow-md">
+                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border hover:shadow-md">
                   <Link href="/dashboard/paciente/perfil">
                     <Stethoscope className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mi Perfil</span>

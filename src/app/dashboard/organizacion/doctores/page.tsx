@@ -88,7 +88,7 @@ export default function DoctorsListPage() {
         </div>
 
         {/* Search and Filters */}
-        <Card className="border-2 shadow-lg">
+        <Card className="border shadow-sm">
           <CardContent className="pt-6">
             <div className="flex gap-4">
               <div className="relative flex-1">
@@ -97,7 +97,7 @@ export default function DoctorsListPage() {
                   placeholder="Buscar por nombre, email o especialización..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 h-12 text-base border-2 focus:border-primary"
+                  className="pl-12 h-12 text-base border focus:border-primary"
                 />
               </div>
             </div>
@@ -106,7 +106,7 @@ export default function DoctorsListPage() {
 
       {/* Doctors Grid */}
       {filteredDoctors.length === 0 && searchTerm && (
-        <Card className="border-2 shadow-lg">
+        <Card className="border shadow-sm">
           <CardContent className="py-16 text-center">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
               <Search className="h-10 w-10 text-muted-foreground" />
@@ -120,7 +120,7 @@ export default function DoctorsListPage() {
       )}
 
       {filteredDoctors.length === 0 && !searchTerm && (
-        <Card className="border-2 shadow-lg">
+        <Card className="border shadow-sm">
           <CardContent className="py-16 text-center">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-6">
               <Stethoscope className="h-10 w-10 text-primary" />
@@ -129,7 +129,7 @@ export default function DoctorsListPage() {
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               Comienza agregando doctores a tu organización para gestionar pacientes y citas
             </p>
-            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg">
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
               <Link href="/dashboard/organizacion/doctores/nuevo">
                 <UserPlus className="mr-2 h-5 w-5" />
                 Agregar Primer Doctor
@@ -142,11 +142,11 @@ export default function DoctorsListPage() {
       {filteredDoctors.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDoctors.map((doctor) => (
-            <Card key={doctor.id} className="border-2 hover:border-primary/40 hover:shadow-xl transition-all overflow-hidden relative group">
+            <Card key={doctor.id} className="border hover:border-primary/40 hover:shadow-md transition-all overflow-hidden relative group">
               <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 group-hover:bg-primary/10 transition-colors"></div>
               <CardHeader className="relative z-10">
                 <div className="flex items-center space-x-4">
-                  <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/30 transition-transform">
+                  <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30 transition-transform">
                     <Stethoscope className="h-7 w-7 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -199,7 +199,7 @@ export default function DoctorsListPage() {
                   )}
                 </div>
 
-                <Button asChild variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors border-2 mt-2">
+                <Button asChild variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors border mt-2">
                   <Link href={`/dashboard/organizacion/doctores/${doctor.id}`}>
                     Ver Dashboard
                   </Link>
@@ -212,7 +212,7 @@ export default function DoctorsListPage() {
 
       {/* Stats Footer */}
       {doctors.length > 0 && (
-        <Card className="border-2 bg-gradient-to-r from-muted/50 to-background">
+        <Card className="border">
           <CardContent className="py-5">
             <div className="flex justify-between items-center text-sm font-medium">
               <span className="text-foreground">

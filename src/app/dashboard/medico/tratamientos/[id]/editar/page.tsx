@@ -270,7 +270,7 @@ export default function EditarTratamientoPage() {
       <AuthGuard requiredRole="DOCTOR">
         <DashboardLayout>
           <div className="max-w-2xl mx-auto py-12">
-            <Card className="border-2 shadow-lg">
+            <Card className="border shadow-sm">
               <CardContent className="p-12 text-center">
                 <h3 className="text-xl font-bold text-destructive mb-4">{error}</h3>
                 <Button asChild>
@@ -289,9 +289,9 @@ export default function EditarTratamientoPage() {
       <AuthGuard requiredRole="DOCTOR">
         <DashboardLayout>
           <div className="max-w-2xl mx-auto py-12">
-            <Card className="text-center border-2 shadow-lg">
+            <Card className="text-center border shadow-sm">
               <CardContent className="p-12">
-                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-primary/20">
+                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20">
                   <CheckCircle className="h-10 w-10 text-primary" />
                 </div>
                 <h2 className="text-3xl font-bold mb-3 text-foreground">
@@ -321,7 +321,7 @@ export default function EditarTratamientoPage() {
           {/* Header */}
           <div className="space-y-4">
               <Link href={`/dashboard/medico/tratamientos/${treatmentId}`}>
-              <Button variant="outline" className="mb-4 border-2 hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" className="mb-4 border hover:bg-primary hover:text-primary-foreground">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver a detalles
               </Button>
@@ -336,14 +336,14 @@ export default function EditarTratamientoPage() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {error && (
-              <Alert variant="destructive" className="border-2" role="alert">
+              <Alert variant="destructive" className="border" role="alert">
                 <AlertDescription className="font-semibold">{error}</AlertDescription>
               </Alert>
             )}
 
             {/* Patient Info (Read-only) */}
-              <Card className="border-2 shadow-lg bg-muted/30">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm bg-muted/30">
+                <CardHeader className="border-b">
                   <CardTitle className="flex items-center gap-3 text-xl font-bold">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <User className="h-5 w-5 text-primary" />
@@ -354,7 +354,7 @@ export default function EditarTratamientoPage() {
                 </CardHeader>
                 <CardContent className="p-6">
                   {selectedPatient && (
-                    <div className="p-5 bg-gradient-to-br from-accent/10 to-accent/5 rounded-xl border-2 border-chart-5/20">
+                    <div className="p-5 bg-gradient-to-br from-accent/10 to-accent/5 rounded-xl border border-chart-5/20">
                       <h4 className="font-bold text-lg mb-2">{selectedPatient.firstName} {selectedPatient.lastName}</h4>
                       <p className="text-sm text-muted-foreground font-semibold mb-1">
                         {selectedPatient.cancerType} {selectedPatient.cancerStage && `- ${selectedPatient.cancerStage}`}
@@ -366,8 +366,8 @@ export default function EditarTratamientoPage() {
               </Card>
 
             {/* Treatment Type & Protocol (Read-only) */}
-              <Card className="border-2 shadow-lg bg-muted/30">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm bg-muted/30">
+                <CardHeader className="border-b">
                   <CardTitle className="flex items-center gap-3 text-xl font-bold">
                     <div className="p-2 rounded-lg bg-chart-2/10">
                       <Activity className="h-5 w-5 text-chart-2" />
@@ -378,13 +378,13 @@ export default function EditarTratamientoPage() {
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-2">Tipo de Tratamiento</p>
                       <p className="text-lg font-bold text-foreground">
                         {treatmentTypes.find(t => t.value === treatment.type)?.label || treatment.type}
                       </p>
                     </div>
-                    <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-2">Protocolo</p>
                       <p className="text-lg font-bold text-foreground">{treatment.protocol}</p>
                     </div>
@@ -393,8 +393,8 @@ export default function EditarTratamientoPage() {
               </Card>
 
             {/* Editable Fields */}
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <CardTitle className="flex items-center gap-3 text-xl font-bold">
                     <div className="p-2 rounded-lg bg-chart-2/10">
                       <Activity className="h-5 w-5 text-chart-2" />
@@ -416,7 +416,7 @@ export default function EditarTratamientoPage() {
                         placeholder="Ej: 6"
                       value={formData.totalCycles}
                       onChange={(e) => handleInputChange("totalCycles", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                     />
                   </div>
 
@@ -429,7 +429,7 @@ export default function EditarTratamientoPage() {
                       placeholder="Ej: 120"
                       value={formData.sessionDurationMinutes}
                       onChange={(e) => handleInputChange("sessionDurationMinutes", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                     />
                   </div>
             </div>
@@ -440,7 +440,7 @@ export default function EditarTratamientoPage() {
                       value={formData.location}
                       onValueChange={(value) => handleInputChange("location", value)}
                     >
-                      <SelectTrigger id="location" className="h-12 text-base border-2">
+                      <SelectTrigger id="location" className="h-12 text-base border">
                         <SelectValue placeholder="Selecciona una ubicación" />
                       </SelectTrigger>
                       <SelectContent>
@@ -456,8 +456,8 @@ export default function EditarTratamientoPage() {
               </Card>
 
             {/* Medications */}
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <CardTitle className="flex items-center gap-3 text-xl font-bold">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Pill className="h-5 w-5 text-primary" />
@@ -472,7 +472,7 @@ export default function EditarTratamientoPage() {
                     value=""
                     onValueChange={(value) => addMedication(value)}
                   >
-                      <SelectTrigger className="flex-1 h-12 text-base border-2">
+                      <SelectTrigger className="flex-1 h-12 text-base border">
                       <SelectValue placeholder="Agregar medicamento" />
                       </SelectTrigger>
                       <SelectContent>
@@ -496,24 +496,24 @@ export default function EditarTratamientoPage() {
                         handleAddCustomMedication()
                       }
                     }}
-                    className="h-12 text-base border-2 focus:border-primary flex-1"
+                    className="h-12 text-base border focus:border-primary flex-1"
                   />
                   <Button
                     type="button"
                     variant="outline"
                     onClick={handleAddCustomMedication}
-                    className="h-12 px-4 border-2 hover:bg-primary hover:text-primary-foreground"
+                    className="h-12 px-4 border hover:bg-primary hover:text-primary-foreground"
                   >
                     <Plus className="h-5 w-5" />
                     </Button>
                   </div>
 
                 {formData.medications.length > 0 && (
-                      <div className="flex flex-wrap gap-2 p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <div className="flex flex-wrap gap-2 p-4 bg-muted/50 rounded-xl border border-border/50">
                     {formData.medications.map((med, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold border-2 border-primary/20"
+                        className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold border border-primary/20"
                       >
                         <span>{med}</span>
                             <button
@@ -531,8 +531,8 @@ export default function EditarTratamientoPage() {
               </Card>
 
             {/* Additional Information */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-5/10">
                     <FileText className="h-5 w-5 text-chart-5" />
@@ -550,7 +550,7 @@ export default function EditarTratamientoPage() {
                     value={formData.notes}
                     onChange={(e) => handleInputChange("notes", e.target.value)}
                     rows={4}
-                    className="text-base border-2 focus:border-primary min-h-[100px]"
+                    className="text-base border focus:border-primary min-h-[100px]"
                   />
                 </div>
 
@@ -562,7 +562,7 @@ export default function EditarTratamientoPage() {
                     value={formData.preparationInstructions}
                     onChange={(e) => handleInputChange("preparationInstructions", e.target.value)}
                     rows={4}
-                    className="text-base border-2 focus:border-primary min-h-[100px]"
+                    className="text-base border focus:border-primary min-h-[100px]"
                   />
                 </div>
               </CardContent>
@@ -570,10 +570,10 @@ export default function EditarTratamientoPage() {
 
             {/* Submit Button */}
             <div className="flex gap-4 justify-end pt-4">
-              <Button type="button" variant="outline" asChild className="h-12 px-8 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground">
+              <Button type="button" variant="outline" asChild className="h-12 px-8 text-lg font-semibold border hover:bg-muted hover:border-muted-foreground">
                 <Link href={`/dashboard/medico/tratamientos/${treatmentId}`}>Cancelar</Link>
               </Button>
-              <Button type="submit" disabled={isLoading} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
+              <Button type="submit" disabled={isLoading} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-sm hover:shadow-md disabled:opacity-50">
                 <Save className="mr-2 h-5 w-5" />
                 {isLoading ? "Actualizando..." : "Actualizar Tratamiento"}
               </Button>

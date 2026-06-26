@@ -145,7 +145,7 @@ export default function CalendarPage() {
           return (
             <div
               key={day.toISOString()}
-              className={`min-h-[120px] p-3 border-2 rounded-xl transition-all ${
+              className={`min-h-[120px] p-3 border rounded-xl transition-all ${
                 isToday ? 'bg-primary/10 border-primary/40 shadow-md' : 'bg-background border-border/50'
               } ${!isCurrentMonth ? 'opacity-50' : ''} hover:border-primary/30 hover:shadow-sm`}
             >
@@ -156,7 +156,7 @@ export default function CalendarPage() {
                   {format(day, 'd')}
                 </span>
                 {dayAppointments.length > 0 && (
-                  <Badge variant="secondary" className="text-xs border-2 font-semibold">
+                  <Badge variant="secondary" className="text-xs border font-semibold">
                     {dayAppointments.length}
                   </Badge>
                 )}
@@ -166,7 +166,7 @@ export default function CalendarPage() {
                 {dayAppointments.slice(0, 3).map((appointment) => (
                   <div
                     key={appointment.id}
-                    className="p-2 bg-card border-2 border-border/50 rounded-lg text-xs cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all"
+                    className="p-2 bg-card border border-border/50 rounded-lg text-xs cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all"
                   >
                     <div className="flex items-center space-x-1 mb-1">
                       <Clock className="h-3 w-3 text-primary" />
@@ -231,7 +231,7 @@ export default function CalendarPage() {
               return (
                 <div
                   key={day.toISOString()}
-                  className={`min-h-[100px] p-2 border-2 rounded-lg transition-all ${
+                  className={`min-h-[100px] p-2 border rounded-lg transition-all ${
                     isToday ? 'bg-primary/10 border-primary/40 shadow-md' : 'bg-background border-border/50'
                   } ${!isCurrentMonth ? 'opacity-50' : ''} hover:border-primary/30 hover:shadow-sm`}
                 >
@@ -242,7 +242,7 @@ export default function CalendarPage() {
                       {format(day, 'd')}
                     </span>
                     {dayAppointments.length > 0 && (
-                      <Badge variant="secondary" className="text-xs px-1.5 py-0 border-2 font-semibold">
+                      <Badge variant="secondary" className="text-xs px-1.5 py-0 border font-semibold">
                         {dayAppointments.length}
                       </Badge>
                     )}
@@ -331,18 +331,18 @@ export default function CalendarPage() {
           </div>
 
           {/* Calendar Controls */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" onClick={goToPrevious} className="border-2 hover:bg-primary hover:text-primary-foreground">
+                    <Button variant="outline" size="sm" onClick={goToPrevious} className="border hover:bg-primary hover:text-primary-foreground">
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
-                    <Button variant="outline" size="sm" onClick={goToToday} className="border-2 hover:bg-primary hover:text-primary-foreground">
+                    <Button variant="outline" size="sm" onClick={goToToday} className="border hover:bg-primary hover:text-primary-foreground">
                       Hoy
                     </Button>
-                    <Button variant="outline" size="sm" onClick={goToNext} className="border-2 hover:bg-primary hover:text-primary-foreground">
+                    <Button variant="outline" size="sm" onClick={goToNext} className="border hover:bg-primary hover:text-primary-foreground">
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -354,7 +354,7 @@ export default function CalendarPage() {
                   </h2>
                 </div>
                 <Select value={view} onValueChange={(value: 'week' | 'month') => setView(value)}>
-                  <SelectTrigger className="w-[140px] h-10 border-2">
+                  <SelectTrigger className="w-[140px] h-10 border">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -371,8 +371,8 @@ export default function CalendarPage() {
 
           {/* Today's Appointments */}
           {getAppointmentsForDate(new Date()).length > 0 && (
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="text-2xl font-bold">Citas de Hoy</CardTitle>
                 <CardDescription className="mt-1">
                   {getAppointmentsForDate(new Date()).length} {getAppointmentsForDate(new Date()).length === 1 ? 'cita programada' : 'citas programadas'} para hoy
@@ -383,7 +383,7 @@ export default function CalendarPage() {
                   {getAppointmentsForDate(new Date()).map((appointment) => (
                     <div
                       key={appointment.id}
-                      className="flex items-center justify-between p-4 border-2 rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
+                      className="flex items-center justify-between p-4 border rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
                     >
                       <div className="flex items-center space-x-4 flex-1">
                         <Avatar className="h-12 w-12 ring-2 ring-primary/20">
@@ -409,7 +409,7 @@ export default function CalendarPage() {
                           <p className="text-sm font-bold text-foreground">
                             {format(parseISO(appointment.appointmentDate), 'HH:mm')}
                           </p>
-                          <Badge className={`${getStatusColor(appointment.status)} border-2 font-semibold`}>
+                          <Badge className={`${getStatusColor(appointment.status)} border font-semibold`}>
                             {getStatusText(appointment.status)}
                           </Badge>
                         </div>

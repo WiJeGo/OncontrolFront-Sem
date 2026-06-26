@@ -225,7 +225,7 @@ export default function NuevoPacientePage() {
           {/* Header */}
           <div className="space-y-4">
             <Link href="/dashboard/medico/pacientes">
-              <Button variant="outline" className="mb-4 border-2 hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" className="mb-4 border hover:bg-primary hover:text-primary-foreground">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver a pacientes
               </Button>
@@ -240,19 +240,19 @@ export default function NuevoPacientePage() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {error && (
-              <Alert variant="destructive" className="border-2" role="alert">
+              <Alert variant="destructive" className="border" role="alert">
                 <AlertDescription className="font-semibold">{error}</AlertDescription>
               </Alert>
             )}
             
             {actionError && (
-              <Alert variant="destructive" className="border-2" role="alert">
+              <Alert variant="destructive" className="border" role="alert">
                 <AlertDescription className="font-semibold">{actionError}</AlertDescription>
               </Alert>
             )}
 
             {success && (
-              <Alert className="bg-primary/10 border-2 border-primary/30">
+              <Alert className="bg-primary/10 border border-primary/30">
                 <AlertDescription className="text-primary-foreground flex items-center gap-2 font-semibold">
                   <Activity className="h-5 w-5" />
                   Paciente creado exitosamente. Redirigiendo...
@@ -261,8 +261,8 @@ export default function NuevoPacientePage() {
             )}
 
             {/* Información Personal */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <UserPlus className="h-6 w-6 text-primary" />
@@ -279,7 +279,7 @@ export default function NuevoPacientePage() {
                       id="firstName"
                       value={formData.firstName}
                       onChange={(e) => handleInputChange("firstName", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                       required
                     />
                   </div>
@@ -289,7 +289,7 @@ export default function NuevoPacientePage() {
                       id="lastName"
                       value={formData.lastName}
                       onChange={(e) => handleInputChange("lastName", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                       required
                     />
                   </div>
@@ -303,7 +303,7 @@ export default function NuevoPacientePage() {
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                     placeholder="paciente@example.com"
-                    className="h-12 text-base border-2 focus:border-primary"
+                    className="h-12 text-base border focus:border-primary"
                     required
                   />
                 </div>
@@ -317,7 +317,7 @@ export default function NuevoPacientePage() {
                       value={formData.password}
                       onChange={(e) => handleInputChange("password", e.target.value)}
                       placeholder="Mínimo 6 caracteres"
-                      className="pr-12 h-12 text-base border-2 focus:border-primary"
+                      className="pr-12 h-12 text-base border focus:border-primary"
                       required
                     />
                     <Button
@@ -343,7 +343,7 @@ export default function NuevoPacientePage() {
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => handleInputChange("phone", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                     />
                   </div>
                   <div className="space-y-2">
@@ -353,7 +353,7 @@ export default function NuevoPacientePage() {
                       type="date"
                       value={formData.birthDate}
                       onChange={(e) => handleInputChange("birthDate", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                     />
                   </div>
                 </div>
@@ -365,7 +365,7 @@ export default function NuevoPacientePage() {
                       id="city"
                       value={formData.city}
                       onChange={(e) => handleInputChange("city", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                     />
                   </div>
                   <div className="space-y-2">
@@ -374,7 +374,7 @@ export default function NuevoPacientePage() {
                       value={formData.bloodType} 
                       onValueChange={(value) => handleInputChange("bloodType", value)}
                     >
-                      <SelectTrigger id="bloodType" className="h-12 text-base border-2">
+                      <SelectTrigger id="bloodType" className="h-12 text-base border">
                         <SelectValue placeholder="Seleccionar" />
                       </SelectTrigger>
                       <SelectContent>
@@ -392,15 +392,15 @@ export default function NuevoPacientePage() {
                     id="address"
                     value={formData.address}
                     onChange={(e) => handleInputChange("address", e.target.value)}
-                    className="h-12 text-base border-2 focus:border-primary"
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
               </CardContent>
             </Card>
 
             {/* Información Médica */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Activity className="h-6 w-6 text-chart-2" />
@@ -417,7 +417,7 @@ export default function NuevoPacientePage() {
                       value={formData.cancerType}
                       onValueChange={(value) => handleInputChange("cancerType", value)}
                     >
-                      <SelectTrigger id="cancerType" className="h-12 text-base border-2">
+                      <SelectTrigger id="cancerType" className="h-12 text-base border">
                         <SelectValue placeholder="Selecciona el tipo de cáncer" />
                       </SelectTrigger>
                       <SelectContent>
@@ -435,7 +435,7 @@ export default function NuevoPacientePage() {
                       value={formData.cancerStage}
                       onValueChange={(value) => handleInputChange("cancerStage", value)}
                     >
-                      <SelectTrigger id="cancerStage" className="h-12 text-base border-2">
+                      <SelectTrigger id="cancerStage" className="h-12 text-base border">
                         <SelectValue placeholder="Selecciona la etapa" />
                       </SelectTrigger>
                       <SelectContent>
@@ -457,7 +457,7 @@ export default function NuevoPacientePage() {
                       type="date"
                       value={formData.diagnosisDate}
                       onChange={(e) => handleInputChange("diagnosisDate", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                     />
                   </div>
                   <div className="space-y-2">
@@ -466,7 +466,7 @@ export default function NuevoPacientePage() {
                       value={formData.treatmentStatus}
                       onValueChange={(value) => handleInputChange("treatmentStatus", value)}
                     >
-                      <SelectTrigger id="treatmentStatus" className="h-12 text-base border-2">
+                      <SelectTrigger id="treatmentStatus" className="h-12 text-base border">
                         <SelectValue placeholder="Selecciona el estado" />
                       </SelectTrigger>
                       <SelectContent>
@@ -491,7 +491,7 @@ export default function NuevoPacientePage() {
                         }
                       }}
                     >
-                      <SelectTrigger className="h-12 text-base border-2 flex-1">
+                      <SelectTrigger className="h-12 text-base border flex-1">
                         <SelectValue placeholder="Selecciona alergia" />
                       </SelectTrigger>
                       <SelectContent>
@@ -517,7 +517,7 @@ export default function NuevoPacientePage() {
                           }
                         }
                       }}
-                      className="h-12 text-base border-2 focus:border-primary flex-1"
+                      className="h-12 text-base border focus:border-primary flex-1"
                     />
                     <Button
                       type="button"
@@ -528,17 +528,17 @@ export default function NuevoPacientePage() {
                           setCustomAllergy("")
                         }
                       }}
-                      className="h-12 px-4 border-2 hover:bg-primary hover:text-primary-foreground"
+                      className="h-12 px-4 border hover:bg-primary hover:text-primary-foreground"
                     >
                       <Plus className="h-5 w-5" />
                     </Button>
                   </div>
                   {selectedAllergies.length > 0 && (
-                    <div className="flex flex-wrap gap-2 p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="flex flex-wrap gap-2 p-4 bg-muted/50 rounded-xl border border-border/50">
                       {selectedAllergies.map((allergy, index) => (
                         <div
                           key={index}
-                          className="flex items-center gap-2 bg-destructive/10 text-destructive px-4 py-2 rounded-full text-sm font-semibold border-2 border-destructive/20"
+                          className="flex items-center gap-2 bg-destructive/10 text-destructive px-4 py-2 rounded-full text-sm font-semibold border border-destructive/20"
                         >
                           <span>{allergy}</span>
                           <button
@@ -565,7 +565,7 @@ export default function NuevoPacientePage() {
                         }
                       }}
                     >
-                      <SelectTrigger className="h-12 text-base border-2 flex-1">
+                      <SelectTrigger className="h-12 text-base border flex-1">
                         <SelectValue placeholder="Selecciona medicamento" />
                       </SelectTrigger>
                       <SelectContent>
@@ -591,7 +591,7 @@ export default function NuevoPacientePage() {
                           }
                         }
                       }}
-                      className="h-12 text-base border-2 focus:border-primary flex-1"
+                      className="h-12 text-base border focus:border-primary flex-1"
                     />
                     <Button
                       type="button"
@@ -602,17 +602,17 @@ export default function NuevoPacientePage() {
                           setCustomMedication("")
                         }
                       }}
-                      className="h-12 px-4 border-2 hover:bg-primary hover:text-primary-foreground"
+                      className="h-12 px-4 border hover:bg-primary hover:text-primary-foreground"
                     >
                       <Plus className="h-5 w-5" />
                     </Button>
                   </div>
                   {selectedMedications.length > 0 && (
-                    <div className="flex flex-wrap gap-2 p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="flex flex-wrap gap-2 p-4 bg-muted/50 rounded-xl border border-border/50">
                       {selectedMedications.map((medication, index) => (
                         <div
                           key={index}
-                          className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold border-2 border-primary/20"
+                          className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold border border-primary/20"
                         >
                           <span>{medication}</span>
                           <button
@@ -636,15 +636,15 @@ export default function NuevoPacientePage() {
                     onChange={(e) => handleInputChange("medicalHistory", e.target.value)}
                     placeholder="Describa el historial médico relevante..."
                     rows={4}
-                    className="text-base border-2 focus:border-primary min-h-[100px]"
+                    className="text-base border focus:border-primary min-h-[100px]"
                   />
                 </div>
               </CardContent>
             </Card>
 
             {/* Contacto de Emergencia */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-5/10">
                     <UserPlus className="h-6 w-6 text-chart-5" />
@@ -660,7 +660,7 @@ export default function NuevoPacientePage() {
                     id="emergencyContactName"
                     value={formData.emergencyContactName}
                     onChange={(e) => handleInputChange("emergencyContactName", e.target.value)}
-                    className="h-12 text-base border-2 focus:border-primary"
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
 
@@ -672,7 +672,7 @@ export default function NuevoPacientePage() {
                       type="tel"
                       value={formData.emergencyContactPhone}
                       onChange={(e) => handleInputChange("emergencyContactPhone", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                     />
                   </div>
                   <div className="space-y-2">
@@ -681,7 +681,7 @@ export default function NuevoPacientePage() {
                       value={formData.emergencyContactRelationship}
                       onValueChange={(value) => handleInputChange("emergencyContactRelationship", value)}
                     >
-                      <SelectTrigger id="emergencyContactRelationship" className="h-12 text-base border-2">
+                      <SelectTrigger id="emergencyContactRelationship" className="h-12 text-base border">
                         <SelectValue placeholder="Selecciona la relación" />
                       </SelectTrigger>
                       <SelectContent>
@@ -698,8 +698,8 @@ export default function NuevoPacientePage() {
             </Card>
 
             {/* Información de Seguro */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <UserPlus className="h-6 w-6 text-chart-2" />
@@ -716,7 +716,7 @@ export default function NuevoPacientePage() {
                       id="insuranceProvider"
                       value={formData.insuranceProvider}
                       onChange={(e) => handleInputChange("insuranceProvider", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                     />
                   </div>
                   <div className="space-y-2">
@@ -725,7 +725,7 @@ export default function NuevoPacientePage() {
                       id="insuranceNumber"
                       value={formData.insuranceNumber}
                       onChange={(e) => handleInputChange("insuranceNumber", e.target.value)}
-                      className="h-12 text-base border-2 focus:border-primary"
+                      className="h-12 text-base border focus:border-primary"
                     />
                   </div>
                 </div>
@@ -736,7 +736,7 @@ export default function NuevoPacientePage() {
             <div className="flex gap-4 pt-4">
               <Button
                 type="submit"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-sm hover:shadow-md disabled:opacity-50"
                 disabled={isLoading || success}
               >
                 {isLoading ? (
@@ -749,7 +749,7 @@ export default function NuevoPacientePage() {
                 )}
               </Button>
               <Link href="/dashboard/medico/pacientes">
-                <Button type="button" variant="outline" className="h-12 px-8 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground">
+                <Button type="button" variant="outline" className="h-12 px-8 text-lg font-semibold border hover:bg-muted hover:border-muted-foreground">
                   Cancelar
                 </Button>
               </Link>

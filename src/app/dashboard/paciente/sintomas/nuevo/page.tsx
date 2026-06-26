@@ -200,7 +200,7 @@ export default function NuevoSintomaPage() {
         <div className="space-y-8">
           {/* Header */}
           <div className="space-y-4">
-            <Button variant="outline" size="sm" asChild className="border-2 hover:bg-primary hover:text-primary-foreground">
+            <Button variant="outline" size="sm" asChild className="border hover:bg-primary hover:text-primary-foreground">
               <Link href="/dashboard/paciente/sintomas">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver
@@ -216,7 +216,7 @@ export default function NuevoSintomaPage() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {error && (
-              <Alert variant="destructive" className="border-2" role="alert">
+              <Alert variant="destructive" className="border" role="alert">
                 <AlertTriangle className="h-5 w-5" aria-hidden="true" />
                 <AlertDescription className="font-semibold">{error}</AlertDescription>
               </Alert>
@@ -224,8 +224,8 @@ export default function NuevoSintomaPage() {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Basic Information */}
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <CardTitle className="flex items-center gap-3 text-xl font-bold">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Activity className="h-5 w-5 text-primary" />
@@ -246,7 +246,7 @@ export default function NuevoSintomaPage() {
                         handleInputChange("symptom", value)
                       }
                     }}>
-                      <SelectTrigger id="symptom" className="h-12 text-base border-2">
+                      <SelectTrigger id="symptom" className="h-12 text-base border">
                         <SelectValue placeholder="Selecciona el síntoma" />
                       </SelectTrigger>
                       <SelectContent>
@@ -262,7 +262,7 @@ export default function NuevoSintomaPage() {
                         placeholder="Describe tu síntoma"
                         value={formData.customSymptom}
                         onChange={(e) => handleInputChange("customSymptom", e.target.value)}
-                        className="h-12 text-base border-2 focus:border-primary"
+                        className="h-12 text-base border focus:border-primary"
                       />
                     )}
                   </div>
@@ -270,7 +270,7 @@ export default function NuevoSintomaPage() {
                   <div className="space-y-2">
                     <Label htmlFor="severity" className="text-base font-semibold">Severidad *</Label>
                     <Select value={formData.severity} onValueChange={(value) => handleInputChange("severity", value)}>
-                      <SelectTrigger id="severity" className="h-12 text-base border-2">
+                      <SelectTrigger id="severity" className="h-12 text-base border">
                         <SelectValue placeholder="Selecciona la severidad" />
                       </SelectTrigger>
                       <SelectContent>
@@ -291,7 +291,7 @@ export default function NuevoSintomaPage() {
                       <Label htmlFor="date" className="text-base font-semibold">Fecha *</Label>
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button id="date" variant="outline" className="w-full justify-start h-12 text-base border-2 hover:bg-primary hover:text-primary-foreground">
+                          <Button id="date" variant="outline" className="w-full justify-start h-12 text-base border hover:bg-primary hover:text-primary-foreground">
                             <CalendarIcon className="mr-2 h-5 w-5" aria-hidden="true" />
                             {format(formData.date, "dd/MM/yyyy")}
                           </Button>
@@ -315,7 +315,7 @@ export default function NuevoSintomaPage() {
                         type="time"
                         value={formData.time}
                         onChange={(e) => handleInputChange("time", e.target.value)}
-                        className="h-12 text-base border-2 focus:border-primary"
+                        className="h-12 text-base border focus:border-primary"
                       />
                     </div>
                   </div>
@@ -323,7 +323,7 @@ export default function NuevoSintomaPage() {
                   <div className="space-y-2">
                     <Label htmlFor="duration" className="text-base font-semibold">Duración *</Label>
                     <Select value={formData.duration} onValueChange={(value) => handleInputChange("duration", value)}>
-                      <SelectTrigger id="duration" className="h-12 text-base border-2">
+                      <SelectTrigger id="duration" className="h-12 text-base border">
                         <SelectValue placeholder="¿Cuánto duró?" />
                       </SelectTrigger>
                       <SelectContent>
@@ -344,8 +344,8 @@ export default function NuevoSintomaPage() {
               </Card>
 
               {/* Additional Information */}
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <CardTitle className="flex items-center gap-3 text-xl font-bold">
                     <div className="p-2 rounded-lg bg-chart-2/10">
                       <AlertTriangle className="h-5 w-5 text-chart-2" />
@@ -363,13 +363,13 @@ export default function NuevoSintomaPage() {
                       value={formData.notes}
                       onChange={(e) => handleInputChange("notes", e.target.value)}
                       rows={4}
-                      className="text-base border-2 focus:border-primary min-h-[100px]"
+                      className="text-base border focus:border-primary min-h-[100px]"
                     />
                   </div>
 
                   <div className="space-y-3">
                     <Label className="text-base font-semibold">Posibles Causas o Desencadenantes</Label>
-                    <div className="grid grid-cols-1 gap-3 max-h-40 overflow-y-auto p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="grid grid-cols-1 gap-3 max-h-40 overflow-y-auto p-4 bg-muted/50 rounded-xl border border-border/50">
                       {commonTriggers.map((trigger) => (
                         <div key={trigger} className="flex items-center space-x-3">
                           <Checkbox
@@ -378,7 +378,7 @@ export default function NuevoSintomaPage() {
                             onCheckedChange={(checked) => 
                               handleCheckboxChange("triggers", trigger, checked as boolean)
                             }
-                            className="border-2"
+                            className="border"
                           />
                           <Label 
                             htmlFor={`trigger-${trigger}`} 
@@ -394,14 +394,14 @@ export default function NuevoSintomaPage() {
                         placeholder="Especifica otra causa"
                         value={formData.customTrigger}
                         onChange={(e) => handleInputChange("customTrigger", e.target.value)}
-                        className="h-12 text-base border-2 focus:border-primary"
+                        className="h-12 text-base border focus:border-primary"
                       />
                     )}
                   </div>
 
                   <div className="space-y-3">
                     <Label className="text-base font-semibold">Acciones de Manejo</Label>
-                    <div className="grid grid-cols-1 gap-3 max-h-40 overflow-y-auto p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="grid grid-cols-1 gap-3 max-h-40 overflow-y-auto p-4 bg-muted/50 rounded-xl border border-border/50">
                       {managementActions.map((action) => (
                         <div key={action} className="flex items-center space-x-3">
                           <Checkbox
@@ -410,7 +410,7 @@ export default function NuevoSintomaPage() {
                             onCheckedChange={(checked) => 
                               handleCheckboxChange("managementActions", action, checked as boolean)
                             }
-                            className="border-2"
+                            className="border"
                           />
                           <Label 
                             htmlFor={`management-${action}`} 
@@ -426,7 +426,7 @@ export default function NuevoSintomaPage() {
                         placeholder="Especifica otra acción"
                         value={formData.customManagement}
                         onChange={(e) => handleInputChange("customManagement", e.target.value)}
-                        className="h-12 text-base border-2 focus:border-primary"
+                        className="h-12 text-base border focus:border-primary"
                       />
                     )}
                   </div>
@@ -435,38 +435,38 @@ export default function NuevoSintomaPage() {
             </div>
 
             {/* Summary Card */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="text-xl font-bold">Resumen del Síntoma</CardTitle>
                 <CardDescription className="mt-1 text-base">Revisa la información antes de enviar</CardDescription>
               </CardHeader>
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
-                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                     <span className="font-semibold text-muted-foreground text-xs block mb-2">Síntoma:</span>
                     <p className="font-bold text-base">{formData.symptom || formData.customSymptom || "No especificado"}</p>
                   </div>
-                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                     <span className="font-semibold text-muted-foreground text-xs block mb-2">Severidad:</span>
                     <p className="font-bold text-base">{formData.severity || "No especificada"}</p>
                   </div>
-                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                     <span className="font-semibold text-muted-foreground text-xs block mb-2">Fecha y Hora:</span>
                     <p className="font-bold text-base">
                       {format(formData.date, "dd/MM/yyyy")} {formData.time || "No especificada"}
                     </p>
                   </div>
-                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                     <span className="font-semibold text-muted-foreground text-xs block mb-2">Duración:</span>
                     <p className="font-bold text-base">{formData.duration || "No especificada"}</p>
                   </div>
                 </div>
                 {formData.triggers.length > 0 && (
-                  <div className="mt-6 p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="mt-6 p-4 bg-muted/50 rounded-xl border border-border/50">
                     <span className="font-semibold text-muted-foreground text-sm block mb-3">Desencadenantes:</span>
                     <div className="flex flex-wrap gap-2">
                       {formData.triggers.map((trigger, index) => (
-                        <span key={index} className="px-4 py-2 bg-chart-2/10 text-chart-2 rounded-full text-sm font-semibold border-2 border-chart-2/20">
+                        <span key={index} className="px-4 py-2 bg-chart-2/10 text-chart-2 rounded-full text-sm font-semibold border border-chart-2/20">
                           {trigger === "Otro" ? formData.customTrigger : trigger}
                         </span>
                       ))}
@@ -474,11 +474,11 @@ export default function NuevoSintomaPage() {
                   </div>
                 )}
                 {formData.managementActions.length > 0 && (
-                  <div className="mt-6 p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="mt-6 p-4 bg-muted/50 rounded-xl border border-border/50">
                     <span className="font-semibold text-muted-foreground text-sm block mb-3">Acciones de manejo:</span>
                     <div className="flex flex-wrap gap-2">
                       {formData.managementActions.map((action, index) => (
-                        <span key={index} className="px-4 py-2 bg-chart-5/10 text-chart-5 rounded-full text-sm font-semibold border-2 border-chart-5/20">
+                        <span key={index} className="px-4 py-2 bg-chart-5/10 text-chart-5 rounded-full text-sm font-semibold border border-chart-5/20">
                           {action === "Otro" ? formData.customManagement : action}
                         </span>
                       ))}
@@ -490,12 +490,12 @@ export default function NuevoSintomaPage() {
 
             {/* Submit Button */}
             <div className="flex justify-end gap-4 pt-4">
-              <Button variant="outline" asChild className="h-12 px-8 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground">
+              <Button variant="outline" asChild className="h-12 px-8 text-lg font-semibold border hover:bg-muted hover:border-muted-foreground">
                 <Link href="/dashboard/paciente/sintomas">Cancelar</Link>
               </Button>
               <Button 
                 type="submit" 
-                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-sm hover:shadow-md disabled:opacity-50"
                 disabled={!isFormValid || isSubmitting}
               >
                 {isSubmitting ? (

@@ -176,8 +176,8 @@ export default function MedicamentosPage() {
 
           {/* Upcoming Doses */}
           {upcomingDoses.length > 0 && (
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <Clock className="w-6 h-6 text-primary" />
@@ -249,7 +249,7 @@ export default function MedicamentosPage() {
             </div>
 
             {medicationsList.length === 0 ? (
-              <Card className="border-2 shadow-lg">
+              <Card className="border shadow-sm">
                 <CardContent className="py-16 text-center">
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
                     <Pill className="w-10 h-10 text-muted-foreground" />

@@ -192,8 +192,8 @@ export default function RegisterPage() {
         </div>
 
         {/* Formas flotantes decorativas */}
-        <div className="absolute top-10 right-10 w-32 h-32 border-2 border-white/20 rounded-full"></div>
-        <div className="absolute bottom-32 left-16 w-24 h-24 border-2 border-white/20 rounded-full"></div>
+        <div className="absolute top-10 right-10 w-32 h-32 border border-white/20 rounded-full"></div>
+        <div className="absolute bottom-32 left-16 w-24 h-24 border border-white/20 rounded-full"></div>
         <div className="absolute top-1/3 right-1/4 w-16 h-16 bg-white/10 rounded-full"></div>
       </div>
 

@@ -126,7 +126,7 @@ export default function PacientePerfilPage() {
                 }
                 setIsEditing(!isEditing)
               }}
-              className={isEditing ? "border-2 hover:bg-muted hover:border-muted-foreground h-11 px-6" : "bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm"}
+              className={isEditing ? "border hover:bg-muted hover:border-muted-foreground h-11 px-6" : "bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm"}
             >
               {isEditing ? (
                 <>Cancelar</>
@@ -141,21 +141,21 @@ export default function PacientePerfilPage() {
 
           {/* Alerts */}
           {error && (
-            <Alert variant="destructive" className="border-2" role="alert">
+            <Alert variant="destructive" className="border" role="alert">
               <AlertDescription className="font-semibold">{error}</AlertDescription>
             </Alert>
           )}
           {success && (
-            <Alert className="border-2 border-primary/30 bg-primary/10">
+            <Alert className="border border-primary/30 bg-primary/10">
               <AlertDescription className="text-primary font-semibold">{success}</AlertDescription>
             </Alert>
           )}
 
           {/* Profile Header Card */}
-          <Card className="border-2 shadow-lg ">
+          <Card className="border shadow-sm ">
             <CardContent className="pt-8 pb-8">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-                <Avatar className="h-28 w-28 ring-4 ring-primary/20 shadow-lg">
+                <Avatar className="h-28 w-28 ring-4 ring-primary/20 shadow-sm">
                   <AvatarFallback className="text-3xl font-bold bg-primary/15 text-primary">
                     {patientData.firstName.charAt(0)}{patientData.lastName.charAt(0)}
                   </AvatarFallback>
@@ -171,9 +171,9 @@ export default function PacientePerfilPage() {
                     ID: {patientData.profileId}
                   </p>
                   <div className="flex flex-wrap gap-3 mt-4 justify-center md:justify-start">
-                    <Badge variant="outline" className="border-2 font-semibold px-4 py-2">{patientData.isActive ? 'Activo' : 'Inactivo'}</Badge>
+                    <Badge variant="outline" className="border font-semibold px-4 py-2">{patientData.isActive ? 'Activo' : 'Inactivo'}</Badge>
                     {patientData.doctorName && (
-                      <span className="text-sm text-muted-foreground font-semibold px-4 py-2 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <span className="text-sm text-muted-foreground font-semibold px-4 py-2 bg-muted/50 rounded-xl border border-border/50">
                         Médico tratante: {patientData.doctorName}
                       </span>
                     )}
@@ -185,8 +185,8 @@ export default function PacientePerfilPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Personal Information */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <User className="w-5 h-5 text-primary" />
@@ -202,7 +202,7 @@ export default function PacientePerfilPage() {
                     id="firstName"
                     value={patientData.firstName}
                     disabled={true}
-                    className="h-12 text-base border-2 bg-muted/50"
+                    className="h-12 text-base border bg-muted/50"
                   />
                 </div>
 
@@ -212,7 +212,7 @@ export default function PacientePerfilPage() {
                     id="lastName"
                     value={patientData.lastName}
                     disabled={true}
-                    className="h-12 text-base border-2 bg-muted/50"
+                    className="h-12 text-base border bg-muted/50"
                   />
                 </div>
 
@@ -226,7 +226,7 @@ export default function PacientePerfilPage() {
                     type="email"
                     value={patientData.email}
                     disabled={true}
-                    className="h-12 text-base border-2 bg-muted/50"
+                    className="h-12 text-base border bg-muted/50"
                   />
                 </div>
 
@@ -238,7 +238,7 @@ export default function PacientePerfilPage() {
                     value={patientData.phone}
                     onChange={(e) => setPatientData({ ...patientData, phone: e.target.value })}
                     disabled={!isEditing}
-                    className="h-12 text-base border-2 focus:border-primary"
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
 
@@ -249,15 +249,15 @@ export default function PacientePerfilPage() {
                     type="date"
                     value={patientData.birthDate || ''}
                     disabled={true}
-                    className="h-12 text-base border-2 bg-muted/50"
+                    className="h-12 text-base border bg-muted/50"
                   />
                 </div>
               </CardContent>
             </Card>
 
             {/* Medical Information */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Heart className="w-5 h-5 text-chart-2" />
@@ -273,7 +273,7 @@ export default function PacientePerfilPage() {
                     <Input
                       value={patientData.cancerType}
                       disabled={true}
-                      className="h-12 text-base border-2 bg-muted/50"
+                      className="h-12 text-base border bg-muted/50"
                     />
                   </div>
                 )}
@@ -284,7 +284,7 @@ export default function PacientePerfilPage() {
                     <Input
                       value={patientData.cancerStage}
                       disabled={true}
-                      className="h-12 text-base border-2 bg-muted/50"
+                      className="h-12 text-base border bg-muted/50"
                     />
                   </div>
                 )}
@@ -296,7 +296,7 @@ export default function PacientePerfilPage() {
                       type="date"
                       value={patientData.diagnosisDate}
                       disabled={true}
-                      className="h-12 text-base border-2 bg-muted/50"
+                      className="h-12 text-base border bg-muted/50"
                     />
                   </div>
                 )}
@@ -307,7 +307,7 @@ export default function PacientePerfilPage() {
                     <Input
                       value={patientData.doctorName}
                       disabled={true}
-                      className="h-12 text-base border-2 bg-muted/50"
+                      className="h-12 text-base border bg-muted/50"
                     />
                   </div>
                 )}
@@ -317,7 +317,7 @@ export default function PacientePerfilPage() {
                   <Input
                     value={patientData.isActive ? 'Activo' : 'Inactivo'}
                     disabled={true}
-                    className="h-12 text-base border-2 bg-muted/50"
+                    className="h-12 text-base border bg-muted/50"
                   />
                 </div>
               </CardContent>
@@ -326,8 +326,8 @@ export default function PacientePerfilPage() {
 
           {/* Address */}
           {patientData.address && (
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-5/10">
                     <Settings className="w-5 h-5 text-chart-5" />
@@ -344,7 +344,7 @@ export default function PacientePerfilPage() {
                     value={patientData.address}
                     onChange={(e) => setPatientData({ ...patientData, address: e.target.value })}
                     disabled={!isEditing}
-                    className="h-12 text-base border-2 focus:border-primary"
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
               </CardContent>
@@ -352,8 +352,8 @@ export default function PacientePerfilPage() {
           )}
 
           {/* Statistics */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-3 text-xl font-bold">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <Activity className="w-5 h-5 text-primary" />
@@ -364,12 +364,12 @@ export default function PacientePerfilPage() {
             </CardHeader>
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="text-center p-6 border-2 border-primary/20 rounded-xl bg-muted/50 hover:border-primary/40 hover:shadow-md transition-all relative overflow-hidden">
+                <div className="text-center p-6 border border-primary/20 rounded-xl bg-muted/50 hover:border-primary/40 hover:shadow-md transition-all relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12"></div>
                   <p className="text-4xl font-bold text-primary mb-2 relative z-10">{patientData.activeTreatments}</p>
                   <p className="text-sm text-muted-foreground font-semibold relative z-10">Tratamientos Activos</p>
                 </div>
-                <div className="text-center p-6 border-2 border-chart-2/20 rounded-xl bg-muted/50 hover:border-chart-2/40 hover:shadow-md transition-all relative overflow-hidden">
+                <div className="text-center p-6 border border-chart-2/20 rounded-xl bg-muted/50 hover:border-chart-2/40 hover:shadow-md transition-all relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-chart-2/5 rounded-full -mr-12 -mt-12"></div>
                   <p className="text-4xl font-bold text-chart-2 mb-2 relative z-10">{patientData.upcomingAppointments}</p>
                   <p className="text-sm text-muted-foreground font-semibold relative z-10">Citas Próximas</p>
@@ -389,11 +389,11 @@ export default function PacientePerfilPage() {
                   setSuccess("")
                 }}
                 disabled={isSaving}
-                className="h-12 px-8 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground"
+                className="h-12 px-8 text-lg font-semibold border hover:bg-muted hover:border-muted-foreground"
               >
                 Cancelar
               </Button>
-              <Button onClick={handleSave} disabled={isSaving} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
+              <Button onClick={handleSave} disabled={isSaving} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-sm hover:shadow-md disabled:opacity-50">
                 <Save className="w-5 h-5 mr-2" />
                 {isSaving ? "Guardando..." : "Guardar Cambios"}
               </Button>

@@ -174,12 +174,12 @@ export default function TreatmentDetailsPage() {
         <DashboardLayout>
           <div className="max-w-7xl mx-auto space-y-6">
             <Link href="/dashboard/medico/tratamientos">
-              <Button variant="outline" className="border-2 hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" className="border hover:bg-primary hover:text-primary-foreground">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver a tratamientos
               </Button>
             </Link>
-            <Alert variant="destructive" className="border-2" role="alert">
+            <Alert variant="destructive" className="border" role="alert">
               <AlertTriangle className="h-5 w-5" />
               <AlertDescription className="font-semibold">
                 {error || "Tratamiento no encontrado"}
@@ -198,15 +198,15 @@ export default function TreatmentDetailsPage() {
           {/* Header */}
           <div className="space-y-4">
             <Link href="/dashboard/medico/tratamientos">
-              <Button variant="outline" className="mb-4 border-2 hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" className="mb-4 border hover:bg-primary hover:text-primary-foreground">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver a tratamientos
               </Button>
             </Link>
             
             {/* Treatment Header Card */}
-            <Card className="border-2 shadow-lg ">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm ">
+              <CardHeader className="border-b">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-3 flex-1">
                     <CardTitle className="text-3xl font-bold flex items-center gap-3">
@@ -216,7 +216,7 @@ export default function TreatmentDetailsPage() {
                       {treatment.type}
                     </CardTitle>
                     <CardDescription className="flex items-center gap-3 text-base">
-                      <Badge variant={getStatusBadgeVariant(treatment.status)} className="border-2 font-semibold">
+                      <Badge variant={getStatusBadgeVariant(treatment.status)} className="border font-semibold">
                         {treatment.status}
                       </Badge>
                       <span className="text-base font-semibold">Protocolo: {treatment.protocol}</span>
@@ -224,7 +224,7 @@ export default function TreatmentDetailsPage() {
                   </div>
                   <div className="flex gap-2">
                     <Link href={`/dashboard/medico/tratamientos/${treatment.id}/editar`}>
-                      <Button variant="outline" size="sm" className="border-2 hover:bg-primary hover:text-primary-foreground">
+                      <Button variant="outline" size="sm" className="border hover:bg-primary hover:text-primary-foreground">
                         <Edit className="mr-2 h-4 w-4" />
                         Editar
                       </Button>
@@ -235,7 +235,7 @@ export default function TreatmentDetailsPage() {
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {patient && (
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border border-border/50">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <User className="h-5 w-5 text-primary" />
                       </div>
@@ -247,7 +247,7 @@ export default function TreatmentDetailsPage() {
                       </Link>
                     </div>
                   )}
-                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border border-border/50">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Calendar className="h-5 w-5 text-primary" />
                     </div>
@@ -257,7 +257,7 @@ export default function TreatmentDetailsPage() {
                     </div>
                   </div>
                   {treatment.endDate && (
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border border-border/50">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Calendar className="h-5 w-5 text-primary" />
                       </div>
@@ -268,7 +268,7 @@ export default function TreatmentDetailsPage() {
                     </div>
                   )}
                   {treatment.location && (
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border border-border/50">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <MapPin className="h-5 w-5 text-primary" />
                       </div>
@@ -282,7 +282,7 @@ export default function TreatmentDetailsPage() {
 
           {/* Progress Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="space-y-3">
@@ -290,7 +290,7 @@ export default function TreatmentDetailsPage() {
                     <p className="text-sm font-semibold text-muted-foreground">Progreso del Tratamiento</p>
                     <p className="text-3xl font-bold text-primary">{completionPercentage}%</p>
                   </div>
-                  <Progress value={completionPercentage} className="h-3 border-2 border-primary/20" />
+                  <Progress value={completionPercentage} className="h-3 border border-primary/20" />
                   <p className="text-xs text-muted-foreground font-medium">
                     {treatment.currentCycle} de {treatment.totalCycles} ciclos completados
                   </p>
@@ -298,7 +298,7 @@ export default function TreatmentDetailsPage() {
               </CardContent>
             </Card>
             
-            <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
@@ -315,7 +315,7 @@ export default function TreatmentDetailsPage() {
               </CardContent>
             </Card>
             
-            <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
@@ -345,8 +345,8 @@ export default function TreatmentDetailsPage() {
             <TabsContent value="details" className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Treatment Information */}
-                <Card className="border-2 shadow-lg">
-                  <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                <Card className="border shadow-sm">
+                  <CardHeader className="border-b">
                     <CardTitle className="text-xl font-bold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Heart className="h-6 w-6 text-primary" />
@@ -355,28 +355,28 @@ export default function TreatmentDetailsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 space-y-4">
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Tipo de Tratamiento</p>
                       <p className="text-base font-bold">{treatment.type}</p>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Protocolo</p>
                       <p className="text-base font-bold">{treatment.protocol}</p>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Estado</p>
-                      <Badge variant={getStatusBadgeVariant(treatment.status)} className="border-2 font-semibold">
+                      <Badge variant={getStatusBadgeVariant(treatment.status)} className="border font-semibold">
                         {treatment.status}
                       </Badge>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Ciclos</p>
                       <p className="text-base font-bold">
                         {treatment.currentCycle} / {treatment.totalCycles}
                       </p>
                     </div>
                     {treatment.sessionDurationMinutes && (
-                      <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Duración por Sesión</p>
                         <p className="text-base font-bold">{treatment.sessionDurationMinutes} minutos</p>
                       </div>
@@ -385,8 +385,8 @@ export default function TreatmentDetailsPage() {
                 </Card>
 
                 {/* Dates and Location */}
-                <Card className="border-2 shadow-lg">
-                  <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                <Card className="border shadow-sm">
+                  <CardHeader className="border-b">
                     <CardTitle className="text-xl font-bold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-chart-2/10">
                         <Calendar className="h-6 w-6 text-chart-2" />
@@ -395,24 +395,24 @@ export default function TreatmentDetailsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 space-y-4">
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Fecha de Inicio</p>
                       <p className="text-base font-bold">{formatDate(treatment.startDate)}</p>
                     </div>
                     {treatment.endDate && (
-                      <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Fecha de Finalización</p>
                         <p className="text-base font-bold">{formatDate(treatment.endDate)}</p>
                       </div>
                     )}
                     {treatment.nextSession && (
-                      <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Próxima Sesión</p>
                         <p className="text-base font-bold">{formatDate(treatment.nextSession)}</p>
                       </div>
                     )}
                     {treatment.location && (
-                      <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Ubicación</p>
                         <p className="text-base font-bold">{treatment.location}</p>
                       </div>
@@ -422,8 +422,8 @@ export default function TreatmentDetailsPage() {
 
                 {/* Notes */}
                 {treatment.notes && (
-                  <Card className="lg:col-span-2 border-2 shadow-lg">
-                    <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                  <Card className="lg:col-span-2 border shadow-sm">
+                    <CardHeader className="border-b">
                       <CardTitle className="text-xl font-bold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-chart-5/10">
                           <FileText className="h-6 w-6 text-chart-5" />
@@ -439,7 +439,7 @@ export default function TreatmentDetailsPage() {
 
                 {/* Preparation Instructions */}
                 {treatment.preparationInstructions && (
-                  <Card className="lg:col-span-2 border-2 shadow-lg border-primary/20">
+                  <Card className="lg:col-span-2 border shadow-sm border-primary/20">
                     <CardHeader className="border-b bg-gradient-to-r from-primary/10 to-background">
                       <CardTitle className="text-xl font-bold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-primary/20">
@@ -456,8 +456,8 @@ export default function TreatmentDetailsPage() {
 
                 {/* Patient Information */}
                 {patient && (
-                  <Card className="lg:col-span-2 border-2 shadow-lg">
-                    <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                  <Card className="lg:col-span-2 border shadow-sm">
+                    <CardHeader className="border-b">
                       <CardTitle className="text-xl font-bold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-chart-2/10">
                           <User className="h-6 w-6 text-chart-2" />
@@ -467,7 +467,7 @@ export default function TreatmentDetailsPage() {
                     </CardHeader>
                     <CardContent className="p-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                        <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                           <p className="text-sm font-semibold text-muted-foreground mb-1">Nombre</p>
                           <Link 
                             href={`/dashboard/medico/pacientes/${patient.id}`}
@@ -476,20 +476,20 @@ export default function TreatmentDetailsPage() {
                             {patient.firstName} {patient.lastName}
                           </Link>
                         </div>
-                        <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                        <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                           <p className="text-sm font-semibold text-muted-foreground mb-1">ID</p>
-                          <code className="text-sm bg-background px-3 py-1.5 rounded-lg border-2 font-semibold">
+                          <code className="text-sm bg-background px-3 py-1.5 rounded-lg border font-semibold">
                             {patient.profileId}
                           </code>
                         </div>
                         {patient.cancerType && (
-                          <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                          <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                             <p className="text-sm font-semibold text-muted-foreground mb-1">Tipo de Cáncer</p>
                             <p className="text-base font-bold">{patient.cancerType}</p>
                           </div>
                         )}
                         {patient.cancerStage && (
-                          <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                          <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                             <p className="text-sm font-semibold text-muted-foreground mb-1">Etapa</p>
                             <p className="text-base font-bold">{patient.cancerStage}</p>
                           </div>
@@ -503,8 +503,8 @@ export default function TreatmentDetailsPage() {
 
             {/* Sessions Tab */}
             <TabsContent value="sessions" className="space-y-6">
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <CardTitle className="text-xl font-bold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Calendar className="h-6 w-6 text-primary" />
@@ -524,13 +524,13 @@ export default function TreatmentDetailsPage() {
                       {sessions
                         .sort((a, b) => new Date(b.sessionDate).getTime() - new Date(a.sessionDate).getTime())
                         .map((session) => (
-                          <Card key={session.id} className="border-2 hover:border-primary/40 hover:shadow-md transition-all">
+                          <Card key={session.id} className="border hover:border-primary/40 hover:shadow-md transition-all">
                             <CardContent className="p-6">
                               <div className="space-y-4">
                                 <div className="flex items-start justify-between">
                                   <div className="space-y-2 flex-1">
                                     <div className="flex items-center gap-3">
-                                      <Badge className={`${getSessionStatusColor(session.status)} border-2 font-semibold`}>
+                                      <Badge className={`${getSessionStatusColor(session.status)} border font-semibold`}>
                                         {session.status}
                                       </Badge>
                                       <span className="text-base font-bold">
@@ -564,14 +564,14 @@ export default function TreatmentDetailsPage() {
                                 </div>
                                 
                                 {session.notes && (
-                                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                                     <p className="text-xs font-semibold text-muted-foreground mb-2">Notas:</p>
                                     <p className="text-sm font-medium">{session.notes}</p>
                                   </div>
                                 )}
                                 
                                 {session.sideEffects && session.sideEffects.length > 0 && (
-                                  <div className="p-4 bg-destructive/10 rounded-xl border-2 border-destructive/20">
+                                  <div className="p-4 bg-destructive/10 rounded-xl border border-destructive/20">
                                     <p className="text-xs font-semibold text-destructive mb-2">Efectos Secundarios:</p>
                                     <p className="text-sm font-medium text-destructive">{session.sideEffects.join(', ')}</p>
                                   </div>
@@ -588,8 +588,8 @@ export default function TreatmentDetailsPage() {
 
             {/* Medications Tab */}
             <TabsContent value="medications" className="space-y-6">
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <CardTitle className="text-xl font-bold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Pill className="h-6 w-6 text-primary" />
@@ -603,7 +603,7 @@ export default function TreatmentDetailsPage() {
                       {treatment.medications.map((medication, index) => (
                         <div 
                           key={index}
-                          className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl border-2 border-border/50 hover:border-primary/40 transition-all"
+                          className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl border border-border/50 hover:border-primary/40 transition-all"
                         >
                           <div className="p-2 rounded-lg bg-primary/10">
                             <Pill className="h-5 w-5 text-primary" />

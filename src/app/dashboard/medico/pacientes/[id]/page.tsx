@@ -222,12 +222,12 @@ export default function PatientDetailsPage() {
         <DashboardLayout>
           <div className="max-w-7xl mx-auto space-y-6">
             <Link href="/dashboard/medico/pacientes">
-              <Button variant="outline" className="border-2 hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" className="border hover:bg-primary hover:text-primary-foreground">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver a pacientes
               </Button>
             </Link>
-            <Alert variant="destructive" className="border-2" role="alert">
+            <Alert variant="destructive" className="border" role="alert">
               <AlertTriangle className="h-5 w-5" />
               <AlertDescription className="font-semibold">
                 {error || "Paciente no encontrado"}
@@ -314,7 +314,7 @@ export default function PatientDetailsPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
@@ -328,7 +328,7 @@ export default function PatientDetailsPage() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
@@ -344,7 +344,7 @@ export default function PatientDetailsPage() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
@@ -373,8 +373,8 @@ export default function PatientDetailsPage() {
             <TabsContent value="medical" className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Cancer Information */}
-                <Card className="border-2 shadow-lg">
-                  <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                <Card className="border shadow-sm">
+                  <CardHeader className="border-b">
                     <CardTitle className="text-xl font-bold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Stethoscope className="h-6 w-6 text-primary" />
@@ -383,23 +383,23 @@ export default function PatientDetailsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 space-y-4">
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Tipo de Cáncer</p>
                       <p className="text-base font-bold">{patient.cancerType || "No especificado"}</p>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Etapa</p>
                       <p className="text-base font-bold">{patient.cancerStage || "No especificado"}</p>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Fecha de Diagnóstico</p>
                       <p className="text-base font-bold">{formatDate(patient.diagnosisDate)}</p>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Estado de Tratamiento</p>
-                      <Badge variant="outline" className="border-2 font-semibold">{patient.treatmentStatus || "No especificado"}</Badge>
+                      <Badge variant="outline" className="border font-semibold">{patient.treatmentStatus || "No especificado"}</Badge>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Último Tratamiento</p>
                       <p className="text-base font-bold">{formatDate(patient.lastTreatmentDate)}</p>
                     </div>
@@ -407,8 +407,8 @@ export default function PatientDetailsPage() {
                 </Card>
 
                 {/* Medical Details */}
-                <Card className="border-2 shadow-lg">
-                  <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                <Card className="border shadow-sm">
+                  <CardHeader className="border-b">
                     <CardTitle className="text-xl font-bold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-chart-2/10">
                         <Heart className="h-6 w-6 text-chart-2" />
@@ -417,19 +417,19 @@ export default function PatientDetailsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 space-y-4">
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Tipo de Sangre</p>
                       <p className="text-base font-bold">{patient.bloodType || "No especificado"}</p>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Historial Médico</p>
                       <p className="text-sm font-medium">{patient.medicalHistory || "No especificado"}</p>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Medicamentos Actuales</p>
                       <p className="text-sm font-medium">{patient.currentMedications || "No especificado"}</p>
                     </div>
-                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Alergias</p>
                       <p className="text-sm font-medium">{patient.allergies || "No especificado"}</p>
                     </div>
@@ -438,8 +438,8 @@ export default function PatientDetailsPage() {
 
                 {/* Insurance */}
                 {(patient.insuranceProvider || patient.insuranceNumber) && (
-                  <Card className="border-2 shadow-lg">
-                    <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                  <Card className="border shadow-sm">
+                    <CardHeader className="border-b">
                       <CardTitle className="text-xl font-bold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-chart-5/10">
                           <Shield className="h-6 w-6 text-chart-5" />
@@ -448,11 +448,11 @@ export default function PatientDetailsPage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6 space-y-4">
-                      <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Proveedor</p>
                         <p className="text-base font-bold">{patient.insuranceProvider || "No especificado"}</p>
                       </div>
-                      <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Número de Póliza</p>
                         <p className="text-base font-bold">{patient.insuranceNumber || "No especificado"}</p>
                       </div>
@@ -462,7 +462,7 @@ export default function PatientDetailsPage() {
 
                 {/* Emergency Contact */}
                 {patient.emergencyContactName && (
-                  <Card className="border-2 shadow-lg border-primary/20">
+                  <Card className="border shadow-sm border-primary/20">
                     <CardHeader className="border-b bg-gradient-to-r from-primary/10 to-background">
                       <CardTitle className="text-xl font-bold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-primary/20">
@@ -472,18 +472,18 @@ export default function PatientDetailsPage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6 space-y-4">
-                      <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Nombre</p>
                         <p className="text-base font-bold">{patient.emergencyContactName}</p>
                       </div>
                       {patient.emergencyContactPhone && (
-                        <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                        <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                           <p className="text-sm font-semibold text-muted-foreground mb-1">Teléfono</p>
                           <p className="text-base font-bold">{patient.emergencyContactPhone}</p>
                         </div>
                       )}
                       {patient.emergencyContactRelationship && (
-                        <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                        <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                           <p className="text-sm font-semibold text-muted-foreground mb-1">Relación</p>
                           <p className="text-base font-bold">{patient.emergencyContactRelationship}</p>
                         </div>
@@ -495,7 +495,7 @@ export default function PatientDetailsPage() {
 
               {/* Allergies */}
               {allergies.length > 0 && (
-                <Card className="border-2 shadow-lg border-destructive/20">
+                <Card className="border shadow-sm border-destructive/20">
                   <CardHeader className="border-b bg-gradient-to-r from-destructive/10 to-background">
                     <CardTitle className="text-xl font-bold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-destructive/20">
@@ -507,7 +507,7 @@ export default function PatientDetailsPage() {
                   <CardContent className="p-6">
                     <div className="space-y-3">
                       {allergies.map((allergy) => (
-                        <div key={allergy.id} className="flex items-start gap-3 p-4 bg-destructive/10 rounded-xl border-2 border-destructive/20 hover:border-destructive/40 transition-all">
+                        <div key={allergy.id} className="flex items-start gap-3 p-4 bg-destructive/10 rounded-xl border border-destructive/20 hover:border-destructive/40 transition-all">
                           <div className="p-2 rounded-lg bg-destructive/20">
                             <AlertTriangle className="h-5 w-5 text-destructive" />
                           </div>
@@ -516,7 +516,7 @@ export default function PatientDetailsPage() {
                             {allergy.reaction && (
                               <p className="text-sm text-muted-foreground font-medium mt-1">Reacción: {allergy.reaction}</p>
                             )}
-                            <Badge variant="outline" className="mt-2 border-2 font-semibold">
+                            <Badge variant="outline" className="mt-2 border font-semibold">
                               Severidad: {allergy.severity}
                             </Badge>
                           </div>
@@ -530,8 +530,8 @@ export default function PatientDetailsPage() {
 
             {/* Appointments Tab */}
             <TabsContent value="appointments" className="space-y-6">
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-xl font-bold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-primary/10">
@@ -559,20 +559,20 @@ export default function PatientDetailsPage() {
                       {appointmentsData
                         .sort((a, b) => new Date(b.appointmentDate).getTime() - new Date(a.appointmentDate).getTime())
                         .map((appointment) => (
-                        <Card key={appointment.id} className="border-2 hover:border-primary/40 hover:shadow-md transition-all group overflow-hidden">
+                        <Card key={appointment.id} className="border hover:border-primary/40 hover:shadow-md transition-all group overflow-hidden">
                           <CardContent className="p-0">
                             <div className="flex flex-col md:flex-row">
                               <div className={`w-2 md:w-3 ${getAppointmentStatusColor(appointment.status).split(' ')[0]}`} />
                               <div className="p-6 flex-1 space-y-3">
                                 <div className="flex items-center justify-between gap-4">
                                   <div className="flex items-center gap-3">
-                                    <Badge className={`${getAppointmentStatusColor(appointment.status)} border-2 font-semibold`}>
+                                    <Badge className={`${getAppointmentStatusColor(appointment.status)} border font-semibold`}>
                                       {getStatusText(appointment.status)}
                                     </Badge>
-                                    <Badge variant="outline" className="border-2 font-semibold">{appointment.type}</Badge>
+                                    <Badge variant="outline" className="border font-semibold">{appointment.type}</Badge>
                                   </div>
                                   <Link href={`/dashboard/medico/citas/${appointment.id}`}>
-                                    <Button variant="outline" size="sm" className="border-2 hover:bg-primary hover:text-primary-foreground transition-all">
+                                    <Button variant="outline" size="sm" className="border hover:bg-primary hover:text-primary-foreground transition-all">
                                       <Eye className="mr-2 h-4 w-4" />
                                       Ver Detalles
                                     </Button>
@@ -595,7 +595,7 @@ export default function PatientDetailsPage() {
                                   )}
                                 </div>
                                 {appointment.notes && (
-                                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                                     <p className="text-xs font-semibold text-muted-foreground mb-1">Notas:</p>
                                     <p className="text-sm font-medium italic">{appointment.notes}</p>
                                   </div>
@@ -613,8 +613,8 @@ export default function PatientDetailsPage() {
 
             {/* Treatments Tab */}
             <TabsContent value="treatments" className="space-y-6">
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <div className="flex justify-between items-center">
                     <CardTitle className="text-xl font-bold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-primary/10">
@@ -641,7 +641,7 @@ export default function PatientDetailsPage() {
                     <div className="space-y-4">
                       {treatmentsData.map((treatment) => (
                         <Link key={treatment.id} href={`/dashboard/medico/tratamientos/${treatment.id}`}>
-                          <Card className="border-2 hover:border-primary/40 hover:shadow-md transition-all cursor-pointer">
+                          <Card className="border hover:border-primary/40 hover:shadow-md transition-all cursor-pointer">
                             <CardContent className="p-6">
                               <div className="space-y-4">
                                 <div className="flex items-start justify-between gap-4">
@@ -649,36 +649,36 @@ export default function PatientDetailsPage() {
                                     <h4 className="text-lg font-bold mb-1">{treatment.type}</h4>
                                     <p className="text-sm font-medium text-muted-foreground">{treatment.protocol}</p>
                                   </div>
-                                  <Badge variant={getStatusBadgeVariant(treatment.status)} className="border-2 font-semibold">
+                                  <Badge variant={getStatusBadgeVariant(treatment.status)} className="border font-semibold">
                                     {treatment.status}
                                   </Badge>
                                 </div>
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                  <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                                  <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                                     <p className="text-xs font-semibold text-muted-foreground mb-1">Inicio</p>
                                     <p className="text-sm font-bold">{formatDate(treatment.startDate)}</p>
                                   </div>
-                                  <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                                  <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                                     <p className="text-xs font-semibold text-muted-foreground mb-1">Ciclos</p>
                                     <p className="text-sm font-bold">
                                       {treatment.currentCycle} / {treatment.totalCycles}
                                     </p>
                                   </div>
                                   {treatment.location && (
-                                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                                       <p className="text-xs font-semibold text-muted-foreground mb-1">Ubicación</p>
                                       <p className="text-sm font-bold">{treatment.location}</p>
                                     </div>
                                   )}
                                   {treatment.sessionDurationMinutes && (
-                                    <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                                    <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                                       <p className="text-xs font-semibold text-muted-foreground mb-1">Duración</p>
                                       <p className="text-sm font-bold">{treatment.sessionDurationMinutes} min</p>
                                     </div>
                                   )}
                                 </div>
                                 {treatment.notes && (
-                                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                                     <p className="text-xs font-semibold text-muted-foreground mb-1">Notas:</p>
                                     <p className="text-sm font-medium">{treatment.notes}</p>
                                   </div>
@@ -696,8 +696,8 @@ export default function PatientDetailsPage() {
 
             {/* History Tab */}
             <TabsContent value="history" className="space-y-6">
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <CardTitle className="text-xl font-bold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <FileText className="h-6 w-6 text-primary" />
@@ -715,7 +715,7 @@ export default function PatientDetailsPage() {
                   ) : (
                     <div className="space-y-4">
                       {medicalHistoryEntries.map((entry) => (
-                        <Card key={entry.id} className="border-2 hover:border-primary/40 hover:shadow-md transition-all">
+                        <Card key={entry.id} className="border hover:border-primary/40 hover:shadow-md transition-all">
                           <CardContent className="p-6">
                             <div className="space-y-3">
                               <div className="flex items-start justify-between gap-4">
@@ -729,7 +729,7 @@ export default function PatientDetailsPage() {
                                   {getHistoryTypeIcon(entry.type)}
                                 </div>
                               </div>
-                              <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                              <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                                 <p className="text-sm font-medium">{entry.description}</p>
                               </div>
                               {entry.doctorName && (
@@ -743,7 +743,7 @@ export default function PatientDetailsPage() {
                               {entry.documents && entry.documents.length > 0 && (
                                 <div className="flex flex-wrap gap-2">
                                   {entry.documents.map((doc, idx) => (
-                                    <Badge key={idx} variant="outline" className="border-2 font-semibold">
+                                    <Badge key={idx} variant="outline" className="border font-semibold">
                                       <FileText className="h-3 w-3 mr-1" />
                                       {doc}
                                     </Badge>

@@ -77,12 +77,12 @@ export default function DoctorDetailsPage() {
         <DashboardLayout>
           <div className="max-w-7xl mx-auto space-y-6">
             <Link href="/dashboard/organizacion/doctores">
-              <Button variant="outline" className="border-2 hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" className="border hover:bg-primary hover:text-primary-foreground">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver a doctores
               </Button>
             </Link>
-            <Alert variant="destructive" className="border-2" role="alert">
+            <Alert variant="destructive" className="border" role="alert">
               <AlertTriangle className="h-5 w-5" />
               <AlertDescription className="font-semibold">
                 {error || "Doctor no encontrado"}
@@ -101,18 +101,18 @@ export default function DoctorDetailsPage() {
           {/* Header */}
           <div className="space-y-4">
             <Link href="/dashboard/organizacion/doctores">
-              <Button variant="outline" className="mb-4 border-2 hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" className="mb-4 border hover:bg-primary hover:text-primary-foreground">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver a doctores
               </Button>
             </Link>
             
             {/* Doctor Header Card */}
-            <Card className="border-2 shadow-lg ">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm ">
+              <CardHeader className="border-b">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-6 flex-1">
-                    <Avatar className="h-20 w-20 ring-4 ring-primary/20 shadow-lg">
+                    <Avatar className="h-20 w-20 ring-4 ring-primary/20 shadow-sm">
                       <AvatarFallback className="text-2xl font-bold bg-primary/15 text-primary">
                         {doctor.firstName[0]}{doctor.lastName[0]}
                       </AvatarFallback>
@@ -122,14 +122,14 @@ export default function DoctorDetailsPage() {
                         Dr. {doctor.firstName} {doctor.lastName}
                       </CardTitle>
                       <CardDescription className="flex items-center gap-3 text-base">
-                        <code className="text-sm bg-muted px-3 py-1.5 rounded-lg border-2 font-semibold">
+                        <code className="text-sm bg-muted px-3 py-1.5 rounded-lg border font-semibold">
                           {doctor.profileId}
                         </code>
-                        <Badge variant={doctor.isActive ? "default" : "secondary"} className="border-2 font-semibold">
+                        <Badge variant={doctor.isActive ? "default" : "secondary"} className="border font-semibold">
                           {doctor.isActive ? "Activo" : "Inactivo"}
                         </Badge>
                         {doctor.isAvailable !== undefined && (
-                          <Badge variant={doctor.isAvailable ? "default" : "outline"} className="border-2 font-semibold">
+                          <Badge variant={doctor.isAvailable ? "default" : "outline"} className="border font-semibold">
                             {doctor.isAvailable ? "Disponible" : "No disponible"}
                           </Badge>
                         )}
@@ -140,14 +140,14 @@ export default function DoctorDetailsPage() {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border border-border/50">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Mail className="h-5 w-5 text-primary" />
                     </div>
                     <span className="text-sm font-bold">{doctor.email}</span>
                   </div>
                   {doctor.phone && (
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border border-border/50">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Phone className="h-5 w-5 text-primary" />
                       </div>
@@ -155,7 +155,7 @@ export default function DoctorDetailsPage() {
                     </div>
                   )}
                   {doctor.city && (
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border border-border/50">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <MapPin className="h-5 w-5 text-primary" />
                       </div>
@@ -163,7 +163,7 @@ export default function DoctorDetailsPage() {
                     </div>
                   )}
                   {doctor.birthDate && (
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border border-border/50">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Calendar className="h-5 w-5 text-primary" />
                       </div>
@@ -180,7 +180,7 @@ export default function DoctorDetailsPage() {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
@@ -196,7 +196,7 @@ export default function DoctorDetailsPage() {
             </Card>
             
             {doctor.rating !== undefined && (
-              <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
                 <CardContent className="pt-6 relative z-10">
                   <div className="flex items-center justify-between">
@@ -216,7 +216,7 @@ export default function DoctorDetailsPage() {
             )}
 
             {doctor.yearsOfExperience !== undefined && (
-              <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+              <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
                 <CardContent className="pt-6 relative z-10">
                   <div className="flex items-center justify-between">
@@ -236,8 +236,8 @@ export default function DoctorDetailsPage() {
           {/* Information Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Professional Information */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="text-xl font-bold flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <Stethoscope className="h-6 w-6 text-primary" />
@@ -246,28 +246,28 @@ export default function DoctorDetailsPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
-                <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                   <p className="text-sm font-semibold text-muted-foreground mb-1">Especialización</p>
                   <p className="text-base font-bold">{doctor.specialization}</p>
                 </div>
-                <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                   <p className="text-sm font-semibold text-muted-foreground mb-1">Número de Licencia</p>
                   <p className="text-base font-bold">{doctor.licenseNumber}</p>
                 </div>
                 {doctor.yearsOfExperience !== undefined && (
-                  <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Años de Experiencia</p>
                     <p className="text-base font-bold">{doctor.yearsOfExperience} años</p>
                   </div>
                 )}
                 {doctor.hospitalAffiliation && (
-                  <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Afiliación Hospitalaria</p>
                     <p className="text-base font-bold">{doctor.hospitalAffiliation}</p>
                   </div>
                 )}
                 {doctor.consultationFee && (
-                  <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Tarifa de Consulta</p>
                     <p className="text-base font-bold">${parseFloat(doctor.consultationFee).toFixed(2)}</p>
                   </div>
@@ -276,8 +276,8 @@ export default function DoctorDetailsPage() {
             </Card>
 
             {/* Personal Information */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="text-xl font-bold flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Users className="h-6 w-6 text-chart-2" />
@@ -286,30 +286,30 @@ export default function DoctorDetailsPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
-                <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                   <p className="text-sm font-semibold text-muted-foreground mb-1">Email</p>
                   <p className="text-base font-bold">{doctor.email}</p>
                 </div>
                 {doctor.phone && (
-                  <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Teléfono</p>
                     <p className="text-base font-bold">{doctor.phone}</p>
                   </div>
                 )}
                 {doctor.birthDate && (
-                  <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Fecha de Nacimiento</p>
                     <p className="text-base font-bold">{formatDate(doctor.birthDate)} ({calculateAge(doctor.birthDate)} años)</p>
                   </div>
                 )}
                 {doctor.city && (
-                  <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Ciudad</p>
                     <p className="text-base font-bold">{doctor.city}</p>
                   </div>
                 )}
                 {doctor.address && (
-                  <div className="p-3 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Dirección</p>
                     <p className="text-base font-bold">{doctor.address}</p>
                   </div>
@@ -319,8 +319,8 @@ export default function DoctorDetailsPage() {
 
             {/* Organization Information */}
             {doctor.organizationName && (
-              <Card className="border-2 shadow-lg lg:col-span-2">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm lg:col-span-2">
+                <CardHeader className="border-b">
                   <CardTitle className="text-xl font-bold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-chart-5/10">
                       <Building2 className="h-6 w-6 text-chart-5" />
@@ -329,7 +329,7 @@ export default function DoctorDetailsPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-base font-bold">{doctor.organizationName}</p>
                   </div>
                 </CardContent>
@@ -338,8 +338,8 @@ export default function DoctorDetailsPage() {
 
             {/* Bio */}
             {doctor.bio && (
-              <Card className="border-2 shadow-lg lg:col-span-2">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm lg:col-span-2">
+                <CardHeader className="border-b">
                   <CardTitle className="text-xl font-bold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Activity className="h-6 w-6 text-primary" />
@@ -354,8 +354,8 @@ export default function DoctorDetailsPage() {
             )}
 
             {/* Status Information */}
-            <Card className="border-2 shadow-lg lg:col-span-2">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm lg:col-span-2">
+              <CardHeader className="border-b">
                 <CardTitle className="text-xl font-bold flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Activity className="h-6 w-6 text-chart-2" />
@@ -365,16 +365,16 @@ export default function DoctorDetailsPage() {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-2">Estado</p>
                     <div className="flex items-center gap-2">
                       {doctor.isActive ? (
-                        <Badge className="border-2 font-semibold bg-success/10 text-success border-success/30/20">
+                        <Badge className="border font-semibold bg-success/10 text-success border-success/30/20">
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Activo
                         </Badge>
                       ) : (
-                        <Badge className="border-2 font-semibold bg-destructive/10 text-destructive border-destructive/30/20">
+                        <Badge className="border font-semibold bg-destructive/10 text-destructive border-destructive/30/20">
                           <AlertTriangle className="h-3 w-3 mr-1" />
                           Inactivo
                         </Badge>
@@ -382,16 +382,16 @@ export default function DoctorDetailsPage() {
                     </div>
                   </div>
                   {doctor.isAvailable !== undefined && (
-                    <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-2">Disponibilidad</p>
                       <div className="flex items-center gap-2">
                         {doctor.isAvailable ? (
-                          <Badge className="border-2 font-semibold bg-primary/10 text-primary border-primary/20">
+                          <Badge className="border font-semibold bg-primary/10 text-primary border-primary/20">
                             <Clock className="h-3 w-3 mr-1" />
                             Disponible
                           </Badge>
                         ) : (
-                          <Badge className="border-2 font-semibold bg-muted text-muted-foreground">
+                          <Badge className="border font-semibold bg-muted text-muted-foreground">
                             <Clock className="h-3 w-3 mr-1" />
                             No disponible
                           </Badge>
@@ -400,7 +400,7 @@ export default function DoctorDetailsPage() {
                     </div>
                   )}
                   {doctor.rating !== undefined && (
-                    <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                    <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-2">Calificación</p>
                       <p className="text-2xl font-bold">{doctor.rating.toFixed(1)} / 5.0</p>
                       {doctor.totalReviews !== undefined && (

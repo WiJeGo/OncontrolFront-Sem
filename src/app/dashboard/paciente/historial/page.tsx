@@ -166,8 +166,8 @@ export default function HistorialPage() {
             {/* Medical History Tab */}
             <TabsContent value="historial" className="space-y-4">
               {/* Filter Buttons */}
-              <Card className="border-2 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
                   <CardTitle className="text-xl font-bold">Filtros</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -176,7 +176,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "todos" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("todos")}
-                      className={filtroTipo === "todos" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "todos" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
                     >
                       Todos ({historyEntries.length})
                     </Button>
@@ -184,7 +184,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "CONSULTATION" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("CONSULTATION")}
-                      className={filtroTipo === "CONSULTATION" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "CONSULTATION" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
                     >
                       Consultas ({historyEntries.filter(e => e.type === "CONSULTATION").length})
                     </Button>
@@ -192,7 +192,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "PROCEDURE" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("PROCEDURE")}
-                      className={filtroTipo === "PROCEDURE" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "PROCEDURE" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
                     >
                       Procedimientos ({historyEntries.filter(e => e.type === "PROCEDURE").length})
                     </Button>
@@ -200,7 +200,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "SURGERY" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("SURGERY")}
-                      className={filtroTipo === "SURGERY" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "SURGERY" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
                     >
                       Cirugías ({historyEntries.filter(e => e.type === "SURGERY").length})
                     </Button>
@@ -208,7 +208,7 @@ export default function HistorialPage() {
                       variant={filtroTipo === "LAB_RESULT" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setFiltroTipo("LAB_RESULT")}
-                      className={filtroTipo === "LAB_RESULT" ? "bg-primary text-primary-foreground border-0" : "border-2 hover:bg-primary hover:text-primary-foreground"}
+                      className={filtroTipo === "LAB_RESULT" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
                     >
                       Laboratorio ({historyEntries.filter(e => e.type === "LAB_RESULT").length})
                     </Button>
@@ -218,7 +218,7 @@ export default function HistorialPage() {
 
               {/* History Entries */}
               {filteredHistory.length === 0 ? (
-                <Card className="border-2 shadow-lg">
+                <Card className="border shadow-sm">
                   <CardContent className="py-16 text-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
                       <FileText className="w-10 h-10 text-muted-foreground" />
@@ -230,8 +230,8 @@ export default function HistorialPage() {
               ) : (
                 <div className="space-y-6">
                   {filteredHistory.map((entry) => (
-                    <Card key={entry.id} className="border-2 shadow-lg hover:border-primary/40 hover:shadow-xl transition-all">
-                      <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                    <Card key={entry.id} className="border shadow-sm hover:border-primary/40 hover:shadow-md transition-all">
+                      <CardHeader className="border-b">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex items-center gap-4 flex-1">
                             <div className="p-3 rounded-lg bg-primary/10">
@@ -245,7 +245,7 @@ export default function HistorialPage() {
                             </div>
                           </div>
                           <div className="text-right space-y-2">
-                            <Badge className={`${getTypeColor(entry.type)} border-2 font-semibold`}>
+                            <Badge className={`${getTypeColor(entry.type)} border font-semibold`}>
                               {typeNames[entry.type] || entry.type}
                             </Badge>
                             <p className="text-sm text-muted-foreground font-medium flex items-center gap-1 justify-end">
@@ -258,7 +258,7 @@ export default function HistorialPage() {
                       <CardContent className="p-6 space-y-4">
                         {/* Description */}
                         {entry.description && (
-                          <Alert className="border-2 bg-card">
+                          <Alert className="border bg-card">
                             <FileText className="h-5 w-5 text-primary" />
                             <AlertDescription className="font-medium">{entry.description}</AlertDescription>
                           </Alert>
@@ -266,11 +266,11 @@ export default function HistorialPage() {
 
                         {/* Documents */}
                         {entry.documents.length > 0 && (
-                          <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                          <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                             <p className="text-sm font-bold mb-3 text-foreground">Documentos adjuntos:</p>
                             <div className="flex flex-wrap gap-2">
                               {entry.documents.map((doc, index) => (
-                                <Badge key={index} variant="outline" className="border-2 font-semibold">
+                                <Badge key={index} variant="outline" className="border font-semibold">
                                   <FileText className="w-3 h-3 mr-1" />
                                   {doc}
                                 </Badge>
@@ -288,7 +288,7 @@ export default function HistorialPage() {
             {/* Allergies Tab */}
             <TabsContent value="alergias" className="space-y-6">
               {allergies.length === 0 ? (
-                <Card className="border-2 shadow-lg">
+                <Card className="border shadow-sm">
                   <CardContent className="py-16 text-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
                       <AlertTriangle className="w-10 h-10 text-muted-foreground" />
@@ -300,8 +300,8 @@ export default function HistorialPage() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {allergies.map((allergy) => (
-                    <Card key={allergy.id} className="border-2 shadow-lg hover:border-destructive/40 hover:shadow-xl transition-all">
-                      <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+                    <Card key={allergy.id} className="border shadow-sm hover:border-destructive/40 hover:shadow-md transition-all">
+                      <CardHeader className="border-b">
                         <div className="flex items-start justify-between gap-4">
                           <CardTitle className="flex items-center gap-3 text-xl font-bold">
                             <div className="p-2 rounded-lg bg-destructive/10">
@@ -311,7 +311,7 @@ export default function HistorialPage() {
                           </CardTitle>
                           <Badge 
                             variant={allergy.severity === 'SEVERE' || allergy.severity === 'LIFE_THREATENING' ? 'destructive' : 'secondary'}
-                            className="border-2 font-semibold"
+                            className="border font-semibold"
                           >
                             {severityNames[allergy.severity] || allergy.severity}
                           </Badge>
@@ -320,7 +320,7 @@ export default function HistorialPage() {
                       </CardHeader>
                       <CardContent className="p-6">
                         {allergy.reaction && (
-                          <div className="mb-4 p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                          <div className="mb-4 p-4 bg-muted/50 rounded-xl border border-border/50">
                             <p className="text-sm font-bold mb-2 text-foreground">Reacción:</p>
                             <p className="text-sm text-muted-foreground font-medium">{allergy.reaction}</p>
                           </div>

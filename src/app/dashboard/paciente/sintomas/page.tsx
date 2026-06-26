@@ -236,7 +236,7 @@ export default function SymptomsPage() {
 
           {/* Critical Alerts */}
           {criticalSymptoms.length > 0 && (
-            <Card className="border-2 border-destructive shadow-lg bg-gradient-to-br from-destructive/10 to-destructive/5">
+            <Card className="border border-destructive shadow-sm bg-gradient-to-br from-destructive/10 to-destructive/5">
               <CardHeader className="border-b border-destructive/30">
                 <CardTitle className="flex items-center gap-3 text-destructive text-2xl font-bold">
                   <div className="p-2 rounded-lg bg-destructive/20">
@@ -251,7 +251,7 @@ export default function SymptomsPage() {
               <CardContent className="p-6">
                 <div className="space-y-3">
                   {criticalSymptoms.slice(0, 3).map((symptom) => (
-                    <div key={symptom.id} className="flex items-center justify-between p-4 bg-card border-2 border-destructive/20 rounded-xl hover:border-destructive/40 transition-all">
+                    <div key={symptom.id} className="flex items-center justify-between p-4 bg-card border border-destructive/20 rounded-xl hover:border-destructive/40 transition-all">
                       <div>
                         <p className="font-bold text-lg">{symptom.symptomName}</p>
                         <p className="text-sm text-muted-foreground font-medium">
@@ -349,8 +349,8 @@ export default function SymptomsPage() {
           </div>
 
           {/* Filters */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="text-xl font-bold">Filtros de Búsqueda</CardTitle>
             </CardHeader>
             <CardContent className="p-6">
@@ -361,11 +361,11 @@ export default function SymptomsPage() {
                     placeholder="Buscar por nombre, notas o desencadenantes..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-12 h-12 text-base border-2 focus:border-primary"
+                    className="pl-12 h-12 text-base border focus:border-primary"
                   />
                 </div>
                 <Select value={severityFilter} onValueChange={setSeverityFilter}>
-                  <SelectTrigger className="w-full sm:w-[200px] h-12 border-2">
+                  <SelectTrigger className="w-full sm:w-[200px] h-12 border">
                     <SelectValue placeholder="Filtrar por severidad" />
                   </SelectTrigger>
                   <SelectContent>
@@ -377,7 +377,7 @@ export default function SymptomsPage() {
                   </SelectContent>
                 </Select>
                 <Select value={dateFilter} onValueChange={setDateFilter}>
-                  <SelectTrigger className="w-full sm:w-[200px] h-12 border-2">
+                  <SelectTrigger className="w-full sm:w-[200px] h-12 border">
                     <SelectValue placeholder="Filtrar por fecha" />
                   </SelectTrigger>
                   <SelectContent>
@@ -393,8 +393,8 @@ export default function SymptomsPage() {
           </Card>
 
           {/* Symptoms Table */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="text-2xl font-bold">Registro de Síntomas</CardTitle>
               <CardDescription className="mt-1">
                 {filteredSymptoms.length} {filteredSymptoms.length === 1 ? 'síntoma encontrado' : 'síntomas encontrados'}

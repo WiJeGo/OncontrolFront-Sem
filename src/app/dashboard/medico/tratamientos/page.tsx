@@ -143,7 +143,7 @@ export default function TratamientosPage() {
 
       {/* Estadísticas */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
+        <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
             <CardTitle className="text-sm font-semibold text-muted-foreground">Total Tratamientos</CardTitle>
@@ -160,7 +160,7 @@ export default function TratamientosPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+        <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
             <CardTitle className="text-sm font-semibold text-muted-foreground">Activos</CardTitle>
@@ -177,7 +177,7 @@ export default function TratamientosPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+        <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
             <CardTitle className="text-sm font-semibold text-muted-foreground">Pausados</CardTitle>
@@ -194,7 +194,7 @@ export default function TratamientosPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-muted/20 hover:border-muted/40 transition-all hover:shadow-lg relative overflow-hidden">
+        <Card className="border border-muted/20 hover:border-muted/40 transition-all hover:shadow-md relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-muted/5 rounded-full -mr-16 -mt-16"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
             <CardTitle className="text-sm font-semibold text-muted-foreground">Completados</CardTitle>
@@ -213,8 +213,8 @@ export default function TratamientosPage() {
       </div>
 
       {/* Filtros */}
-      <Card className="border-2 shadow-lg">
-        <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+      <Card className="border shadow-sm">
+        <CardHeader className="border-b">
           <CardTitle className="text-xl font-bold">Filtros de Búsqueda</CardTitle>
         </CardHeader>
         <CardContent className="p-6">
@@ -225,12 +225,12 @@ export default function TratamientosPage() {
                 placeholder="Buscar por paciente, tipo o protocolo..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 h-12 text-base border-2 focus:border-primary"
+                className="pl-12 h-12 text-base border focus:border-primary"
               />
             </div>
 
             <Select value={filtroEstado} onValueChange={setFiltroEstado}>
-              <SelectTrigger className="w-full md:w-[200px] h-12 border-2">
+              <SelectTrigger className="w-full md:w-[200px] h-12 border">
                 <SelectValue placeholder="Filtrar por estado" />
               </SelectTrigger>
               <SelectContent>
@@ -243,7 +243,7 @@ export default function TratamientosPage() {
             </Select>
 
             <Select value={filtroTipo} onValueChange={setFiltroTipo}>
-              <SelectTrigger className="w-full md:w-[200px] h-12 border-2">
+              <SelectTrigger className="w-full md:w-[200px] h-12 border">
                 <SelectValue placeholder="Filtrar por tipo" />
               </SelectTrigger>
               <SelectContent>
@@ -262,7 +262,7 @@ export default function TratamientosPage() {
       {/* Lista de Tratamientos */}
       <div className="grid grid-cols-1 gap-6">
         {tratamientosFiltrados.length === 0 ? (
-          <Card className="border-2 shadow-lg">
+          <Card className="border shadow-sm">
             <CardContent className="p-16 text-center">
               <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
                 <Activity className="h-10 w-10 text-muted-foreground" />
@@ -278,7 +278,7 @@ export default function TratamientosPage() {
                   : "Comienza creando tratamientos para tus pacientes"}
               </p>
               {!searchTerm && filtroEstado === "todos" && filtroTipo === "todos" && (
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg" asChild>
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm" asChild>
                   <Link href="/dashboard/medico/tratamientos/nuevo">
                     <Plus className="w-5 h-5 mr-2" />
                     Crear Primer Tratamiento
@@ -289,13 +289,13 @@ export default function TratamientosPage() {
           </Card>
         ) : (
           tratamientosFiltrados.map((tratamiento) => (
-            <Card key={tratamiento.id} className="border-2 shadow-lg hover:border-primary/40 hover:shadow-xl transition-all">
+            <Card key={tratamiento.id} className="border shadow-sm hover:border-primary/40 hover:shadow-md transition-all">
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                   <div className="flex-1 space-y-4">
                     <div className="flex items-center gap-3 flex-wrap">
                       <h3 className="text-xl font-bold text-foreground">{tratamiento.patientName}</h3>
-                      <Badge className={`${estadoColors[tratamiento.status as keyof typeof estadoColors]} border-2 font-semibold`}>
+                      <Badge className={`${estadoColors[tratamiento.status as keyof typeof estadoColors]} border font-semibold`}>
                         {estadoNames[tratamiento.status] || tratamiento.status}
                       </Badge>
                     </div>
@@ -323,18 +323,18 @@ export default function TratamientosPage() {
                     )}
 
                     {tratamiento.notes && (
-                      <p className="text-sm text-muted-foreground p-3 bg-muted/50 rounded-lg border-2 border-muted">{tratamiento.notes}</p>
+                      <p className="text-sm text-muted-foreground p-3 bg-muted/50 rounded-lg border border-muted">{tratamiento.notes}</p>
                     )}
                   </div>
 
                   <div className="flex gap-3">
-                    <Button variant="outline" size="sm" className="border-2 hover:bg-primary hover:text-primary-foreground" asChild>
+                    <Button variant="outline" size="sm" className="border hover:bg-primary hover:text-primary-foreground" asChild>
                       <Link href={`/dashboard/medico/tratamientos/${tratamiento.id}`}>
                         <Eye className="w-4 h-4 mr-1" />
                         Ver
                       </Link>
                     </Button>
-                    <Button variant="outline" size="sm" className="border-2 hover:bg-chart-2 hover:text-white" asChild>
+                    <Button variant="outline" size="sm" className="border hover:bg-chart-2 hover:text-white" asChild>
                       <Link href={`/dashboard/medico/tratamientos/${tratamiento.id}/editar`}>
                         <Edit className="w-4 h-4 mr-1" />
                         Editar
@@ -349,9 +349,9 @@ export default function TratamientosPage() {
                     <span className="text-muted-foreground">Progreso del tratamiento</span>
                     <span className="text-foreground">{tratamiento.progressPercentage}%</span>
                   </div>
-                  <div className="w-full bg-muted rounded-full h-3 border-2 border-border/50 overflow-hidden">
+                  <div className="w-full bg-muted rounded-full h-3 border border-border/50 overflow-hidden">
                     <div
-                      className="bg-primary h-3 rounded-full transition-all duration-300 shadow-lg"
+                      className="bg-primary h-3 rounded-full transition-all duration-300 shadow-sm"
                       style={{ width: `${Math.min(tratamiento.progressPercentage, 100)}%` }}
                     />
                   </div>

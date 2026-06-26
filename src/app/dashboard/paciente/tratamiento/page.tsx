@@ -132,14 +132,14 @@ export default function TratamientoPacientePage() {
       </div>
 
       {/* Resumen del tratamiento */}
-      <Card className="border-2 border-primary/30 shadow-lg ">
+      <Card className="border border-primary/30 shadow-sm ">
         <CardHeader className="border-b border-primary/30">
           <div className="flex items-center justify-between mb-4">
             <div className="space-y-2">
               <h2 className="text-2xl font-bold text-foreground">{treatment.protocol}</h2>
               <p className="text-muted-foreground font-semibold text-lg">{tipoNames[treatment.type] || treatment.type}</p>
             </div>
-            <Badge className={`${estadoColors[treatment.status as keyof typeof estadoColors]} border-2 font-bold text-lg px-4 py-2`}>
+            <Badge className={`${estadoColors[treatment.status as keyof typeof estadoColors]} border font-bold text-lg px-4 py-2`}>
               {estadoNames[treatment.status] || treatment.status}
             </Badge>
           </div>
@@ -155,9 +155,9 @@ export default function TratamientoPacientePage() {
                   </span>
                   <span className="text-primary">{treatment.progressPercentage}%</span>
                 </div>
-                <div className="w-full bg-muted rounded-full h-4 border-2 border-border/50 overflow-hidden">
+                <div className="w-full bg-muted rounded-full h-4 border border-border/50 overflow-hidden">
                   <div
-                    className="bg-primary h-4 rounded-full transition-all duration-300 shadow-lg"
+                    className="bg-primary h-4 rounded-full transition-all duration-300 shadow-sm"
                     style={{ width: `${Math.min(treatment.progressPercentage, 100)}%` }}
                   />
                 </div>
@@ -191,8 +191,8 @@ export default function TratamientoPacientePage() {
 
         <TabsContent value="resumen" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <Activity className="w-5 h-5 text-primary" />
@@ -214,7 +214,7 @@ export default function TratamientoPacientePage() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground font-semibold">Estado:</span>
-                    <Badge className="bg-primary/20 text-primary-foreground border-2 font-semibold">
+                    <Badge className="bg-primary/20 text-primary-foreground border font-semibold">
                       {estadoNames[treatment.status] || treatment.status}
                     </Badge>
                   </div>
@@ -234,8 +234,8 @@ export default function TratamientoPacientePage() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Calendar className="w-5 h-5 text-chart-2" />
@@ -269,8 +269,8 @@ export default function TratamientoPacientePage() {
           </div>
 
           {treatment.notes && (
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-destructive/10">
                     <Heart className="w-5 h-5 text-destructive" />
@@ -285,7 +285,7 @@ export default function TratamientoPacientePage() {
           )}
 
           {treatment.preparationInstructions && (
-            <Card className="border-2 border-border shadow-lg ">
+            <Card className="border border-border shadow-sm ">
               <CardHeader className="border-b border-border">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold text-chart-2">
                   <div className="p-2 rounded-lg bg-chart-2/20">
@@ -302,8 +302,8 @@ export default function TratamientoPacientePage() {
         </TabsContent>
 
         <TabsContent value="medicamentos" className="space-y-6">
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <Pill className="w-6 h-6 text-primary" />
@@ -316,10 +316,10 @@ export default function TratamientoPacientePage() {
               {treatment.medications.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {treatment.medications.map((medicamento, index) => (
-                    <div key={index} className="border-2 border-border/50 rounded-xl p-4 hover:border-primary/40 hover:shadow-md transition-all bg-card">
+                    <div key={index} className="border border-border/50 rounded-xl p-4 hover:border-primary/40 hover:shadow-md transition-all bg-card">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-bold text-lg text-foreground">{medicamento}</h3>
-                        <Badge variant="outline" className="border-2 font-semibold">Activo</Badge>
+                        <Badge variant="outline" className="border font-semibold">Activo</Badge>
                       </div>
                     </div>
                   ))}
@@ -338,8 +338,8 @@ export default function TratamientoPacientePage() {
         </TabsContent>
 
         <TabsContent value="efectos" className="space-y-6">
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                 <div className="p-2 rounded-lg bg-chart-2/10">
                   <AlertCircle className="w-6 h-6 text-chart-2" />
@@ -352,7 +352,7 @@ export default function TratamientoPacientePage() {
               {treatment.sideEffects.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   {treatment.sideEffects.map((efecto, index) => (
-                    <div key={index} className="border-2 border-destructive/20 rounded-xl p-4 hover:border-destructive/40 hover:shadow-md transition-all bg-card">
+                    <div key={index} className="border border-destructive/20 rounded-xl p-4 hover:border-destructive/40 hover:shadow-md transition-all bg-card">
                       <h3 className="font-bold text-lg text-foreground">{efecto}</h3>
                     </div>
                   ))}
@@ -374,8 +374,8 @@ export default function TratamientoPacientePage() {
         </TabsContent>
 
         <TabsContent value="sesiones" className="space-y-6">
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <Calendar className="w-6 h-6 text-primary" />
@@ -388,7 +388,7 @@ export default function TratamientoPacientePage() {
               {upcomingSessions.length > 0 ? (
                 <div className="space-y-4">
                   {upcomingSessions.map((session) => (
-                    <div key={session.id} className="border-2 border-border/50 rounded-xl p-5 hover:border-primary/40 hover:shadow-md transition-all bg-card">
+                    <div key={session.id} className="border border-border/50 rounded-xl p-5 hover:border-primary/40 hover:shadow-md transition-all bg-card">
                       <div className="flex justify-between items-start gap-4">
                         <div className="flex-1">
                           <h3 className="font-bold text-xl text-foreground mb-2">
@@ -411,7 +411,7 @@ export default function TratamientoPacientePage() {
                             <p className="text-sm text-muted-foreground font-medium">{session.location}</p>
                           )}
                         </div>
-                        <Badge variant="outline" className="border-2 font-semibold">{session.status}</Badge>
+                        <Badge variant="outline" className="border font-semibold">{session.status}</Badge>
                       </div>
                     </div>
                   ))}

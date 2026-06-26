@@ -128,7 +128,7 @@ export default function MedicoPerfilPage() {
                 }
                 setIsEditing(!isEditing)
               }}
-              className={isEditing ? "border-2 hover:bg-muted hover:border-muted-foreground h-11 px-6" : "bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm"}
+              className={isEditing ? "border hover:bg-muted hover:border-muted-foreground h-11 px-6" : "bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm"}
             >
               {isEditing ? (
                 <>Cancelar</>
@@ -143,21 +143,21 @@ export default function MedicoPerfilPage() {
 
           {/* Alerts */}
           {error && (
-            <Alert variant="destructive" className="border-2" role="alert">
+            <Alert variant="destructive" className="border" role="alert">
               <AlertDescription className="font-semibold">{error}</AlertDescription>
             </Alert>
           )}
           {success && (
-            <Alert className="border-2 border-primary/30 bg-primary/10">
+            <Alert className="border border-primary/30 bg-primary/10">
               <AlertDescription className="text-primary font-semibold">{success}</AlertDescription>
             </Alert>
           )}
 
           {/* Profile Header Card */}
-          <Card className="border-2 shadow-lg ">
+          <Card className="border shadow-sm ">
             <CardContent className="pt-8 pb-8">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-                <Avatar className="h-28 w-28 ring-4 ring-primary/20 shadow-lg">
+                <Avatar className="h-28 w-28 ring-4 ring-primary/20 shadow-sm">
                   <AvatarFallback className="text-3xl font-bold bg-primary/15 text-primary">
                     {doctorData.firstName.charAt(0)}{doctorData.lastName.charAt(0)}
                   </AvatarFallback>
@@ -172,7 +172,7 @@ export default function MedicoPerfilPage() {
                   </p>
                   <div className="flex flex-wrap gap-3 mt-4 justify-center md:justify-start">
                     {doctorData.organizationName && (
-                      <span className="flex items-center gap-2 text-sm text-muted-foreground font-semibold px-4 py-2 bg-muted/50 rounded-xl border-2 border-border/50">
+                      <span className="flex items-center gap-2 text-sm text-muted-foreground font-semibold px-4 py-2 bg-muted/50 rounded-xl border border-border/50">
                         <Briefcase className="w-4 h-4 text-primary" />
                         {doctorData.organizationName}
                       </span>
@@ -185,8 +185,8 @@ export default function MedicoPerfilPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Personal Information */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <User className="w-5 h-5 text-primary" />
@@ -202,7 +202,7 @@ export default function MedicoPerfilPage() {
                     id="firstName"
                     value={doctorData.firstName}
                     disabled={true}
-                    className="h-12 text-base border-2 bg-muted/50"
+                    className="h-12 text-base border bg-muted/50"
                   />
                 </div>
 
@@ -212,7 +212,7 @@ export default function MedicoPerfilPage() {
                     id="lastName"
                     value={doctorData.lastName}
                     disabled={true}
-                    className="h-12 text-base border-2 bg-muted/50"
+                    className="h-12 text-base border bg-muted/50"
                   />
                 </div>
 
@@ -226,7 +226,7 @@ export default function MedicoPerfilPage() {
                     type="email"
                     value={doctorData.email}
                     disabled={true}
-                    className="h-12 text-base border-2 bg-muted/50"
+                    className="h-12 text-base border bg-muted/50"
                   />
                 </div>
 
@@ -238,15 +238,15 @@ export default function MedicoPerfilPage() {
                     value={doctorData.phone}
                     onChange={(e) => setDoctorData({ ...doctorData, phone: e.target.value })}
                     disabled={!isEditing}
-                    className="h-12 text-base border-2 focus:border-primary"
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
               </CardContent>
             </Card>
 
             {/* Professional Information */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <GraduationCap className="w-5 h-5 text-chart-2" />
@@ -263,7 +263,7 @@ export default function MedicoPerfilPage() {
                     value={doctorData.specialization}
                     onChange={(e) => setDoctorData({ ...doctorData, specialization: e.target.value })}
                     disabled={!isEditing}
-                    className="h-12 text-base border-2 focus:border-primary"
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
 
@@ -277,7 +277,7 @@ export default function MedicoPerfilPage() {
                     value={doctorData.licenseNumber}
                     onChange={(e) => setDoctorData({ ...doctorData, licenseNumber: e.target.value })}
                     disabled={!isEditing}
-                    className="h-12 text-base border-2 focus:border-primary"
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
 
@@ -287,7 +287,7 @@ export default function MedicoPerfilPage() {
                     <Input
                       value={doctorData.organizationName}
                       disabled={true}
-                      className="h-12 text-base border-2 bg-muted/50"
+                      className="h-12 text-base border bg-muted/50"
                     />
                   </div>
                 )}
@@ -298,7 +298,7 @@ export default function MedicoPerfilPage() {
                     id="status"
                     value={doctorData.isAvailable ? 'Disponible' : 'No disponible'}
                     disabled={true}
-                    className="h-12 text-base border-2 bg-muted/50"
+                    className="h-12 text-base border bg-muted/50"
                   />
                 </div>
               </CardContent>
@@ -306,8 +306,8 @@ export default function MedicoPerfilPage() {
           </div>
 
           {/* Biography */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-3 text-xl font-bold">
                 <div className="p-2 rounded-lg bg-chart-5/10">
                   <Settings className="w-5 h-5 text-chart-5" />
@@ -326,7 +326,7 @@ export default function MedicoPerfilPage() {
                   disabled={!isEditing}
                   rows={6}
                   placeholder="Describe tu experiencia, especialización y enfoque médico..."
-                  className="text-base border-2 focus:border-primary min-h-[150px]"
+                  className="text-base border focus:border-primary min-h-[150px]"
                 />
               </div>
 
@@ -339,7 +339,7 @@ export default function MedicoPerfilPage() {
                   disabled={!isEditing}
                   rows={3}
                   placeholder="Dirección completa de tu consultorio..."
-                  className="text-base border-2 focus:border-primary min-h-[100px]"
+                  className="text-base border focus:border-primary min-h-[100px]"
                 />
               </div>
             </CardContent>
@@ -385,11 +385,11 @@ export default function MedicoPerfilPage() {
                   setSuccess("")
                 }}
                 disabled={isSaving}
-                className="h-12 px-8 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground"
+                className="h-12 px-8 text-lg font-semibold border hover:bg-muted hover:border-muted-foreground"
               >
                 Cancelar
               </Button>
-              <Button onClick={handleSave} disabled={isSaving} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
+              <Button onClick={handleSave} disabled={isSaving} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-sm hover:shadow-md disabled:opacity-50">
                 <Save className="w-5 h-5 mr-2" />
                 {isSaving ? "Guardando..." : "Guardar Cambios"}
               </Button>

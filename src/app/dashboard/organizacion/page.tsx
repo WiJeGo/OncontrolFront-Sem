@@ -161,14 +161,14 @@ export default function OrganizationDashboardPage() {
       </div>
 
       {/* Doctors List */}
-      <Card className="border-2 shadow-lg">
-        <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+      <Card className="border shadow-sm">
+        <CardHeader className="border-b">
           <div className="flex justify-between items-center">
             <div>
               <CardTitle className="text-2xl font-bold">Doctores</CardTitle>
               <CardDescription className="mt-1">Lista de médicos en tu organización</CardDescription>
             </div>
-            <Button asChild variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors border-2">
+            <Button asChild variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors border">
               <Link href="/dashboard/organizacion/doctores">Ver todos</Link>
             </Button>
           </div>
@@ -195,7 +195,7 @@ export default function OrganizationDashboardPage() {
               {dashboard.doctors.slice(0, 5).map((doctor) => (
                 <div
                   key={doctor.id}
-                  className="flex items-center justify-between p-5 border-2 rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
+                  className="flex items-center justify-between p-5 border rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
                 >
                   <div className="flex items-center space-x-4 flex-1">
                     <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
@@ -225,7 +225,7 @@ export default function OrganizationDashboardPage() {
                         )}
                       </div>
                     </div>
-                    <Button asChild variant="outline" size="sm" className="hover:bg-primary hover:text-primary-foreground transition-colors border-2">
+                    <Button asChild variant="outline" size="sm" className="hover:bg-primary hover:text-primary-foreground transition-colors border">
                       <Link href={`/dashboard/organizacion/doctores/${doctor.id}`}>Ver detalles</Link>
                     </Button>
                   </div>

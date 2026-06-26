@@ -280,7 +280,7 @@ export default function ReportesPage() {
             </div>
             <div className="flex gap-3 flex-wrap">
               <Select value={periodoSeleccionado} onValueChange={setPeriodoSeleccionado}>
-                <SelectTrigger className="w-full sm:w-[180px] h-11 border-2">
+                <SelectTrigger className="w-full sm:w-[180px] h-11 border">
                   <Calendar className="mr-2 h-5 w-5" />
                   <SelectValue placeholder="Período" />
                 </SelectTrigger>
@@ -294,13 +294,13 @@ export default function ReportesPage() {
               <Button 
                 variant="outline" 
                 onClick={generarReporte} 
-                className="border-2 hover:bg-primary hover:text-primary-foreground h-11 px-6"
+                className="border hover:bg-primary hover:text-primary-foreground h-11 px-6"
               >
                 <Filter className="mr-2 h-5 w-5" />
                 Refrescar Datos
               </Button>
               <Button 
-                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg" 
+                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm" 
                 onClick={exportarReporte}
               >
                 <Download className="mr-2 h-5 w-5" />
@@ -311,7 +311,7 @@ export default function ReportesPage() {
 
           {/* Métricas principales */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="border-2 shadow-lg">
+            <Card className="border shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-bold text-muted-foreground">Pacientes</CardTitle>
                 <Users className="h-5 w-5 text-primary" />
@@ -324,7 +324,7 @@ export default function ReportesPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 shadow-lg">
+            <Card className="border shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-bold text-muted-foreground">Tratamientos</CardTitle>
                 <Activity className="h-5 w-5 text-chart-2" />
@@ -337,7 +337,7 @@ export default function ReportesPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 shadow-lg">
+            <Card className="border shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-bold text-muted-foreground">Citas del Mes</CardTitle>
                 <Calendar className="h-5 w-5 text-chart-5" />
@@ -350,7 +350,7 @@ export default function ReportesPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 shadow-lg">
+            <Card className="border shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-bold text-muted-foreground">Adherencia</CardTitle>
                 <Heart className="h-5 w-5 text-destructive" />
@@ -366,7 +366,7 @@ export default function ReportesPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Crecimiento */}
-            <Card className="border-2 shadow-lg">
+            <Card className="border shadow-sm">
               <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-primary" />
@@ -394,7 +394,7 @@ export default function ReportesPage() {
             </Card>
 
             {/* Tratamientos */}
-            <Card className="border-2 shadow-lg">
+            <Card className="border shadow-sm">
               <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-2">
                   <PieChart className="h-5 w-5 text-chart-2" />
@@ -423,7 +423,7 @@ export default function ReportesPage() {
           </div>
 
           {/* Citas por día */}
-          <Card className="border-2 shadow-lg">
+          <Card className="border shadow-sm">
             <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-2">
                 <LineChart className="h-5 w-5 text-chart-5" />

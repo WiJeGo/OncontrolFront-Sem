@@ -175,9 +175,9 @@ export default function NuevaCitaPage() {
       <AuthGuard requiredRole="DOCTOR">
         <DashboardLayout>
           <div className="max-w-2xl mx-auto py-12">
-            <Card className="text-center border-2 shadow-lg">
+            <Card className="text-center border shadow-sm">
               <CardContent className="p-12">
-                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-primary/20">
+                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20">
                   <CheckCircle className="h-10 w-10 text-primary" />
                 </div>
                 <h2 className="text-3xl font-bold mb-3 text-foreground">
@@ -187,10 +187,10 @@ export default function NuevaCitaPage() {
                   La cita ha sido programada y se ha enviado una notificación al paciente.
                 </p>
                 <div className="space-y-3">
-                  <Button asChild className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-6 text-lg font-semibold shadow-lg hover:shadow-xl">
+                  <Button asChild className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-6 text-lg font-semibold shadow-sm hover:shadow-md">
                     <Link href="/dashboard/medico/calendario">Ver Calendario</Link>
                   </Button>
-                  <Button variant="outline" asChild className="w-full h-12 px-6 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground">
+                  <Button variant="outline" asChild className="w-full h-12 px-6 text-lg font-semibold border hover:bg-muted hover:border-muted-foreground">
                     <Link href="/dashboard/medico/citas/nueva">Crear Otra Cita</Link>
                   </Button>
                 </div>
@@ -208,7 +208,7 @@ export default function NuevaCitaPage() {
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Header */}
           <div className="space-y-4">
-            <Button variant="outline" size="sm" asChild className="border-2 hover:bg-primary hover:text-primary-foreground">
+            <Button variant="outline" size="sm" asChild className="border hover:bg-primary hover:text-primary-foreground">
               <Link href="/dashboard/medico/calendario">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver
@@ -224,14 +224,14 @@ export default function NuevaCitaPage() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {error && (
-              <Alert variant="destructive" className="border-2" role="alert">
+              <Alert variant="destructive" className="border" role="alert">
                 <AlertDescription className="font-semibold">{error}</AlertDescription>
               </Alert>
             )}
 
             {/* Patient Selection */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <User className="h-5 w-5 text-primary" />
@@ -250,7 +250,7 @@ export default function NuevaCitaPage() {
                     onValueChange={(value) => handleInputChange("patientProfileId", parseInt(value))}
                     disabled={isLoadingPatients}
                   >
-                    <SelectTrigger id="patient" className="h-12 text-base border-2">
+                    <SelectTrigger id="patient" className="h-12 text-base border">
                       <SelectValue placeholder={isLoadingPatients ? "Cargando pacientes..." : "Selecciona un paciente"} />
                     </SelectTrigger>
                     <SelectContent>
@@ -272,8 +272,8 @@ export default function NuevaCitaPage() {
             </Card>
 
             {/* Date and Time */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <CalendarIcon className="h-5 w-5 text-chart-2" />
@@ -292,7 +292,7 @@ export default function NuevaCitaPage() {
                       <PopoverTrigger asChild>
                         <Button
                           variant="outline"
-                          className="w-full justify-start text-left font-normal h-12 text-base border-2 hover:bg-primary hover:text-primary-foreground"
+                          className="w-full justify-start text-left font-normal h-12 text-base border hover:bg-primary hover:text-primary-foreground"
                         >
                           <CalendarIcon className="mr-2 h-5 w-5" />
                           {formData.date ? format(formData.date, "PPP") : "Selecciona una fecha"}
@@ -315,7 +315,7 @@ export default function NuevaCitaPage() {
                       Hora <span className="text-destructive">*</span>
                     </Label>
                     <Select value={formData.time} onValueChange={(value) => handleInputChange("time", value)}>
-                      <SelectTrigger id="time" className="h-12 text-base border-2">
+                      <SelectTrigger id="time" className="h-12 text-base border">
                         <SelectValue placeholder="Selecciona una hora" />
                       </SelectTrigger>
                       <SelectContent>
@@ -336,7 +336,7 @@ export default function NuevaCitaPage() {
                     value={formData.durationMinutes.toString()}
                     onValueChange={(value) => handleInputChange("durationMinutes", parseInt(value))}
                   >
-                    <SelectTrigger id="duration" className="h-12 text-base border-2">
+                    <SelectTrigger id="duration" className="h-12 text-base border">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -352,8 +352,8 @@ export default function NuevaCitaPage() {
             </Card>
 
             {/* Appointment Details */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+            <Card className="border shadow-sm">
+              <CardHeader className="border-b">
                 <CardTitle className="flex items-center gap-3 text-xl font-bold">
                   <div className="p-2 rounded-lg bg-chart-5/10">
                     <FileText className="h-5 w-5 text-chart-5" />
@@ -371,7 +371,7 @@ export default function NuevaCitaPage() {
                     value={formData.type}
                     onValueChange={(value) => handleInputChange("type", value as AppointmentType)}
                   >
-                    <SelectTrigger id="type" className="h-12 text-base border-2">
+                    <SelectTrigger id="type" className="h-12 text-base border">
                       <SelectValue placeholder="Selecciona el tipo" />
                     </SelectTrigger>
                     <SelectContent>
@@ -393,7 +393,7 @@ export default function NuevaCitaPage() {
                     value={formData.location}
                     onValueChange={(value) => handleInputChange("location", value)}
                   >
-                    <SelectTrigger id="location" className="h-12 text-base border-2">
+                    <SelectTrigger id="location" className="h-12 text-base border">
                       <SelectValue placeholder="Selecciona una ubicación" />
                     </SelectTrigger>
                     <SelectContent>
@@ -414,7 +414,7 @@ export default function NuevaCitaPage() {
                     value={formData.notes}
                     onChange={(e) => handleInputChange("notes", e.target.value)}
                     rows={4}
-                    className="text-base border-2 focus:border-primary min-h-[100px]"
+                    className="text-base border focus:border-primary min-h-[100px]"
                   />
                 </div>
 
@@ -426,11 +426,11 @@ export default function NuevaCitaPage() {
                     value={formData.preparationInstructions}
                     onChange={(e) => handleInputChange("preparationInstructions", e.target.value)}
                     rows={4}
-                    className="text-base border-2 focus:border-primary min-h-[100px]"
+                    className="text-base border focus:border-primary min-h-[100px]"
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border border-border/50">
                   <div className="space-y-1">
                     <Label htmlFor="reminder" className="text-base font-semibold">Enviar Recordatorio</Label>
                     <p className="text-sm text-muted-foreground font-medium">
@@ -448,10 +448,10 @@ export default function NuevaCitaPage() {
 
             {/* Submit Button */}
             <div className="flex gap-4 justify-end pt-4">
-              <Button type="button" variant="outline" asChild className="h-12 px-8 text-lg font-semibold border-2 hover:bg-muted hover:border-muted-foreground">
+              <Button type="button" variant="outline" asChild className="h-12 px-8 text-lg font-semibold border hover:bg-muted hover:border-muted-foreground">
                 <Link href="/dashboard/medico/calendario">Cancelar</Link>
               </Button>
-              <Button type="submit" disabled={isLoading} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-lg hover:shadow-xl disabled:opacity-50">
+              <Button type="submit" disabled={isLoading} className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-12 px-8 text-lg font-semibold shadow-sm hover:shadow-md disabled:opacity-50">
                 {isLoading ? "Creando..." : "Crear Cita"}
               </Button>
             </div>

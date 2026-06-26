@@ -230,7 +230,7 @@ export default function AppointmentDetailsPage() {
       <AuthGuard requiredRole="DOCTOR">
         <DashboardLayout>
           <div className="max-w-2xl mx-auto py-12">
-            <Card className="border-2 shadow-lg">
+            <Card className="border shadow-sm">
               <CardContent className="p-12 text-center">
                 <h3 className="text-xl font-bold text-destructive mb-4">{error || 'Cita no encontrada'}</h3>
                 <Button asChild>
@@ -251,7 +251,7 @@ export default function AppointmentDetailsPage() {
           {/* Header */}
           <div className="space-y-4">
             <Link href="/dashboard/medico/citas">
-              <Button variant="outline" className="border-2 hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" className="border hover:bg-primary hover:text-primary-foreground">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver a Citas
               </Button>
@@ -263,15 +263,15 @@ export default function AppointmentDetailsPage() {
                 </h1>
                 <p className="text-muted-foreground text-lg">Información completa de la cita médica</p>
               </div>
-              <Badge className={`${getStatusColor(appointment.status)} border-2 text-lg px-4 py-2 font-semibold`}>
+              <Badge className={`${getStatusColor(appointment.status)} border text-lg px-4 py-2 font-semibold`}>
                 {getStatusText(appointment.status)}
               </Badge>
             </div>
           </div>
 
           {/* Patient Info */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <User className="h-6 w-6 text-primary" />
@@ -290,8 +290,8 @@ export default function AppointmentDetailsPage() {
           </Card>
 
           {/* Appointment Details */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="flex items-center gap-3 text-2xl font-bold">
                 <div className="p-2 rounded-lg bg-chart-2/10">
                   <Calendar className="h-6 w-6 text-chart-2" />
@@ -301,7 +301,7 @@ export default function AppointmentDetailsPage() {
             </CardHeader>
             <CardContent className="p-6 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                   <div className="flex items-center gap-2 mb-2">
                     <Calendar className="h-5 w-5 text-primary" />
                     <p className="text-sm font-semibold text-muted-foreground">Fecha</p>
@@ -316,7 +316,7 @@ export default function AppointmentDetailsPage() {
                   </p>
                 </div>
 
-                <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                   <div className="flex items-center gap-2 mb-2">
                     <Clock className="h-5 w-5 text-primary" />
                     <p className="text-sm font-semibold text-muted-foreground">Hora</p>
@@ -329,7 +329,7 @@ export default function AppointmentDetailsPage() {
                   </p>
                 </div>
 
-                <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                   <div className="flex items-center gap-2 mb-2">
                     <FileText className="h-5 w-5 text-primary" />
                     <p className="text-sm font-semibold text-muted-foreground">Tipo</p>
@@ -337,7 +337,7 @@ export default function AppointmentDetailsPage() {
                   <p className="text-lg font-bold text-foreground">{appointment.type}</p>
                 </div>
 
-                <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                   <div className="flex items-center gap-2 mb-2">
                     <Clock className="h-5 w-5 text-primary" />
                     <p className="text-sm font-semibold text-muted-foreground">Duración</p>
@@ -346,7 +346,7 @@ export default function AppointmentDetailsPage() {
                 </div>
 
                 {appointment.location && (
-                  <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50 md:col-span-2">
+                  <div className="p-4 bg-muted/50 rounded-xl border border-border/50 md:col-span-2">
                     <div className="flex items-center gap-2 mb-2">
                       <MapPin className="h-5 w-5 text-primary" />
                       <p className="text-sm font-semibold text-muted-foreground">Ubicación</p>
@@ -357,14 +357,14 @@ export default function AppointmentDetailsPage() {
               </div>
 
               {appointment.notes && (
-                <div className="p-4 bg-muted/50 rounded-xl border-2 border-border/50">
+                <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                   <p className="text-sm font-semibold text-muted-foreground mb-2">Notas</p>
                   <p className="text-base text-foreground">{appointment.notes}</p>
                 </div>
               )}
 
               {appointment.preparationInstructions && (
-                <div className="p-4 bg-chart-5/10 rounded-xl border-2 border-chart-5/20">
+                <div className="p-4 bg-chart-5/10 rounded-xl border border-chart-5/20">
                   <p className="text-sm font-semibold text-chart-5 mb-2">Instrucciones de Preparación</p>
                   <p className="text-base text-foreground">{appointment.preparationInstructions}</p>
                 </div>
@@ -373,8 +373,8 @@ export default function AppointmentDetailsPage() {
           </Card>
 
           {/* Actions */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="text-xl font-bold">Acciones</CardTitle>
             </CardHeader>
             <CardContent className="p-6">
@@ -391,7 +391,7 @@ export default function AppointmentDetailsPage() {
                     <Button 
                       variant="outline"
                       onClick={() => setRescheduleDialogOpen(true)}
-                      className="border-2 hover:bg-primary hover:text-primary-foreground"
+                      className="border hover:bg-primary hover:text-primary-foreground"
                     >
                       <Calendar className="mr-2 h-4 w-4" />
                       Reprogramar
@@ -411,7 +411,7 @@ export default function AppointmentDetailsPage() {
                     <Button 
                       variant="outline"
                       onClick={() => setRescheduleDialogOpen(true)}
-                      className="border-2 hover:bg-primary hover:text-primary-foreground"
+                      className="border hover:bg-primary hover:text-primary-foreground"
                     >
                       <Calendar className="mr-2 h-4 w-4" />
                       Reprogramar
@@ -419,7 +419,7 @@ export default function AppointmentDetailsPage() {
                     <Button 
                       variant="outline"
                       onClick={handleCancelAppointment}
-                      className="border-2 border-destructive/20 text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                      className="border border-destructive/20 text-destructive hover:bg-destructive hover:text-destructive-foreground"
                     >
                       <Trash2 className="mr-2 h-4 w-4" />
                       Cancelar Cita

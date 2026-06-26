@@ -147,8 +147,8 @@ export default function NewDoctorPage() {
           <p className="text-muted-foreground text-lg">Registra un médico en tu organización</p>
         </div>
 
-      <Card className="border-2 shadow-lg">
-        <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+      <Card className="border shadow-sm">
+        <CardHeader className="border-b">
           <CardTitle className="text-2xl font-bold">Información del Doctor</CardTitle>
           <CardDescription className="mt-1">Completa todos los campos requeridos (*)</CardDescription>
         </CardHeader>
@@ -191,7 +191,7 @@ export default function NewDoctorPage() {
                       id="firstName"
                       value={formData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      className="h-11 border-2"
+                      className="h-11 border"
                       required
                     />
                   </div>
@@ -201,7 +201,7 @@ export default function NewDoctorPage() {
                       id="lastName"
                       value={formData.lastName}
                       onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      className="h-11 border-2"
+                      className="h-11 border"
                       required
                     />
                   </div>
@@ -214,7 +214,7 @@ export default function NewDoctorPage() {
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  className="h-11 border-2"
+                  className="h-11 border"
                   required
                 />
               </div>
@@ -228,7 +228,7 @@ export default function NewDoctorPage() {
                     value={formData.password}
                     onChange={(e) => handleInputChange('password', e.target.value)}
                     placeholder="Mínimo 6 caracteres"
-                    className="pr-11 h-11 border-2"
+                    className="pr-11 h-11 border"
                     required
                   />
                   <Button
@@ -251,7 +251,7 @@ export default function NewDoctorPage() {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="h-11 border-2"
+                    className="h-11 border"
                   />
                 </div>
                 <div className="space-y-2">
@@ -261,7 +261,7 @@ export default function NewDoctorPage() {
                     type="date"
                     value={formData.birthDate}
                     onChange={(e) => handleInputChange('birthDate', e.target.value)}
-                    className="h-11 border-2"
+                    className="h-11 border"
                   />
                 </div>
               </div>
@@ -273,7 +273,7 @@ export default function NewDoctorPage() {
                     id="city"
                     value={formData.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
-                    className="h-11 border-2"
+                    className="h-11 border"
                   />
                 </div>
                 <div className="space-y-2">
@@ -282,7 +282,7 @@ export default function NewDoctorPage() {
                     id="address"
                     value={formData.address}
                     onChange={(e) => handleInputChange('address', e.target.value)}
-                    className="h-11 border-2"
+                    className="h-11 border"
                   />
                 </div>
               </div>
@@ -304,7 +304,7 @@ export default function NewDoctorPage() {
                     value={formData.specialization}
                     onValueChange={(value) => handleInputChange('specialization', value)}
                   >
-                    <SelectTrigger id="specialization" className="h-11 border-2">
+                    <SelectTrigger id="specialization" className="h-11 border">
                       <SelectValue placeholder="Selecciona una especialización" />
                     </SelectTrigger>
                     <SelectContent>
@@ -319,7 +319,7 @@ export default function NewDoctorPage() {
                 <div className="space-y-2">
                   <Label htmlFor="licenseNumber" className="font-semibold">Número de Licencia *</Label>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap px-3 py-2 bg-muted rounded-lg border-2">MED-</span>
+                    <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap px-3 py-2 bg-muted rounded-lg border">MED-</span>
                     <Input
                       id="licenseNumber"
                       type="text"
@@ -330,7 +330,7 @@ export default function NewDoctorPage() {
                       }}
                       placeholder="0000"
                       maxLength={4}
-                      className="flex-1 h-11 border-2"
+                      className="flex-1 h-11 border"
                       required
                     />
                   </div>
@@ -345,7 +345,7 @@ export default function NewDoctorPage() {
                   value={formData.hospitalAffiliation}
                   onChange={(e) => handleInputChange('hospitalAffiliation', e.target.value)}
                   placeholder="Hospital o institución afiliada"
-                  className="h-11 border-2"
+                  className="h-11 border"
                 />
               </div>
 
@@ -357,7 +357,7 @@ export default function NewDoctorPage() {
                   onChange={(e) => handleInputChange('bio', e.target.value)}
                   placeholder="Breve descripción profesional..."
                   rows={4}
-                  className="border-2 resize-none"
+                  className="border resize-none"
                 />
               </div>
 
@@ -376,7 +376,7 @@ export default function NewDoctorPage() {
             <div className="flex gap-4 pt-4 border-t">
               <Button
                 type="submit"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm disabled:opacity-50"
                 disabled={isLoading || success}
               >
                 {isLoading ? (
@@ -395,7 +395,7 @@ export default function NewDoctorPage() {
                 <Button 
                   type="button" 
                   variant="outline"
-                  className="hover:bg-chart-5 hover:text-white transition-colors border-2 h-11 px-6"
+                  className="hover:bg-chart-5 hover:text-white transition-colors border h-11 px-6"
                 >
                   Cancelar
                 </Button>

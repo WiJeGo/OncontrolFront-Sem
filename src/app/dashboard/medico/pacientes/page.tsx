@@ -135,7 +135,7 @@ export default function PatientsPage() {
               variant="outline" 
               onClick={exportToCSV}
               disabled={filteredPatients.length === 0}
-              className="border-2 h-11 px-4 shadow-sm hover:shadow-md transition-all"
+              className="border h-11 px-4 shadow-sm hover:shadow-md transition-all"
             >
               <Download className="mr-2 h-5 w-5" />
               Exportar CSV
@@ -206,8 +206,8 @@ export default function PatientsPage() {
         </div>
 
         {/* Filters */}
-        <Card className="border-2 shadow-lg">
-          <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+        <Card className="border shadow-sm">
+          <CardHeader className="border-b">
             <CardTitle className="text-xl font-bold">Filtros de Búsqueda</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
@@ -218,11 +218,11 @@ export default function PatientsPage() {
                   placeholder="Buscar por nombre, email o ID de paciente..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 h-12 text-base border-2 focus:border-primary"
+                  className="pl-12 h-12 text-base border focus:border-primary"
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full sm:w-[200px] h-12 border-2">
+                <SelectTrigger className="w-full sm:w-[200px] h-12 border">
                   <SelectValue placeholder="Filtrar por estado" />
                 </SelectTrigger>
                 <SelectContent>
@@ -236,8 +236,8 @@ export default function PatientsPage() {
         </Card>
 
         {/* Patients Table */}
-        <Card className="border-2 shadow-lg">
-          <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+        <Card className="border shadow-sm">
+          <CardHeader className="border-b">
             <CardTitle className="text-2xl font-bold">Lista de Pacientes</CardTitle>
             <CardDescription className="mt-1">
               {filteredPatients.length} {filteredPatients.length === 1 ? 'paciente encontrado' : 'pacientes encontrados'}
@@ -245,7 +245,7 @@ export default function PatientsPage() {
           </CardHeader>
           <CardContent className="p-6">
             {filteredPatients.length === 0 ? (
-              <div className="text-center py-20 bg-muted/20 rounded-2xl border-2 border-dashed border-border">
+              <div className="text-center py-20 bg-muted/20 rounded-2xl border border-dashed border-border">
                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
                   <UserX className="h-10 w-10 text-muted-foreground" />
                 </div>
@@ -263,7 +263,7 @@ export default function PatientsPage() {
                   <Button 
                     variant="outline" 
                     onClick={() => { setSearchTerm(""); setStatusFilter("all"); }}
-                    className="h-11 px-6 border-2 hover:bg-muted transition-all"
+                    className="h-11 px-6 border hover:bg-muted transition-all"
                   >
                     Limpiar todos los filtros
                   </Button>
@@ -311,7 +311,7 @@ export default function PatientsPage() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <code className="text-xs bg-muted px-3 py-1.5 rounded-lg border-2 font-semibold">
+                        <code className="text-xs bg-muted px-3 py-1.5 rounded-lg border font-semibold">
                           {patient.profileId}
                         </code>
                       </TableCell>
@@ -335,7 +335,7 @@ export default function PatientsPage() {
                       <TableCell>
                         <div className="space-y-1">
                           {patient.cancerType && (
-                            <Badge variant="outline" className="block w-fit border-2 font-semibold">
+                            <Badge variant="outline" className="block w-fit border font-semibold">
                               {patient.cancerType}
                             </Badge>
                           )}
@@ -366,7 +366,7 @@ export default function PatientsPage() {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <Button asChild variant="outline" size="sm" className="border-2 hover:bg-primary hover:text-primary-foreground transition-all">
+                          <Button asChild variant="outline" size="sm" className="border hover:bg-primary hover:text-primary-foreground transition-all">
                             <Link href={`/dashboard/medico/pacientes/${patient.id}`}>
                               <Eye className="mr-2 h-4 w-4" />
                               Detalles
@@ -405,8 +405,8 @@ export default function PatientsPage() {
 
         {/* Emergency Contacts Info */}
         {filteredPatients.some(p => p.emergencyContactName) && (
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="text-2xl font-bold">Contactos de Emergencia</CardTitle>
             </CardHeader>
             <CardContent className="p-6">
@@ -414,7 +414,7 @@ export default function PatientsPage() {
                 {filteredPatients
                   .filter(p => p.emergencyContactName)
                   .map((patient) => (
-                    <div key={patient.id} className="p-4 border-2 rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card">
+                    <div key={patient.id} className="p-4 border rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card">
                       <p className="font-bold text-lg mb-2">{patient.firstName} {patient.lastName}</p>
                       <p className="text-sm text-muted-foreground font-medium mb-1">
                         {patient.emergencyContactName} ({patient.emergencyContactRelationship})

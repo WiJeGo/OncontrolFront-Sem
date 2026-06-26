@@ -163,11 +163,11 @@ export default function NuevaCitaPage() {
       <AuthGuard requiredRole="PATIENT">
         <DashboardLayout>
           <div className="flex items-center justify-center min-h-[60vh]">
-            <Card className="w-full max-w-md border-2 shadow-lg">
+            <Card className="w-full max-w-md border shadow-sm">
               <CardContent className="pt-12 pb-12">
                 <div className="text-center space-y-6">
                   <div className="flex justify-center">
-                    <div className="rounded-full bg-primary/10 p-4 border-2 border-primary/20">
+                    <div className="rounded-full bg-primary/10 p-4 border border-primary/20">
                       <CheckCircle className="h-12 w-12 text-primary" />
                     </div>
                   </div>

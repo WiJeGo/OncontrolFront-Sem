@@ -216,7 +216,7 @@ export default function CitasPacientePage() {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Próximas Citas</CardTitle>
@@ -232,7 +232,7 @@ export default function CitasPacientePage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Pendientes</CardTitle>
@@ -250,7 +250,7 @@ export default function CitasPacientePage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Completadas</CardTitle>
@@ -266,7 +266,7 @@ export default function CitasPacientePage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 border-destructive/20 hover:border-destructive/40 transition-all hover:shadow-lg relative overflow-hidden">
+            <Card className="border border-destructive/20 hover:border-destructive/40 transition-all hover:shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/5 rounded-full -mr-16 -mt-16"></div>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
                 <CardTitle className="text-sm font-semibold text-muted-foreground">Canceladas</CardTitle>
@@ -288,7 +288,7 @@ export default function CitasPacientePage() {
 
           {/* Next Appointment Alert */}
           {upcomingAppointments.length > 0 && (
-            <Card className="border-2 border-primary/30 shadow-lg bg-gradient-to-br from-primary/10 to-primary/5">
+            <Card className="border border-primary/30 shadow-sm bg-gradient-to-br from-primary/10 to-primary/5">
               <CardHeader className="border-b border-primary/30">
                 <CardTitle className="flex items-center gap-3 text-primary text-xl font-bold">
                   <div className="p-2 rounded-lg bg-primary/20">
@@ -309,14 +309,14 @@ export default function CitasPacientePage() {
           )}
 
           {/* Filters */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="text-xl font-bold">Filtros de Búsqueda</CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-[250px] h-12 border-2">
+                  <SelectTrigger className="w-full sm:w-[250px] h-12 border">
                     <Filter className="mr-2 h-5 w-5" />
                     <SelectValue placeholder="Filtrar por estado" />
                   </SelectTrigger>
@@ -337,7 +337,7 @@ export default function CitasPacientePage() {
           {/* Appointments List */}
           <div className="grid gap-6">
             {filteredAppointments.map((appointment) => (
-              <Card key={appointment.id} className="border-2 shadow-lg hover:border-primary/40 hover:shadow-xl transition-all">
+              <Card key={appointment.id} className="border shadow-sm hover:border-primary/40 hover:shadow-md transition-all">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between gap-6">
                     <div className="flex items-start gap-4 flex-1">
@@ -352,7 +352,7 @@ export default function CitasPacientePage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-3">
                           <h3 className="text-xl font-bold">{appointment.type}</h3>
-                          <Badge className={`${getStatusColor(appointment.status)} border-2 font-semibold`}>
+                          <Badge className={`${getStatusColor(appointment.status)} border font-semibold`}>
                             {getStatusIcon(appointment.status)}
                             <span className="ml-1">{getStatusText(appointment.status)}</span>
                           </Badge>
@@ -380,7 +380,7 @@ export default function CitasPacientePage() {
                           </div>
                         </div>
                         {appointment.notes && (
-                          <p className="text-sm text-muted-foreground mt-4 p-4 bg-muted/50 rounded-xl border-2 border-muted">
+                          <p className="text-sm text-muted-foreground mt-4 p-4 bg-muted/50 rounded-xl border border-muted">
                             {appointment.notes}
                           </p>
                         )}
@@ -392,7 +392,7 @@ export default function CitasPacientePage() {
                           variant="outline"
                           size="sm"
                           onClick={() => handleCancelAppointment(appointment.id)}
-                          className="text-destructive hover:text-destructive border-2 border-destructive/20 hover:border-destructive hover:bg-destructive/10"
+                          className="text-destructive hover:text-destructive border border-destructive/20 hover:border-destructive hover:bg-destructive/10"
                         >
                           Cancelar
                         </Button>
@@ -405,7 +405,7 @@ export default function CitasPacientePage() {
           </div>
 
           {filteredAppointments.length === 0 && (
-            <Card className="border-2 shadow-lg">
+            <Card className="border shadow-sm">
               <CardContent className="p-16 text-center">
                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
                   <Calendar className="h-10 w-10 text-muted-foreground" />
@@ -414,7 +414,7 @@ export default function CitasPacientePage() {
                 <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                   No tienes citas que coincidan con los filtros seleccionados.
                 </p>
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-lg" asChild>
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm" asChild>
                   <Link href="/dashboard/paciente/citas/nueva">
                     <Calendar className="mr-2 h-5 w-5" />
                     Solicitar Nueva Cita
@@ -425,26 +425,26 @@ export default function CitasPacientePage() {
           )}
 
           {/* Quick Actions */}
-          <Card className="border-2 shadow-lg">
-            <CardHeader className="border-b bg-gradient-to-r from-muted/50 to-background">
+          <Card className="border shadow-sm">
+            <CardHeader className="border-b">
               <CardTitle className="text-2xl font-bold">Acciones Rápidas</CardTitle>
               <CardDescription className="mt-1">Gestiona tus citas médicas</CardDescription>
             </CardHeader>
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Button variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-all border-2 hover:shadow-lg" asChild>
+                <Button variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-all border hover:shadow-md" asChild>
                   <Link href="/dashboard/paciente/citas/nueva">
                     <Calendar className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Solicitar Nueva Cita</span>
                   </Link>
                 </Button>
-                <Button variant="outline" className="h-24 flex-col hover:bg-chart-2 hover:text-white transition-colors border-2 hover:shadow-md" asChild>
+                <Button variant="outline" className="h-24 flex-col hover:bg-chart-2 hover:text-white transition-colors border hover:shadow-md" asChild>
                   <Link href="/dashboard/paciente/medicamentos">
                     <Pill className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mis Medicamentos</span>
                   </Link>
                 </Button>
-                <Button variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-colors border-2 hover:shadow-md" asChild>
+                <Button variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-colors border hover:shadow-md" asChild>
                   <Link href="/dashboard/paciente/historial">
                     <FileText className="h-7 w-7 mb-2" />
                     <span className="font-semibold">Mi Historial</span>
