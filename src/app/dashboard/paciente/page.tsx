@@ -5,25 +5,49 @@ import Link from "next/link"
 import { AuthGuard } from "@/components/auth-guard-updated"
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Loading } from "@/components/loading"
 import { useAuthContext } from "@/contexts/auth-context"
 import { usePatientDashboard } from "@/hooks/use-patients"
 import { medications } from "@/lib/api"
 import type { UpcomingDoseResponse } from "@/lib/api"
 import { isPatientUser } from "@/types/organization"
-import { 
-  Plus, 
-  Calendar, 
-  Activity, 
-  Heart, 
+import {
+  Plus,
+  Calendar,
+  Activity,
+  Heart,
   Clock,
   AlertTriangle,
   Stethoscope,
   Pill,
-  CheckCircle
+  CheckCircle,
+  ArrowRight,
+  User,
 } from "lucide-react"
+
+function CountUp({ value, className }: { value: number; className?: string }) {
+  const [display, setDisplay] = useState(0)
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduce || value <= 0) {
+      setDisplay(value)
+      return
+    }
+    const duration = 700
+    const start = performance.now()
+    let raf = 0
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration)
+      const eased = 1 - Math.pow(1 - p, 3)
+      setDisplay(Math.round(value * eased))
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [value])
+  return <span className={className}>{display}</span>
+}
 
 export default function PacienteDashboard() {
   const { user } = useAuthContext()
@@ -38,7 +62,6 @@ export default function PacienteDashboard() {
     }
   }, [user])
 
-  // Real next-dose data from the API (was previously a hardcoded simulation).
   const loadNextDose = useCallback(async () => {
     if (!patientProfileId) return
     try {
@@ -56,7 +79,6 @@ export default function PacienteDashboard() {
     loadNextDose()
   }, [loadNextDose])
 
-  // Live countdown to the next scheduled dose.
   useEffect(() => {
     if (!nextDose) {
       setDoseCountdown("")
@@ -109,9 +131,7 @@ export default function PacienteDashboard() {
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
               <p className="text-destructive mb-4">{error}</p>
-              <Button onClick={() => refetch()}>
-                Reintentar
-              </Button>
+              <Button onClick={() => refetch()}>Reintentar</Button>
             </div>
           </div>
         </DashboardLayout>
@@ -123,453 +143,444 @@ export default function PacienteDashboard() {
     return null
   }
 
-  const getSeverityColor = (severity: string) => {
+  const severityPill = (severity: string) => {
     switch (severity?.toUpperCase()) {
-      case 'CRITICAL':
-        return 'bg-critical/15 text-critical border-critical/30'
-      case 'SEVERE':
-        return 'bg-severe/15 text-severe border-severe/30'
-      case 'MODERATE':
-        return 'bg-warning/20 text-warning-foreground border-warning/40'
-      case 'MILD':
-        return 'bg-success/15 text-success border-success/30'
+      case "CRITICAL":
+        return "bg-critical/15 text-critical"
+      case "SEVERE":
+        return "bg-severe/15 text-severe"
+      case "MODERATE":
+        return "bg-warning/20 text-warning-foreground"
+      case "MILD":
+        return "bg-success/15 text-success"
       default:
-        return 'bg-muted text-muted-foreground border-border'
+        return "bg-muted text-muted-foreground"
     }
   }
 
-  const getSeverityText = (severity: string) => {
+  const severityText = (severity: string) => {
     switch (severity?.toUpperCase()) {
-      case 'CRITICAL':
-        return 'Crítico'
-      case 'SEVERE':
-        return 'Severo'
-      case 'MODERATE':
-        return 'Moderado'
-      case 'MILD':
-        return 'Leve'
+      case "CRITICAL":
+        return "Crítico"
+      case "SEVERE":
+        return "Severo"
+      case "MODERATE":
+        return "Moderado"
+      case "MILD":
+        return "Leve"
       default:
-        return severity || 'N/A'
+        return severity || "N/A"
     }
   }
 
-  // Severity must not rely on color alone (a11y): pair with an icon + text.
   const SeverityIcon = ({ severity, className }: { severity: string; className?: string }) => {
     switch (severity?.toUpperCase()) {
-      case 'CRITICAL':
-      case 'SEVERE':
+      case "CRITICAL":
+      case "SEVERE":
         return <AlertTriangle className={className} aria-hidden="true" />
-      case 'MODERATE':
-        return <Activity className={className} aria-hidden="true" />
-      case 'MILD':
+      case "MILD":
         return <CheckCircle className={className} aria-hidden="true" />
       default:
         return <Activity className={className} aria-hidden="true" />
     }
   }
 
-  const criticalSymptoms = dashboard.recentSymptoms.filter(s => s.requiresMedicalAttention)
+  const rawDate = new Date().toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" })
+  const dateLabel = rawDate.charAt(0).toUpperCase() + rawDate.slice(1)
+
+  const criticalSymptoms = dashboard.recentSymptoms.filter((s) => s.requiresMedicalAttention)
+
+  const kpis = [
+    {
+      label: "Próximas citas",
+      value: dashboard.upcomingAppointments,
+      sub: "Programadas",
+      icon: Calendar,
+      tint: "bg-primary/10 text-primary",
+      tile: "bg-primary/[0.06]",
+    },
+    {
+      label: "Síntomas recientes",
+      value: dashboard.recentSymptoms.length,
+      sub: "Últimos 7 días",
+      icon: Activity,
+      tint: "bg-chart-2/10 text-chart-2",
+      tile: "bg-chart-2/[0.06]",
+    },
+    {
+      label: "Síntomas severos",
+      value: dashboard.criticalSymptoms,
+      sub: "Requieren atención",
+      icon: AlertTriangle,
+      tint: "bg-destructive/10 text-destructive",
+      tile: "bg-destructive/[0.06]",
+      emphasize: dashboard.criticalSymptoms > 0,
+    },
+  ]
+
+  const quickActions = [
+    { href: "/dashboard/paciente/citas", label: "Mis citas", icon: Calendar },
+    { href: "/dashboard/paciente/sintomas", label: "Mis síntomas", icon: Activity },
+    { href: "/dashboard/paciente/historial", label: "Mi historial", icon: Heart },
+    { href: "/dashboard/paciente/perfil", label: "Mi perfil", icon: User },
+  ]
 
   return (
     <AuthGuard requiredRole="PATIENT">
       <DashboardLayout>
-        <div className="space-y-8">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight text-foreground">
-                Mi Dashboard
-              </h1>
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-primary"></div>
-                <p className="text-lg font-semibold text-foreground">{dashboard.patientName}</p>
+        <div className="space-y-7">
+          {/* Welcome banner */}
+          <div className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary/10 via-card to-chart-2/10 px-5 py-5 shadow-sm duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6">
+            <div
+              className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-primary/10 blur-3xl"
+              aria-hidden="true"
+            />
+            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">{dateLabel}</p>
+                <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
+                  Hola, {dashboard.patientName}
+                </h1>
+                {dashboard.doctorName && (
+                  <p className="mt-1 flex flex-wrap items-center gap-x-1.5 text-sm text-muted-foreground">
+                    <span>Dr. {dashboard.doctorName}</span>
+                    <span className="text-border">·</span>
+                    <span>{dashboard.organizationName}</span>
+                  </p>
+                )}
               </div>
-              {dashboard.doctorName && (
-                <p className="text-sm text-muted-foreground flex items-center gap-1">
-                  <span>Dr. {dashboard.doctorName}</span>
-                  <span>•</span>
-                  <span>{dashboard.organizationName}</span>
-                </p>
-              )}
-            </div>
-            <div className="flex gap-3">
-              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
-                <Link href="/dashboard/paciente/sintomas/nuevo">
-                  <Plus className="mr-2 h-5 w-5" />
-                  Reportar Síntoma
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors border h-11 px-6">
-                <Link href="/dashboard/paciente/citas/nueva">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  Solicitar Cita
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* Critical Symptoms Alert */}
-          {criticalSymptoms.length > 0 && (
-            <Card className="border border-destructive shadow-sm bg-gradient-to-br from-destructive/10 to-destructive/5">
-              <CardHeader className="border-b border-destructive/30">
-                <CardTitle className="text-destructive flex items-center gap-3 text-2xl font-bold">
-                  <div className="p-2 rounded-lg bg-destructive/20">
-                    <AlertTriangle className="h-6 w-6 text-destructive" />
-                  </div>
-                  Atención: Síntomas que requieren atención médica
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-3">
-                  {criticalSymptoms.map((symptom) => (
-                    <div key={symptom.id} className="flex items-center justify-between p-4 bg-card border border-destructive/20 rounded-xl hover:border-destructive/40 transition-all">
-                      <div>
-                        <p className="font-bold text-lg">{symptom.symptomName}</p>
-                        <p className="text-sm text-muted-foreground font-medium">
-                          {new Date(symptom.occurrenceDate).toLocaleDateString('es-ES')}
-                        </p>
-                      </div>
-                      <Badge className={`${getSeverityColor(symptom.severity)} font-semibold inline-flex items-center gap-1`}>
-                        <SeverityIcon severity={symptom.severity} className="h-3.5 w-3.5" />
-                        {getSeverityText(symptom.severity)}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-                <Button asChild className="w-full mt-6 bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors h-11 shadow-sm">
-                  <Link href="/dashboard/paciente/citas/nueva">
-                    <AlertTriangle className="mr-2 h-5 w-5" />
-                    Solicitar Cita de Emergencia
+              <div className="flex gap-2">
+                <Button asChild className="h-10 bg-primary px-4 text-primary-foreground shadow-sm hover:bg-primary/90">
+                  <Link href="/dashboard/paciente/sintomas/nuevo">
+                    <Plus className="mr-1.5 h-4 w-4" />
+                    Reportar síntoma
                   </Link>
                 </Button>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Next Medication Countdown - real upcoming-dose data */}
-          {nextDose && (
-            <Card className="border border-primary/40 shadow-sm overflow-hidden bg-card">
-              <CardContent className="p-0">
-                <div className="flex flex-col md:flex-row">
-                  <div className="p-8 bg-primary text-primary-foreground flex flex-col items-center justify-center min-w-[240px] text-center">
-                    <div className="p-3 rounded-full bg-white/20 mb-4">
-                      <Clock className="h-10 w-10" aria-hidden="true" />
-                    </div>
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-80 mb-1">Próxima toma en</p>
-                    <p className="text-5xl font-black tabular-nums">{doseCountdown || "—"}</p>
-                  </div>
-                  <div className="p-8 flex-1 flex flex-col md:flex-row items-center justify-between gap-6 bg-card">
-                    <div className="flex items-center gap-6">
-                      <div className="p-4 rounded-2xl bg-primary/10 text-primary border border-primary/20">
-                        <Pill className="h-10 w-10" aria-hidden="true" />
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-foreground tracking-tight">{nextDose.medicationName}</h3>
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-muted-foreground font-medium">
-                          <span className="font-mono tabular-nums">{nextDose.dosage}</span>
-                          <span aria-hidden="true">•</span>
-                          <span className="inline-flex items-center gap-1.5">
-                            <Calendar className="h-4 w-4" aria-hidden="true" />
-                            <span className="tabular-nums">
-                              {new Date(nextDose.scheduledTime).toLocaleString('es-ES', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <Button
-                      onClick={handleMarkDoseTaken}
-                      disabled={markingDose}
-                      className="w-full md:w-auto bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] transition-all shadow-sm rounded-2xl h-14 px-10 font-bold text-lg disabled:opacity-60"
-                    >
-                      <CheckCircle className="mr-2 h-6 w-6" aria-hidden="true" />
-                      {markingDose ? "Guardando…" : "Marcar como tomada"}
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Próximas Citas</CardTitle>
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <Calendar className="h-5 w-5 text-primary" />
-                </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
-                  {dashboard.upcomingAppointments}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                  Citas programadas
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Síntomas Recientes</CardTitle>
-                <div className="p-2 rounded-lg bg-chart-2/10">
-                  <Activity className="h-5 w-5 text-chart-2" />
-                </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
-                  {dashboard.recentSymptoms.length}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-chart-2"></span>
-                  Últimos 7 días
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-destructive/20 hover:border-destructive/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-destructive/5 rounded-full -mr-16 -mt-16"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Síntomas Severos</CardTitle>
-                <div className="p-2 rounded-lg bg-destructive/10">
-                  <AlertTriangle className="h-5 w-5 text-destructive" />
-                </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-destructive mb-1 tabular-nums">
-                  {dashboard.criticalSymptoms}
-                </div>
-                <p className="text-xs text-destructive font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse motion-reduce:animate-none" aria-hidden="true"></span>
-                  Requieren atención
-                </p>
-              </CardContent>
-            </Card>
+                <Button asChild variant="outline" className="h-10 border-border bg-background/70 px-4 hover:bg-muted">
+                  <Link href="/dashboard/paciente/citas/nueva">
+                    <Calendar className="mr-1.5 h-4 w-4" />
+                    Solicitar cita
+                  </Link>
+                </Button>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Upcoming Appointments */}
-            <Card className="border shadow-sm">
-              <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Clock className="h-6 w-6 text-primary" />
-                  </div>
-                  Próximas Citas
-                </CardTitle>
-                <CardDescription className="mt-1">
-                  {dashboard.upcomingAppointmentsList.length} citas programadas
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-3">
-                  {dashboard.upcomingAppointmentsList.length === 0 ? (
-                    <div className="text-center py-12">
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
-                        <Calendar className="h-8 w-8 text-muted-foreground" />
-                      </div>
-                      <h3 className="text-lg font-bold mb-2">No tienes citas programadas</h3>
-                      <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                        Solicita una cita con tu médico para continuar con tu tratamiento
+          {/* Critical symptoms alert */}
+          {criticalSymptoms.length > 0 && (
+            <section
+              className="overflow-hidden rounded-xl border border-destructive/40 bg-destructive/[0.04] shadow-sm duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none"
+              style={{ animationDelay: "60ms", animationFillMode: "both" }}
+            >
+              <header className="flex items-center gap-2 border-b border-destructive/20 px-5 py-4">
+                <AlertTriangle className="h-5 w-5 text-destructive" aria-hidden="true" />
+                <h2 className="text-base font-semibold text-destructive">Síntomas que requieren atención médica</h2>
+              </header>
+              <div>
+                {criticalSymptoms.map((symptom) => (
+                  <div
+                    key={symptom.id}
+                    className="flex items-center justify-between gap-3 border-t border-destructive/15 px-5 py-3.5 first:border-t-0"
+                  >
+                    <div className="min-w-0">
+                      <p className="truncate font-medium text-foreground">{symptom.symptomName}</p>
+                      <p className="text-xs tabular-nums text-muted-foreground">
+                        {new Date(symptom.occurrenceDate).toLocaleDateString("es-ES")}
                       </p>
-                      <Button asChild variant="outline" className="border hover:bg-primary hover:text-primary-foreground h-11 px-6">
-                        <Link href="/dashboard/paciente/citas/nueva">
-                          <Calendar className="mr-2 h-5 w-5" />
-                          Solicitar Cita
-                        </Link>
-                      </Button>
                     </div>
-                  ) : (
-                    dashboard.upcomingAppointmentsList.slice(0, 3).map((appointment) => (
+                    <span
+                      className={`inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium ${severityPill(
+                        symptom.severity,
+                      )}`}
+                    >
+                      <SeverityIcon severity={symptom.severity} className="h-3.5 w-3.5" />
+                      {severityText(symptom.severity)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="border-t border-destructive/20 p-3">
+                <Button
+                  asChild
+                  className="w-full bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  <Link href="/dashboard/paciente/citas/nueva">
+                    <AlertTriangle className="mr-1.5 h-4 w-4" />
+                    Solicitar cita de emergencia
+                  </Link>
+                </Button>
+              </div>
+            </section>
+          )}
+
+          {/* Next dose */}
+          {nextDose && (
+            <div
+              className="overflow-hidden rounded-xl border border-primary/30 bg-card shadow-sm duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none"
+              style={{ animationDelay: "100ms", animationFillMode: "both" }}
+            >
+              <div className="flex flex-col sm:flex-row">
+                <div className="flex flex-col items-center justify-center gap-1 bg-primary px-8 py-6 text-primary-foreground sm:min-w-[200px]">
+                  <span className="text-[11px] font-medium uppercase tracking-wider opacity-80">Próxima toma en</span>
+                  <span className="font-mono text-4xl font-semibold tabular-nums">{doseCountdown || "—"}</span>
+                </div>
+                <div className="flex flex-1 flex-col items-start justify-between gap-4 p-5 sm:flex-row sm:items-center">
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                      <Pill className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <h3 className="font-semibold text-foreground">{nextDose.medicationName}</h3>
+                      <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
+                        <span className="font-mono tabular-nums">{nextDose.dosage}</span>
+                        <span className="text-border" aria-hidden="true">·</span>
+                        <span className="tabular-nums">
+                          {new Date(nextDose.scheduledTime).toLocaleString("es-ES", {
+                            weekday: "short",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={handleMarkDoseTaken}
+                    disabled={markingDose}
+                    className="w-full bg-primary text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-[0.98] disabled:opacity-60 sm:w-auto"
+                  >
+                    <CheckCircle className="mr-1.5 h-4 w-4" aria-hidden="true" />
+                    {markingDose ? "Guardando…" : "Marcar como tomada"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* KPI strip */}
+          <div
+            className="grid grid-cols-1 divide-x divide-y divide-border overflow-hidden rounded-xl border border-border bg-card shadow-sm duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none sm:grid-cols-3 sm:divide-y-0"
+            style={{ animationDelay: "140ms", animationFillMode: "both" }}
+          >
+            {kpis.map((kpi) => (
+              <div key={kpi.label} className={`p-5 ${kpi.tile}`}>
+                <div className="mb-3 flex items-center gap-2 text-[13px] text-muted-foreground">
+                  <span className={`grid h-7 w-7 place-items-center rounded-lg ${kpi.tint}`}>
+                    <kpi.icon className="h-4 w-4" />
+                  </span>
+                  {kpi.label}
+                </div>
+                <CountUp
+                  value={kpi.value}
+                  className={`font-mono text-3xl font-semibold tabular-nums ${
+                    kpi.emphasize ? "text-destructive" : "text-foreground"
+                  }`}
+                />
+                <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  {kpi.emphasize && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-destructive motion-safe:animate-pulse" aria-hidden="true" />
+                  )}
+                  {kpi.sub}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="grid grid-cols-1 gap-5 duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none lg:grid-cols-2"
+            style={{ animationDelay: "200ms", animationFillMode: "both" }}
+          >
+            {/* Upcoming appointments */}
+            <section className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+              <header className="flex items-center justify-between border-b border-border px-5 py-4">
+                <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
+                  <Clock className="h-4 w-4 text-primary" />
+                  Próximas citas
+                </h2>
+                <span className="text-xs tabular-nums text-muted-foreground">
+                  {dashboard.upcomingAppointmentsList.length} programadas
+                </span>
+              </header>
+
+              {dashboard.upcomingAppointmentsList.length === 0 ? (
+                <div className="px-5 py-12 text-center">
+                  <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+                    <span className="absolute inset-0 rounded-full bg-primary/5" aria-hidden="true" />
+                    <span className="absolute inset-[10px] rounded-full bg-primary/10" aria-hidden="true" />
+                    <Calendar className="relative h-8 w-8 text-primary/70" aria-hidden="true" />
+                  </div>
+                  <h3 className="mb-1 font-semibold text-foreground">No tienes citas programadas</h3>
+                  <p className="mx-auto mb-5 max-w-xs text-sm text-muted-foreground">
+                    Solicita una cita con tu médico para continuar tu tratamiento.
+                  </p>
+                  <Button asChild variant="outline" className="border-border hover:bg-muted/60">
+                    <Link href="/dashboard/paciente/citas/nueva">
+                      <Calendar className="mr-1.5 h-4 w-4" />
+                      Solicitar cita
+                    </Link>
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  {dashboard.upcomingAppointmentsList.slice(0, 4).map((appointment) => {
+                    const date = new Date(appointment.appointmentDate)
+                    const day = date.toLocaleDateString("es-ES", { day: "numeric" })
+                    const month = date.toLocaleDateString("es-ES", { month: "short" }).replace(".", "")
+                    const time = date.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })
+                    return (
                       <div
                         key={appointment.id}
-                        className="flex items-center justify-between p-4 border rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
+                        className="flex items-center gap-4 border-t border-border px-5 py-3.5 transition-colors hover:bg-muted/40"
                       >
-                        <div className="flex items-center space-x-4 flex-1">
-                          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
-                            <Stethoscope className="h-6 w-6 text-primary" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-bold text-lg">{appointment.doctorName}</p>
-                            <p className="text-sm text-muted-foreground font-medium">
-                              {appointment.type} • {appointment.durationMinutes} min
-                            </p>
-                          </div>
+                        <div className="w-10 shrink-0 text-center">
+                          <div className="font-mono text-lg font-semibold leading-none text-foreground">{day}</div>
+                          <div className="mt-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">{month}</div>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm font-bold text-foreground">
-                            {new Date(appointment.appointmentDate).toLocaleDateString('es-ES', {
-                              month: 'short',
-                              day: 'numeric'
-                            })}
-                          </p>
-                          <p className="text-xs text-muted-foreground font-medium">
-                            {new Date(appointment.appointmentDate).toLocaleTimeString('es-ES', {
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
+                        <div className="h-8 w-px shrink-0 bg-border" aria-hidden="true" />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-foreground">Dr. {appointment.doctorName}</p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {appointment.type} · <span className="tabular-nums">{appointment.durationMinutes} min</span>
                           </p>
                         </div>
+                        <span className="font-mono text-sm tabular-nums text-foreground">{time}</span>
                       </div>
-                    ))
-                  )}
+                    )
+                  })}
+                  <Link
+                    href="/dashboard/paciente/citas"
+                    className="flex items-center justify-center gap-1.5 border-t border-border px-5 py-3 text-sm font-medium text-primary transition-colors hover:bg-muted/40"
+                  >
+                    Ver todas las citas
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
-                {dashboard.upcomingAppointmentsList && dashboard.upcomingAppointmentsList.length > 0 && (
-                  <div className="mt-6">
-                    <Button asChild variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors border">
-                      <Link href="/dashboard/paciente/citas">
-                        Ver Todas las Citas
-                      </Link>
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+              )}
+            </section>
 
-            {/* Recent Symptoms */}
-            <Card className="border shadow-sm">
-              <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                  <div className="p-2 rounded-lg bg-chart-2/10">
-                    <Activity className="h-6 w-6 text-chart-2" />
+            {/* Recent symptoms */}
+            <section className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+              <header className="flex items-center justify-between border-b border-border px-5 py-4">
+                <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
+                  <Activity className="h-4 w-4 text-chart-2" />
+                  Síntomas recientes
+                </h2>
+                <span className="text-xs tabular-nums text-muted-foreground">
+                  {dashboard.recentSymptoms.length} reportados
+                </span>
+              </header>
+
+              {dashboard.recentSymptoms.length === 0 ? (
+                <div className="px-5 py-12 text-center">
+                  <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+                    <span className="absolute inset-0 rounded-full bg-chart-2/5" aria-hidden="true" />
+                    <span className="absolute inset-[10px] rounded-full bg-chart-2/10" aria-hidden="true" />
+                    <Heart className="relative h-8 w-8 text-chart-2/70" aria-hidden="true" />
                   </div>
-                  Síntomas Recientes
-                </CardTitle>
-                <CardDescription className="mt-1">
-                  Últimos {dashboard.recentSymptoms.length} síntomas reportados
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-3">
-                  {dashboard.recentSymptoms.length === 0 ? (
-                    <div className="text-center py-12">
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                        <Heart className="h-8 w-8 text-primary" />
-                      </div>
-                      <h3 className="text-lg font-bold mb-2">No has reportado síntomas recientemente</h3>
-                      <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                        Reporta tus síntomas para ayudar a tu médico a monitorear tu estado
-                      </p>
-                      <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm">
-                        <Link href="/dashboard/paciente/sintomas/nuevo">
-                          <Plus className="mr-2 h-5 w-5" />
-                          Reportar Síntoma
-                        </Link>
-                      </Button>
-                    </div>
-                  ) : (
-                    dashboard.recentSymptoms.slice(0, 5).map((symptom) => (
-                      <div
-                        key={symptom.id}
-                        className="flex items-center justify-between p-4 border rounded-xl hover:border-primary/40 hover:shadow-md transition-all bg-card"
-                      >
-                        <div className="flex-1">
-                          <p className="font-bold text-lg">{symptom.symptomName}</p>
-                          <p className="text-sm text-muted-foreground font-medium">
-                            {new Date(symptom.occurrenceDate).toLocaleDateString('es-ES')} •{' '}
-                            {symptom.occurrenceTime}
-                          </p>
-                        </div>
-                        <Badge className={`${getSeverityColor(symptom.severity)} font-semibold inline-flex items-center gap-1`}>
-                          <SeverityIcon severity={symptom.severity} className="h-3.5 w-3.5" />
-                          {getSeverityText(symptom.severity)}
-                        </Badge>
-                      </div>
-                    ))
-                  )}
+                  <h3 className="mb-1 font-semibold text-foreground">Sin síntomas recientes</h3>
+                  <p className="mx-auto mb-5 max-w-xs text-sm text-muted-foreground">
+                    Reporta tus síntomas para que tu médico monitoree tu estado.
+                  </p>
+                  <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+                    <Link href="/dashboard/paciente/sintomas/nuevo">
+                      <Plus className="mr-1.5 h-4 w-4" />
+                      Reportar síntoma
+                    </Link>
+                  </Button>
                 </div>
-                {dashboard.recentSymptoms.length > 0 && (
-                  <div className="mt-6">
-                    <Button asChild variant="outline" className="w-full hover:bg-primary hover:text-primary-foreground transition-colors border">
-                      <Link href="/dashboard/paciente/sintomas">
-                        Ver Todos los Síntomas
-                      </Link>
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+              ) : (
+                <div>
+                  {dashboard.recentSymptoms.slice(0, 5).map((symptom) => (
+                    <div
+                      key={symptom.id}
+                      className="flex items-center justify-between gap-3 border-t border-border px-5 py-3.5 transition-colors hover:bg-muted/40"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-foreground">{symptom.symptomName}</p>
+                        <p className="truncate text-xs tabular-nums text-muted-foreground">
+                          {new Date(symptom.occurrenceDate).toLocaleDateString("es-ES")} · {symptom.occurrenceTime}
+                        </p>
+                      </div>
+                      <span
+                        className={`inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium ${severityPill(
+                          symptom.severity,
+                        )}`}
+                      >
+                        <SeverityIcon severity={symptom.severity} className="h-3.5 w-3.5" />
+                        {severityText(symptom.severity)}
+                      </span>
+                    </div>
+                  ))}
+                  <Link
+                    href="/dashboard/paciente/sintomas"
+                    className="flex items-center justify-center gap-1.5 border-t border-border px-5 py-3 text-sm font-medium text-primary transition-colors hover:bg-muted/40"
+                  >
+                    Ver todos los síntomas
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              )}
+            </section>
           </div>
 
-          {/* Quick Actions */}
-          <Card className="border shadow-sm">
-            <CardHeader className="border-b">
-              <CardTitle className="text-2xl font-bold">Acciones Rápidas</CardTitle>
-              <CardDescription className="mt-1">
-                Accesos directos a las funciones más utilizadas
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border hover:shadow-md">
-                  <Link href="/dashboard/paciente/citas">
-                    <Calendar className="h-7 w-7 mb-2" />
-                    <span className="font-semibold">Mis Citas</span>
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-all border hover:shadow-md">
-                  <Link href="/dashboard/paciente/sintomas">
-                    <Activity className="h-7 w-7 mb-2" />
-                    <span className="font-semibold">Mis Síntomas</span>
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-chart-5 hover:text-white transition-colors border hover:shadow-md">
-                  <Link href="/dashboard/paciente/historial">
-                    <Heart className="h-7 w-7 mb-2" />
-                    <span className="font-semibold">Mi Historial</span>
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" className="h-24 flex-col hover:bg-primary hover:text-primary-foreground transition-colors border hover:shadow-md">
-                  <Link href="/dashboard/paciente/perfil">
-                    <Stethoscope className="h-7 w-7 mb-2" />
-                    <span className="font-semibold">Mi Perfil</span>
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Quick actions */}
+          <div
+            className="duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none"
+            style={{ animationDelay: "260ms", animationFillMode: "both" }}
+          >
+            <h2 className="mb-3 text-sm font-medium text-muted-foreground">Accesos rápidos</h2>
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              {quickActions.map((action) => (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  className="group flex flex-col items-start gap-3 rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
+                >
+                  <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                    <action.icon className="h-5 w-5" />
+                  </span>
+                  <span className="text-sm font-medium text-foreground">{action.label}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
 
-          {/* Patient Info */}
-          <Card className="border shadow-sm">
-            <CardHeader className="border-b">
-              <CardTitle className="text-xl font-semibold tracking-tight">Tu Información Médica</CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <dl className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x">
-                <div className="px-6 py-4">
-                  <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Doctor Asignado</dt>
-                  <dd className="mt-1 text-base font-medium text-foreground">{dashboard.doctorName || 'No asignado'}</dd>
-                </div>
-                <div className="px-6 py-4">
-                  <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tipo de Sangre</dt>
-                  <dd className="mt-1 text-base font-medium text-foreground font-mono tabular-nums">{dashboard.bloodType || 'No especificado'}</dd>
-                </div>
-                {dashboard.cancerType && (
-                  <>
-                    <div className="px-6 py-4 border-t sm:border-t-0">
-                      <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Diagnóstico</dt>
-                      <dd className="mt-1 text-base font-medium text-foreground">{dashboard.cancerType}</dd>
-                    </div>
-                    <div className="px-6 py-4 border-t sm:border-t-0">
-                      <dt className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Etapa</dt>
-                      <dd className="mt-1 text-base font-medium text-foreground">{dashboard.cancerStage || 'No especificada'}</dd>
-                    </div>
-                  </>
-                )}
-              </dl>
-              <div className="border-t px-6 py-4">
-                <Button asChild variant="outline" size="sm" className="hover:bg-primary hover:text-primary-foreground transition-colors">
-                  <Link href="/dashboard/paciente/perfil">
-                    Ver Perfil Completo
-                  </Link>
-                </Button>
+          {/* Patient info */}
+          <section
+            className="overflow-hidden rounded-xl border border-border bg-card shadow-sm duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none"
+            style={{ animationDelay: "320ms", animationFillMode: "both" }}
+          >
+            <header className="flex items-center justify-between border-b border-border px-5 py-4">
+              <h2 className="text-base font-semibold text-foreground">Tu información médica</h2>
+              <Button asChild variant="outline" size="sm" className="border-border hover:bg-muted/60">
+                <Link href="/dashboard/paciente/perfil">Ver perfil</Link>
+              </Button>
+            </header>
+            <dl className="grid grid-cols-1 sm:grid-cols-2">
+              <div className="border-b border-border px-5 py-4 sm:border-r">
+                <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Doctor asignado</dt>
+                <dd className="mt-1 font-medium text-foreground">{dashboard.doctorName || "No asignado"}</dd>
               </div>
-            </CardContent>
-          </Card>
+              <div className="border-b border-border px-5 py-4">
+                <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Tipo de sangre</dt>
+                <dd className="mt-1 font-mono font-medium tabular-nums text-foreground">
+                  {dashboard.bloodType || "No especificado"}
+                </dd>
+              </div>
+              {dashboard.cancerType && (
+                <>
+                  <div className="border-b border-border px-5 py-4 sm:border-r sm:border-b-0">
+                    <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Diagnóstico</dt>
+                    <dd className="mt-1 font-medium text-foreground">{dashboard.cancerType}</dd>
+                  </div>
+                  <div className="px-5 py-4">
+                    <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Etapa</dt>
+                    <dd className="mt-1 font-medium text-foreground">{dashboard.cancerStage || "No especificada"}</dd>
+                  </div>
+                </>
+              )}
+            </dl>
+          </section>
         </div>
       </DashboardLayout>
     </AuthGuard>
