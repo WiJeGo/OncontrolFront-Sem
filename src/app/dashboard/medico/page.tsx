@@ -85,6 +85,7 @@ export default function MedicoDashboard() {
       sub: `${dashboard.activePatients} activos`,
       icon: Users,
       tint: "bg-primary/10 text-primary",
+      tile: "bg-primary/[0.06]",
     },
     {
       label: "Citas totales",
@@ -92,6 +93,7 @@ export default function MedicoDashboard() {
       sub: `${dashboard.completedAppointments} completadas`,
       icon: Calendar,
       tint: "bg-chart-2/10 text-chart-2",
+      tile: "bg-chart-2/[0.06]",
     },
     {
       label: "Próximas citas",
@@ -99,6 +101,7 @@ export default function MedicoDashboard() {
       sub: "Por confirmar",
       icon: Clock,
       tint: "bg-chart-5/10 text-chart-5",
+      tile: "bg-chart-5/[0.06]",
     },
     {
       label: "Síntomas críticos",
@@ -106,6 +109,7 @@ export default function MedicoDashboard() {
       sub: `${dashboard.totalSymptomsReported} reportados`,
       icon: Activity,
       tint: "bg-destructive/10 text-destructive",
+      tile: "bg-destructive/[0.06]",
       emphasize: dashboard.criticalSymptoms > 0,
     },
   ]
@@ -150,9 +154,9 @@ export default function MedicoDashboard() {
           </div>
 
           {/* KPI strip — connected hairline tiles */}
-          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border lg:grid-cols-4">
+          <div className="grid grid-cols-2 divide-x divide-y divide-border overflow-hidden rounded-xl border border-border bg-card lg:grid-cols-4 lg:divide-y-0">
             {kpis.map((kpi) => (
-              <div key={kpi.label} className="bg-card p-5">
+              <div key={kpi.label} className={`p-5 ${kpi.tile}`}>
                 <div className="mb-3 flex items-center gap-2 text-[13px] text-muted-foreground">
                   <span className={`grid h-7 w-7 place-items-center rounded-lg ${kpi.tint}`}>
                     <kpi.icon className="h-4 w-4" />

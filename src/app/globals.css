@@ -5,7 +5,7 @@
 
 :root {
   /* OnControl Brand Colors - Modern Palette */
-  --background: oklch(0.99 0 0); /* Slightly off-white for softer look */
+  --background: oklch(0.975 0.008 200); /* Soft teal-tinted off-white (cards lift above it) */
   --foreground: oklch(0.15 0.01 260); /* Deep dark blue-gray for text */
   --card: oklch(1 0 0); /* Pure white for cards */
   --card-foreground: oklch(0.15 0.01 260);
@@ -13,14 +13,14 @@
   --popover-foreground: oklch(0.15 0.01 260);
 
   /* Primary: Modern Teal #00897b - More vibrant and modern */
-  --primary: oklch(0.52 0.13 185); /* Vibrant teal */
+  --primary: oklch(0.52 0.15 185); /* Vibrant teal (more saturated) */
   --primary-foreground: oklch(1 0 0); /* White text on teal */
 
   /* Secondary: calm neutral surface for secondary actions/badges */
-  --secondary: oklch(0.96 0.006 240);
+  --secondary: oklch(0.955 0.012 200);
   --secondary-foreground: oklch(0.30 0.02 250);
 
-  --muted: oklch(0.97 0.005 240); /* Very light neutral */
+  --muted: oklch(0.955 0.011 200); /* Light teal-tinted neutral */
   --muted-foreground: oklch(0.52 0.015 250); /* Medium gray for muted text */
 
   /* Accent: subtle teal-tinted surface for hover/highlight states */
@@ -31,7 +31,7 @@
   --destructive: oklch(0.58 0.19 25);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.92 0.005 240); /* Light neutral border */
+  --border: oklch(0.90 0.012 205); /* Tinted hairline border (visible on tinted bg) */
   --input: oklch(0.90 0.006 240); /* Visible input borders */
   --ring: oklch(0.52 0.13 185 / 0.40); /* Teal focus ring */
 
@@ -59,7 +59,7 @@
   --radius: 0.75rem; /* Slightly larger radius for modern look */
 
   /* Sidebar colors */
-  --sidebar: oklch(0.98 0.005 260);
+  --sidebar: oklch(0.97 0.012 200);
   --sidebar-foreground: oklch(0.15 0.01 260);
   --sidebar-primary: oklch(0.52 0.13 185);
   --sidebar-primary-foreground: oklch(1 0 0);
@@ -70,24 +70,24 @@
 }
 
 .dark {
-  --background: oklch(0.10 0.01 260); /* Dark blue-gray background */
+  --background: oklch(0.175 0.015 235); /* Elevated charcoal-blue (not near-black) */
   --foreground: oklch(0.98 0.005 260); /* Light text */
-  --card: oklch(0.13 0.01 260); /* Darker cards */
+  --card: oklch(0.215 0.016 235); /* Cards lift clearly above the bg */
   --card-foreground: oklch(0.98 0.005 260);
-  --popover: oklch(0.10 0.01 260);
+  --popover: oklch(0.20 0.016 235);
   --popover-foreground: oklch(0.98 0.005 260);
-  --primary: oklch(0.60 0.14 185); /* Lighter teal for dark mode */
-  --primary-foreground: oklch(0.10 0.01 260);
-  --secondary: oklch(0.24 0.01 250); /* Dark neutral surface */
+  --primary: oklch(0.66 0.15 185); /* Brighter teal for dark mode */
+  --primary-foreground: oklch(0.12 0.01 235);
+  --secondary: oklch(0.27 0.016 235); /* Dark neutral surface */
   --secondary-foreground: oklch(0.92 0.005 240);
-  --muted: oklch(0.18 0.01 260); /* Dark muted background */
-  --muted-foreground: oklch(0.72 0.01 260); /* Light muted text */
+  --muted: oklch(0.25 0.015 235); /* Dark muted surface */
+  --muted-foreground: oklch(0.74 0.012 235); /* Light muted text */
   --accent: oklch(0.26 0.03 200); /* Subtle teal-tinted surface */
   --accent-foreground: oklch(0.92 0.02 200);
   --destructive: oklch(0.62 0.18 25); /* Clinical red */
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.20 0.01 260); /* Darker borders */
-  --input: oklch(0.13 0.01 260); /* Dark input background */
+  --border: oklch(0.31 0.012 235); /* Visible hairline borders on lifted surfaces */
+  --input: oklch(0.31 0.012 235); /* Visible input borders */
   --ring: oklch(0.60 0.14 185 / 0.3); /* Teal ring with more opacity */
   --chart-1: oklch(0.62 0.13 185); /* Teal */
   --chart-2: oklch(0.62 0.11 240); /* Blue */
@@ -104,13 +104,13 @@
   --critical-foreground: oklch(0.99 0 0);
   --brand: oklch(0.62 0.13 185);
   --brand-2: oklch(0.62 0.12 235);
-  --sidebar: oklch(0.10 0.01 260);
+  --sidebar: oklch(0.15 0.014 235);
   --sidebar-foreground: oklch(0.98 0.005 260);
-  --sidebar-primary: oklch(0.60 0.14 185);
-  --sidebar-primary-foreground: oklch(0.10 0.01 260);
-  --sidebar-accent: oklch(0.26 0.03 200);
+  --sidebar-primary: oklch(0.66 0.15 185);
+  --sidebar-primary-foreground: oklch(0.12 0.01 235);
+  --sidebar-accent: oklch(0.27 0.03 200);
   --sidebar-accent-foreground: oklch(0.92 0.02 200);
-  --sidebar-border: oklch(0.20 0.01 260);
+  --sidebar-border: oklch(0.30 0.012 235);
   --sidebar-ring: oklch(0.60 0.14 185 / 0.3);
 }
 
