@@ -95,23 +95,15 @@ export default function PatientDetailsPage() {
         // Load related data
         const patientProfileId = patientData.id
         
+        // Use patient-scoped endpoints (they resolve the patient_profile_id ->
+        // underlying profile server-side). The previous client-side filter
+        // compared appointment.patientId (= profiles.id) against the URL's
+        // patient_profile_id, so appointments never matched.
         const [appointmentsResult, treatmentsResult, historyData, allergiesData] = await Promise.all([
-          appointmentsApi.getDoctorAppointments(doctorProfileId)
-            .then(data => data.filter(apt => {
-              const aptPatientId = apt.patientId || apt.patientProfileId;
-              return aptPatientId?.toString() === patientId.toString();
-            }))
-            .catch(() => []),
-          treatments.getDoctorTreatments(doctorProfileId)
-            .then(data => data.filter(t => {
-              const tPatientId = t.patientId || t.patientProfileId;
-              return tPatientId?.toString() === patientId.toString();
-            }))
-            .catch(() => []),
-          medicalHistory.getHistory(Number(patientId))
-            .catch(() => []),
-          medicalHistory.getAllergies(Number(patientId))
-            .catch(() => [])
+          appointmentsApi.getPatientAppointments(Number(patientId)).catch(() => []),
+          treatments.getPatientTreatments(Number(patientId)).catch(() => []),
+          medicalHistory.getHistory(Number(patientId)).catch(() => []),
+          medicalHistory.getAllergies(Number(patientId)).catch(() => []),
         ])
         
         setAppointmentsData(appointmentsResult)
