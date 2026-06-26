@@ -12,7 +12,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Loading } from "@/components/loading"
 import { useAuthContext } from "@/contexts/auth-context"
-import type { PatientProfileResponse } from "@/lib/api"
+import { patients } from "@/lib/api"
+import type { PatientProfileResponse, UpdatePatientRequest } from "@/lib/api"
 import { isPatientUser } from "@/types/organization"
 import { 
   User, 
@@ -60,13 +61,31 @@ export default function PacientePerfilPage() {
     setSuccess("")
 
     try {
-      // API call to update patient profile would go here
-      // For now, we'll just show success message
+      const payload: UpdatePatientRequest = {
+        phone: patientData.phone,
+        address: patientData.address || undefined,
+      }
+
+      const updated = await patients.updateProfile(patientData.id, payload)
+      setPatientData(updated)
+
+      // Auth state is hydrated from localStorage 'userData' on navigation; sync it.
+      try {
+        const stored = localStorage.getItem("userData")
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          parsed.profile = updated
+          localStorage.setItem("userData", JSON.stringify(parsed))
+        }
+      } catch {
+        /* non-fatal */
+      }
+
       setSuccess("Perfil actualizado correctamente")
       setIsEditing(false)
     } catch (err) {
       console.error('Error updating profile:', err)
-      setError("Error al actualizar el perfil")
+      setError(err instanceof Error ? err.message : "Error al actualizar el perfil")
     } finally {
       setIsSaving(false)
     }
