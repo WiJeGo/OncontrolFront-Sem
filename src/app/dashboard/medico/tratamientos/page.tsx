@@ -4,9 +4,8 @@ import { useState, useEffect } from "react"
 import { AuthGuard } from "@/components/auth-guard-updated"
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Clock, Pill, Activity, Plus, Search, Eye, Edit } from "lucide-react"
 import Link from "next/link"
@@ -17,10 +16,33 @@ import { isDoctorUser } from "@/types/organization"
 import { Loading } from "@/components/loading"
 
 const estadoColors = {
-  ACTIVE: "bg-primary/20 text-primary-foreground",
-  PAUSED: "bg-primary/10 text-primary-foreground",
+  ACTIVE: "bg-success/15 text-success",
+  PAUSED: "bg-warning/20 text-warning-foreground",
   COMPLETED: "bg-muted text-muted-foreground",
-  SUSPENDED: "bg-muted/50 text-muted-foreground",
+  SUSPENDED: "bg-destructive/15 text-destructive",
+}
+
+function CountUp({ value, className }: { value: number; className?: string }) {
+  const [display, setDisplay] = useState(0)
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduce || value <= 0) {
+      setDisplay(value)
+      return
+    }
+    const duration = 700
+    const start = performance.now()
+    let raf = 0
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration)
+      setDisplay(Math.round(value * (1 - Math.pow(1 - p, 3))))
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [value])
+  return <span className={className}>{display}</span>
 }
 
 const tipoNames: Record<string, string> = {
@@ -126,156 +148,100 @@ export default function TratamientosPage() {
       <DashboardLayout>
         <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            Gestión de Tratamientos
-          </h1>
-          <p className="text-muted-foreground text-lg">Administra los protocolos de tratamiento de tus pacientes</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Tratamientos</h1>
+          <p className="mt-1 text-sm tabular-nums text-muted-foreground">
+            {tratamientosFiltrados.length} {tratamientosFiltrados.length === 1 ? "tratamiento" : "tratamientos"}
+          </p>
         </div>
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm" asChild>
+        <Button className="h-10 bg-primary px-4 text-primary-foreground shadow-sm hover:bg-primary/90" asChild>
           <Link href="/dashboard/medico/tratamientos/nuevo">
-            <Plus className="w-5 h-5 mr-2" />
-            Nuevo Tratamiento
+            <Plus className="mr-1.5 h-4 w-4" />
+            Nuevo tratamiento
           </Link>
         </Button>
       </div>
 
-      {/* Estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">Total Tratamientos</CardTitle>
-            <div className="p-2 rounded-lg bg-primary/10">
-              <Activity className="h-5 w-5 text-primary" />
+      {/* KPI strip */}
+      <div className="grid grid-cols-2 divide-x divide-y divide-border overflow-hidden rounded-xl border border-border bg-card shadow-sm lg:grid-cols-4 lg:divide-y-0">
+        {[
+          { label: "Total", value: stats.total, sub: "Registrados", icon: Activity, tint: "bg-primary/10 text-primary", tile: "bg-primary/[0.06]" },
+          { label: "Activos", value: stats.activos, sub: "En curso", icon: Pill, tint: "bg-success/10 text-success", tile: "bg-success/[0.06]" },
+          { label: "Pausados", value: stats.pausados, sub: "Temporalmente", icon: Clock, tint: "bg-warning/15 text-warning-foreground", tile: "bg-warning/[0.06]" },
+          { label: "Completados", value: stats.completados, sub: "Finalizados", icon: Activity, tint: "bg-muted text-muted-foreground", tile: "" },
+        ].map((kpi) => (
+          <div key={kpi.label} className={`p-5 ${kpi.tile}`}>
+            <div className="mb-3 flex items-center gap-2 text-[13px] text-muted-foreground">
+              <span className={`grid h-7 w-7 place-items-center rounded-lg ${kpi.tint}`}>
+                <kpi.icon className="h-4 w-4" />
+              </span>
+              {kpi.label}
             </div>
-          </CardHeader>
-          <CardContent className="relative z-10">
-            <div className="text-3xl font-bold text-foreground mb-1">{stats.total}</div>
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-              Tratamientos registrados
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">Activos</CardTitle>
-            <div className="p-2 rounded-lg bg-chart-2/10">
-              <Pill className="h-5 w-5 text-chart-2" />
-            </div>
-          </CardHeader>
-          <CardContent className="relative z-10">
-            <div className="text-3xl font-bold text-foreground mb-1">{stats.activos}</div>
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-chart-2"></span>
-              En curso
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">Pausados</CardTitle>
-            <div className="p-2 rounded-lg bg-chart-5/10">
-              <Clock className="h-5 w-5 text-chart-5" />
-            </div>
-          </CardHeader>
-          <CardContent className="relative z-10">
-            <div className="text-3xl font-bold text-foreground mb-1">{stats.pausados}</div>
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-chart-5"></span>
-              Temporalmente pausados
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border border-muted/20 hover:border-muted/40 transition-all hover:shadow-md relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-muted/5 rounded-full -mr-16 -mt-16"></div>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">Completados</CardTitle>
-            <div className="p-2 rounded-lg bg-muted/10">
-              <Activity className="h-5 w-5 text-muted-foreground" />
-            </div>
-          </CardHeader>
-          <CardContent className="relative z-10">
-            <div className="text-3xl font-bold text-foreground mb-1">{stats.completados}</div>
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground"></span>
-              Finalizados
-            </p>
-          </CardContent>
-        </Card>
+            <CountUp value={kpi.value} className="font-mono text-3xl font-semibold tabular-nums text-foreground" />
+            <div className="mt-1 text-xs text-muted-foreground">{kpi.sub}</div>
+          </div>
+        ))}
       </div>
 
-      {/* Filtros */}
-      <Card className="border shadow-sm">
-        <CardHeader className="border-b">
-          <CardTitle className="text-xl font-bold">Filtros de Búsqueda</CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-              <Input
-                placeholder="Buscar por paciente, tipo o protocolo..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 h-12 text-base border focus:border-primary"
-              />
-            </div>
-
-            <Select value={filtroEstado} onValueChange={setFiltroEstado}>
-              <SelectTrigger className="w-full md:w-[200px] h-12 border">
-                <SelectValue placeholder="Filtrar por estado" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos los estados</SelectItem>
-                <SelectItem value="ACTIVE">Activos</SelectItem>
-                <SelectItem value="PAUSED">Pausados</SelectItem>
-                <SelectItem value="COMPLETED">Completados</SelectItem>
-                <SelectItem value="SUSPENDED">Suspendidos</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={filtroTipo} onValueChange={setFiltroTipo}>
-              <SelectTrigger className="w-full md:w-[200px] h-12 border">
-                <SelectValue placeholder="Filtrar por tipo" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todos">Todos los tipos</SelectItem>
-                <SelectItem value="CHEMOTHERAPY">Quimioterapia</SelectItem>
-                <SelectItem value="RADIOTHERAPY">Radioterapia</SelectItem>
-                <SelectItem value="IMMUNOTHERAPY">Inmunoterapia</SelectItem>
-                <SelectItem value="SURGERY">Cirugía</SelectItem>
-                <SelectItem value="HORMONE_THERAPY">Terapia Hormonal</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Toolbar */}
+      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-sm sm:flex-row sm:items-center">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por paciente, tipo o protocolo…"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="h-10 border-border pl-9"
+            aria-label="Buscar tratamientos"
+          />
+        </div>
+        <Select value={filtroEstado} onValueChange={setFiltroEstado}>
+          <SelectTrigger className="h-10 w-full border-border sm:w-44">
+            <SelectValue placeholder="Estado" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todos">Todos los estados</SelectItem>
+            <SelectItem value="ACTIVE">Activos</SelectItem>
+            <SelectItem value="PAUSED">Pausados</SelectItem>
+            <SelectItem value="COMPLETED">Completados</SelectItem>
+            <SelectItem value="SUSPENDED">Suspendidos</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={filtroTipo} onValueChange={setFiltroTipo}>
+          <SelectTrigger className="h-10 w-full border-border sm:w-44">
+            <SelectValue placeholder="Tipo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todos">Todos los tipos</SelectItem>
+            <SelectItem value="CHEMOTHERAPY">Quimioterapia</SelectItem>
+            <SelectItem value="RADIOTHERAPY">Radioterapia</SelectItem>
+            <SelectItem value="IMMUNOTHERAPY">Inmunoterapia</SelectItem>
+            <SelectItem value="SURGERY">Cirugía</SelectItem>
+            <SelectItem value="HORMONE_THERAPY">Terapia Hormonal</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
       {/* Lista de Tratamientos */}
       <div className="grid grid-cols-1 gap-6">
         {tratamientosFiltrados.length === 0 ? (
           <Card className="border shadow-sm">
             <CardContent className="p-16 text-center">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
-                <Activity className="h-10 w-10 text-muted-foreground" />
+              <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+                <span className="absolute inset-0 rounded-full bg-primary/5" aria-hidden="true" />
+                <span className="absolute inset-[10px] rounded-full bg-primary/10" aria-hidden="true" />
+                <Activity className="relative h-8 w-8 text-primary/70" aria-hidden="true" />
               </div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="mb-1 font-semibold text-foreground">
                 {searchTerm || filtroEstado !== "todos" || filtroTipo !== "todos"
-                  ? "No se encontraron tratamientos"
+                  ? "Sin resultados"
                   : "No hay tratamientos registrados"}
               </h3>
-              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              <p className="mx-auto mb-5 max-w-sm text-sm text-muted-foreground">
                 {searchTerm || filtroEstado !== "todos" || filtroTipo !== "todos"
-                  ? "Intenta cambiar los filtros de búsqueda"
-                  : "Comienza creando tratamientos para tus pacientes"}
+                  ? "Prueba cambiando los filtros."
+                  : "Crea tratamientos para tus pacientes."}
               </p>
               {!searchTerm && filtroEstado === "todos" && filtroTipo === "todos" && (
                 <Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-11 px-6 shadow-sm" asChild>
@@ -293,11 +259,11 @@ export default function TratamientosPage() {
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                   <div className="flex-1 space-y-4">
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <h3 className="text-xl font-bold text-foreground">{tratamiento.patientName}</h3>
-                      <Badge className={`${estadoColors[tratamiento.status as keyof typeof estadoColors]} border font-semibold`}>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="text-base font-semibold text-foreground">{tratamiento.patientName}</h3>
+                      <span className={`rounded-md px-2 py-0.5 text-[11px] font-medium ${estadoColors[tratamiento.status as keyof typeof estadoColors]}`}>
                         {estadoNames[tratamiento.status] || tratamiento.status}
-                      </Badge>
+                      </span>
                     </div>
 
                     <div className="flex flex-wrap gap-4 text-sm">
