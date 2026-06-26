@@ -198,9 +198,13 @@ export default function PatientDetailsPage() {
       case "TREATMENT":
       case "TRATAMIENTO":
         return <Activity className="h-5 w-5 text-chart-2" />
+      case "TEST_RESULT":
       case "LAB_RESULT":
       case "RESULTADO_LABORATORIO":
         return <FileText className="h-5 w-5 text-success" />
+      case "SURGERY":
+      case "EMERGENCY":
+        return <Heart className="h-5 w-5 text-destructive" />
       default:
         return <FileText className="h-5 w-5 text-muted-foreground" />
     }
@@ -243,121 +247,90 @@ export default function PatientDetailsPage() {
     <AuthGuard requiredRole="DOCTOR">
       <DashboardLayout>
         <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header */}
-          <div>
-            <Link href="/dashboard/medico/pacientes">
-              <Button variant="ghost" className="mb-4">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Volver a pacientes
+          {/* Back */}
+          <Link
+            href="/dashboard/medico/pacientes"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Volver a pacientes
+          </Link>
+
+          {/* Patient header */}
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+            <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-4">
+                <Avatar className="h-14 w-14">
+                  <AvatarFallback className="bg-primary/10 text-base font-medium text-primary">
+                    {patient.firstName[0]}
+                    {patient.lastName[0]}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h2 className="text-lg font-semibold text-foreground">
+                    {patient.firstName} {patient.lastName}
+                  </h2>
+                  <div className="mt-1 flex flex-wrap items-center gap-2">
+                    <span className="font-mono text-xs text-muted-foreground">{patient.profileId}</span>
+                    <span
+                      className={`rounded-md px-2 py-0.5 text-[11px] font-medium ${
+                        patient.isActive ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {patient.isActive ? "Activo" : "Inactivo"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <Button asChild variant="outline" size="sm" className="self-start border-border hover:bg-muted sm:self-auto">
+                <Link href={`/dashboard/medico/pacientes/${patient.id}/editar`}>
+                  <Edit className="mr-1.5 h-4 w-4" />
+                  Editar
+                </Link>
               </Button>
-            </Link>
-            
-            {/* Patient Header Card */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-4">
-                    <Avatar className="h-16 w-16">
-                      <AvatarFallback className="text-xl">
-                        {patient.firstName[0]}{patient.lastName[0]}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="space-y-1">
-                      <CardTitle className="text-2xl">
-                        {patient.firstName} {patient.lastName}
-                      </CardTitle>
-                      <CardDescription className="flex items-center gap-2">
-                        <code className="text-xs bg-muted px-2 py-1 rounded">
-                          {patient.profileId}
-                        </code>
-                        <Badge variant={patient.isActive ? "default" : "secondary"}>
-                          {patient.isActive ? "Activo" : "Inactivo"}
-                        </Badge>
-                      </CardDescription>
-                    </div>
-                  </div>
-                  <Link href={`/dashboard/medico/pacientes/${patient.id}/editar`}>
-                    <Button variant="outline" size="sm">
-                      <Edit className="mr-2 h-4 w-4" />
-                      Editar
-                    </Button>
-                  </Link>
+            </div>
+            <dl className="grid grid-cols-1 gap-x-6 gap-y-3 border-t border-border px-5 py-4 text-sm sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
+                <span className="truncate text-foreground">{patient.email}</span>
+              </div>
+              {patient.phone && (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span className="tabular-nums text-foreground">{patient.phone}</span>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">{patient.email}</span>
-                  </div>
-                  {patient.phone && (
-                    <div className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{patient.phone}</span>
-                    </div>
-                  )}
-                  {patient.city && (
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{patient.city}</span>
-                    </div>
-                  )}
-                  {patient.birthDate && (
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{calculateAge(patient.birthDate)} años</span>
-                    </div>
-                  )}
+              )}
+              {patient.city && (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span className="text-foreground">{patient.city}</span>
                 </div>
-              </CardContent>
-            </Card>
+              )}
+              {patient.birthDate && (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Calendar className="h-4 w-4 shrink-0" aria-hidden="true" />
+                  <span className="tabular-nums text-foreground">{calculateAge(patient.birthDate)} años</span>
+                </div>
+              )}
+            </dl>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
-              <CardContent className="pt-6 relative z-10">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground">Tratamientos Activos</p>
-                    <p className="text-3xl font-bold text-foreground">{treatmentsData.filter(t => t.status === 'ACTIVE').length}</p>
-                  </div>
-                  <div className="p-3 rounded-2xl bg-primary/10">
-                    <Activity className="h-8 w-8 text-primary" />
-                  </div>
+          <div className="grid grid-cols-3 divide-x divide-border overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+            {[
+              { label: "Tratamientos activos", value: treatmentsData.filter((t) => t.status === "ACTIVE").length, icon: Activity, tint: "bg-primary/10 text-primary" },
+              { label: "Citas", value: appointmentsData.length, icon: Calendar, tint: "bg-chart-2/10 text-chart-2" },
+              { label: "Alergias", value: allergies.length, icon: Shield, tint: "bg-chart-5/10 text-chart-5" },
+            ].map((kpi) => (
+              <div key={kpi.label} className="p-5">
+                <div className="mb-3 flex items-center gap-2 text-[13px] text-muted-foreground">
+                  <span className={`grid h-7 w-7 place-items-center rounded-lg ${kpi.tint}`}>
+                    <kpi.icon className="h-4 w-4" />
+                  </span>
+                  <span className="hidden sm:inline">{kpi.label}</span>
                 </div>
-              </CardContent>
-            </Card>
-            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
-              <CardContent className="pt-6 relative z-10">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground">Total de Citas</p>
-                    <p className="text-3xl font-bold text-foreground">
-                      {appointmentsData.length}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-2xl bg-chart-2/10">
-                    <Calendar className="h-8 w-8 text-chart-2" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
-              <CardContent className="pt-6 relative z-10">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground">Alergias Registradas</p>
-                    <p className="text-3xl font-bold text-foreground">{allergies.length}</p>
-                  </div>
-                  <div className="p-3 rounded-2xl bg-chart-5/10">
-                    <Shield className="h-8 w-8 text-chart-5" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                <div className="font-mono text-3xl font-semibold tabular-nums text-foreground">{kpi.value}</div>
+              </div>
+            ))}
           </div>
 
           {/* Tabs */}
