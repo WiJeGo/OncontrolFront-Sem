@@ -106,7 +106,7 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
 
   useEffect(() => {
     if (!isLoading && (!isAuthenticated || !user)) {
-      router.push("/auth/login")
+      router.replace("/")
     }
   }, [isLoading, isAuthenticated, user, router])
 

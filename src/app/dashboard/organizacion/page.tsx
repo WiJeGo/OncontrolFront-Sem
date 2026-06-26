@@ -47,9 +47,9 @@ export default function OrganizationDashboardPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push("/auth/login")
+      router.replace("/")
     } else if (!authLoading && user && !isOrganizationUser(user)) {
-      router.push("/dashboard")
+      router.replace("/dashboard")
     }
   }, [user, authLoading, router])
 
