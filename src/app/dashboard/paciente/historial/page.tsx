@@ -22,21 +22,53 @@ import {
   Calendar
 } from "lucide-react"
 
+// Matches the backend MedicalHistoryType enum.
 const typeNames: Record<string, string> = {
+  DIAGNOSIS: "Diagnóstico",
   CONSULTATION: "Consulta",
-  PROCEDURE: "Procedimiento",
+  TREATMENT: "Tratamiento",
+  TEST_RESULT: "Resultado de examen",
+  HOSPITALIZATION: "Hospitalización",
   SURGERY: "Cirugía",
   EMERGENCY: "Emergencia",
-  LAB_RESULT: "Resultados de Laboratorio",
-  IMAGING: "Imagenología",
-  OTHER: "Otro"
+  FOLLOW_UP: "Seguimiento",
+  REFERRAL: "Derivación",
+  PRESCRIPTION: "Receta",
+  VACCINATION: "Vacunación",
+  ALLERGY: "Alergia",
+  OTHER: "Otro",
 }
 
+// Allergy severity comes from the backend as LOW/MEDIUM/HIGH/CRITICAL; older
+// values (MILD/…/LIFE_THREATENING) kept for safety.
 const severityNames: Record<string, string> = {
+  LOW: "Leve",
+  MEDIUM: "Moderada",
+  HIGH: "Alta",
+  CRITICAL: "Crítica",
   MILD: "Leve",
-  MODERATE: "Moderado",
-  SEVERE: "Severo",
-  LIFE_THREATENING: "Riesgo de vida"
+  MODERATE: "Moderada",
+  SEVERE: "Severa",
+  LIFE_THREATENING: "Riesgo de vida",
+}
+
+const allergySeverityPill = (s?: string) => {
+  switch ((s || "").toUpperCase()) {
+    case "CRITICAL":
+    case "LIFE_THREATENING":
+      return "bg-destructive/15 text-destructive"
+    case "HIGH":
+    case "SEVERE":
+      return "bg-severe/15 text-severe"
+    case "MEDIUM":
+    case "MODERATE":
+      return "bg-warning/20 text-warning-foreground"
+    case "LOW":
+    case "MILD":
+      return "bg-success/15 text-success"
+    default:
+      return "bg-muted text-muted-foreground"
+  }
 }
 
 export default function HistorialPage() {
@@ -114,29 +146,33 @@ export default function HistorialPage() {
 
   const getTypeIcon = (type: string) => {
     switch (type) {
+      case "DIAGNOSIS":
       case "CONSULTATION":
-        return <Stethoscope className="w-5 h-5 text-chart-2" />
-      case "PROCEDURE":
-        return <Activity className="w-5 h-5 text-chart-3" />
+        return <Stethoscope className="w-4 h-4" />
+      case "TREATMENT":
+        return <Heart className="w-4 h-4" />
+      case "TEST_RESULT":
+        return <FileText className="w-4 h-4" />
       case "SURGERY":
-        return <Heart className="w-5 h-5 text-destructive" />
-      case "LAB_RESULT":
-        return <FileText className="w-5 h-5 text-success" />
+      case "EMERGENCY":
+        return <Activity className="w-4 h-4" />
       default:
-        return <FileText className="w-5 h-5 text-muted-foreground" />
+        return <FileText className="w-4 h-4" />
     }
   }
 
   const getTypeColor = (type: string) => {
     switch (type) {
+      case "DIAGNOSIS":
       case "CONSULTATION":
         return "bg-chart-2/15 text-chart-2"
-      case "PROCEDURE":
-        return "bg-chart-3/15 text-chart-3"
-      case "SURGERY":
-        return "bg-destructive/15 text-destructive"
-      case "LAB_RESULT":
+      case "TREATMENT":
+        return "bg-primary/15 text-primary"
+      case "TEST_RESULT":
         return "bg-success/15 text-success"
+      case "SURGERY":
+      case "EMERGENCY":
+        return "bg-destructive/15 text-destructive"
       default:
         return "bg-muted text-muted-foreground"
     }
@@ -167,10 +203,11 @@ export default function HistorialPage() {
               <div className="flex flex-wrap gap-2">
                 {[
                   { value: "todos", label: "Todos" },
+                  { value: "DIAGNOSIS", label: "Diagnósticos" },
                   { value: "CONSULTATION", label: "Consultas" },
-                  { value: "PROCEDURE", label: "Procedimientos" },
+                  { value: "TREATMENT", label: "Tratamientos" },
+                  { value: "TEST_RESULT", label: "Exámenes" },
                   { value: "SURGERY", label: "Cirugías" },
-                  { value: "LAB_RESULT", label: "Laboratorio" },
                 ].map((opt) => {
                   const count =
                     opt.value === "todos"
@@ -288,12 +325,11 @@ export default function HistorialPage() {
                             </span>
                             {allergy.allergen}
                           </CardTitle>
-                          <Badge 
-                            variant={allergy.severity === 'SEVERE' || allergy.severity === 'LIFE_THREATENING' ? 'destructive' : 'secondary'}
-                            className="border font-semibold"
+                          <span
+                            className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${allergySeverityPill(allergy.severity)}`}
                           >
                             {severityNames[allergy.severity] || allergy.severity}
-                          </Badge>
+                          </span>
                         </div>
                         <CardDescription className="mt-1 font-medium text-base">{allergy.type}</CardDescription>
                       </CardHeader>

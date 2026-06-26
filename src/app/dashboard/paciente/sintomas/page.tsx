@@ -38,6 +38,14 @@ function CountUp({ value, className }: { value: number; className?: string }) {
   return <span className={className}>{display}</span>
 }
 
+const SEVERITY_CANON: Record<string, string> = {
+  LEVE: "MILD", MILD: "MILD",
+  MODERADA: "MODERATE", MODERATE: "MODERATE",
+  SEVERA: "SEVERE", SEVERE: "SEVERE",
+  CRITICA: "CRITICAL", "CRÍTICA": "CRITICAL", CRITICAL: "CRITICAL",
+}
+const canonSeverity = (s?: string) => SEVERITY_CANON[(s || "").toUpperCase()] || (s || "").toUpperCase()
+
 export default function SymptomsPage() {
   const { user } = useAuthContext()
   const [patientProfileId, setPatientProfileId] = useState<number | null>(null)
@@ -86,7 +94,9 @@ export default function SymptomsPage() {
       )
     }
     if (severityFilter !== "all") {
-      filtered = filtered.filter((symptom) => symptom.severity === severityFilter)
+      // The API returns severity in Spanish (MODERADA…) while the filter options
+      // are the English enum (MODERATE…); normalize both before comparing.
+      filtered = filtered.filter((symptom) => canonSeverity(symptom.severity) === severityFilter)
     }
     if (dateFilter !== "all") {
       const today = new Date()
