@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState, memo, useMemo, useCallback, useEffect } from "react"
 import { OnControlLogo } from "./oncontrol-logo"
-import { Button } from "./ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import {
   DropdownMenu,
@@ -14,10 +13,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
-import { Badge } from "./ui/badge"
 import {
   Users,
   Calendar,
+  CalendarDays,
   Heart,
   BarChart3,
   Settings,
@@ -30,6 +29,7 @@ import {
   FileText,
   ChevronLeft,
   ChevronRight,
+  ChevronsUpDown,
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -39,6 +39,12 @@ import { ModeToggle } from "./mode-toggle"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
+}
+
+const ROLE_LABEL: Record<string, string> = {
+  organizacion: "Organización",
+  medico: "Médico",
+  paciente: "Paciente",
 }
 
 export const DashboardLayout = memo(function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -53,36 +59,44 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
     setIsMounted(true)
   }, [])
 
-  // Determine user type based on the new architecture
-  const userType = user?.type === 'ORGANIZATION' ? 'organizacion' : 
-                   user?.type === 'DOCTOR' ? 'medico' : 'paciente'
+  const userType =
+    user?.type === "ORGANIZATION" ? "organizacion" : user?.type === "DOCTOR" ? "medico" : "paciente"
 
   const handleLogout = useCallback(async () => {
     await logout()
   }, [logout])
 
-  const organizacionNavItems = useMemo(() => [
-    { href: "/dashboard/organizacion", icon: Home, label: "Dashboard", badge: null },
-    { href: "/dashboard/organizacion/doctores", icon: Stethoscope, label: "Doctores", badge: null },
-  ], [])
+  const organizacionNavItems = useMemo(
+    () => [
+      { href: "/dashboard/organizacion", icon: Home, label: "Dashboard" },
+      { href: "/dashboard/organizacion/doctores", icon: Stethoscope, label: "Doctores" },
+    ],
+    [],
+  )
 
-  const medicoNavItems = useMemo(() => [
-    { href: "/dashboard/medico", icon: Home, label: "Dashboard", badge: null },
-    { href: "/dashboard/medico/pacientes", icon: Users, label: "Pacientes", badge: null },
-    { href: "/dashboard/medico/citas", icon: Calendar, label: "Citas", badge: null },
-    { href: "/dashboard/medico/calendario", icon: Calendar, label: "Calendario", badge: null },
-    { href: "/dashboard/medico/tratamientos", icon: Heart, label: "Tratamientos", badge: null },
-    { href: "/dashboard/medico/reportes", icon: BarChart3, label: "Reportes", badge: null },
-  ], [])
+  const medicoNavItems = useMemo(
+    () => [
+      { href: "/dashboard/medico", icon: Home, label: "Dashboard" },
+      { href: "/dashboard/medico/pacientes", icon: Users, label: "Pacientes" },
+      { href: "/dashboard/medico/citas", icon: Calendar, label: "Citas" },
+      { href: "/dashboard/medico/calendario", icon: CalendarDays, label: "Calendario" },
+      { href: "/dashboard/medico/tratamientos", icon: Heart, label: "Tratamientos" },
+      { href: "/dashboard/medico/reportes", icon: BarChart3, label: "Reportes" },
+    ],
+    [],
+  )
 
-  const pacienteNavItems = useMemo(() => [
-    { href: "/dashboard/paciente", icon: Home, label: "Dashboard", badge: null },
-    { href: "/dashboard/paciente/tratamiento", icon: Heart, label: "Mi Tratamiento", badge: null },
-    { href: "/dashboard/paciente/citas", icon: Calendar, label: "Mis Citas", badge: null },
-    { href: "/dashboard/paciente/sintomas", icon: Activity, label: "Síntomas", badge: null },
-    { href: "/dashboard/paciente/medicamentos", icon: Stethoscope, label: "Medicamentos", badge: null },
-    { href: "/dashboard/paciente/historial", icon: FileText, label: "Historial", badge: null },
-  ], [])
+  const pacienteNavItems = useMemo(
+    () => [
+      { href: "/dashboard/paciente", icon: Home, label: "Dashboard" },
+      { href: "/dashboard/paciente/tratamiento", icon: Heart, label: "Mi tratamiento" },
+      { href: "/dashboard/paciente/citas", icon: Calendar, label: "Mis citas" },
+      { href: "/dashboard/paciente/sintomas", icon: Activity, label: "Síntomas" },
+      { href: "/dashboard/paciente/medicamentos", icon: Stethoscope, label: "Medicamentos" },
+      { href: "/dashboard/paciente/historial", icon: FileText, label: "Historial" },
+    ],
+    [],
+  )
 
   const navItems = useMemo(() => {
     if (userType === "organizacion") return organizacionNavItems
@@ -90,217 +104,261 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
     return pacienteNavItems
   }, [userType, organizacionNavItems, medicoNavItems, pacienteNavItems])
 
-  // Redirect to login if not authenticated (after all hooks)
   useEffect(() => {
     if (!isLoading && (!isAuthenticated || !user)) {
-      router.push('/auth/login')
+      router.push("/auth/login")
     }
   }, [isLoading, isAuthenticated, user, router])
 
-  // Show loading while checking authentication
   if (isLoading) {
     return <Loading message="Verificando autenticación..." />
   }
 
-  // Don't render if not authenticated
   if (!isAuthenticated || !user) {
     return null
   }
 
-  // Evitar problemas de hidratación esperando a que el componente esté montado
   if (!isMounted) {
     return <Loading message="Cargando..." />
   }
 
-  const NavItem = memo(function NavItem({ href, icon: Icon, label, badge, collapsed }: { href: string; icon: React.ComponentType<{ className?: string }>; label: string; badge: string | null; collapsed?: boolean }) {
-    const isActive = pathname === href
+  const base = `/dashboard/${userType}`
+  const currentSection =
+    navItems.find((item) => pathname === item.href || (item.href !== base && pathname.startsWith(item.href + "/")))
+      ?.label ??
+    (userType === "organizacion" ? "Organización" : userType === "medico" ? "Médico" : "Paciente")
+  const displayName =
+    user.type === "ORGANIZATION" && "organizationName" in user
+      ? user.organizationName || "Organización"
+      : user.type === "DOCTOR" && "profile" in user
+        ? `Dr. ${user.profile.firstName} ${user.profile.lastName}`
+        : user.type === "PATIENT" && "profile" in user
+          ? `${user.profile.firstName} ${user.profile.lastName}`
+          : "Usuario"
+  const email =
+    user.type === "ORGANIZATION" && "email" in user
+      ? user.email
+      : "profile" in user
+        ? user.profile.email
+        : ""
+  const initials =
+    user.type === "ORGANIZATION" && "organizationName" in user
+      ? user.organizationName?.[0] || "O"
+      : "profile" in user
+        ? `${user.profile.firstName?.[0] || ""}${user.profile.lastName?.[0] || ""}`
+        : "U"
+
+  const NavLink = ({
+    href,
+    icon: Icon,
+    label,
+    collapsed,
+  }: {
+    href: string
+    icon: React.ComponentType<{ className?: string }>
+    label: string
+    collapsed?: boolean
+  }) => {
+    const isActive = pathname === href || (href !== base && pathname.startsWith(href + "/"))
     return (
       <Link
         href={href}
-        className={`group flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 font-semibold relative overflow-hidden ${
-          isActive 
-            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30 scale-105" 
-            : "text-muted-foreground hover:text-foreground hover:bg-primary/10 hover:scale-105"
-        } ${collapsed ? 'justify-center px-3' : ''}`}
         onClick={() => setSidebarOpen(false)}
         title={collapsed ? label : undefined}
+        aria-current={isActive ? "page" : undefined}
+        className={`group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+          collapsed ? "justify-center" : ""
+        } ${
+          isActive
+            ? "bg-primary/10 text-primary"
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+        }`}
       >
-        {/* Active indicator */}
         {isActive && (
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white/30 rounded-r-full" />
+          <span
+            className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-primary"
+            aria-hidden="true"
+          />
         )}
-        <Icon className={`h-5 w-5 transition-transform duration-300 ${isActive ? 'text-white scale-110' : 'group-hover:scale-110'}`} />
-        {!collapsed && (
-          <>
-            <span className={`font-semibold transition-opacity duration-300 ${collapsed ? 'opacity-0 w-0' : 'opacity-100'}`}>
-              {label}
-            </span>
-            {badge && (
-              <Badge variant="secondary" className="ml-auto">
-                {badge}
-              </Badge>
-            )}
-          </>
-        )}
+        <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive ? "text-primary" : ""}`} />
+        {!collapsed && <span className="truncate">{label}</span>}
       </Link>
     )
-  })
+  }
+
+  const AccountMenu = ({ collapsed }: { collapsed?: boolean }) => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={`flex w-full items-center gap-3 rounded-lg border border-border bg-card p-2 text-left transition-colors hover:bg-muted ${
+            collapsed ? "justify-center" : ""
+          }`}
+        >
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="/hombre-62-a-os-profesional.jpg" alt="" />
+            <AvatarFallback className="bg-primary/10 text-xs font-medium text-primary">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          {!collapsed && (
+            <>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-foreground">{displayName}</p>
+                <p className="truncate text-xs text-muted-foreground">{ROLE_LABEL[userType]}</p>
+              </div>
+              <ChevronsUpDown className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+            </>
+          )}
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-60 rounded-xl" align="start" side="top" forceMount>
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-0.5">
+            <p className="truncate text-sm font-medium">{displayName}</p>
+            <p className="truncate text-xs text-muted-foreground">{email}</p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {userType !== "organizacion" && (
+          <DropdownMenuItem asChild>
+            <Link href={`/dashboard/${userType}/perfil`}>
+              <Settings className="mr-2 h-4 w-4" />
+              <span>Configuración</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
+        <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Cerrar sesión</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+
+  const SidebarInner = ({ collapsed }: { collapsed?: boolean }) => (
+    <div className="flex h-full flex-col">
+      {/* Brand + collapse */}
+      <div
+        className={`flex h-16 items-center border-b border-border px-4 ${
+          collapsed ? "justify-center" : "justify-between"
+        }`}
+      >
+        {collapsed ? (
+          <Link href={base} aria-label="OnControl">
+            <OnControlLogo size="sm" hideText />
+          </Link>
+        ) : (
+          <Link href={base} aria-label="OnControl">
+            <OnControlLogo size="md" />
+          </Link>
+        )}
+        {!collapsed && (
+          <>
+            <button
+              onClick={() => setSidebarCollapsed(true)}
+              className="hidden h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted lg:flex"
+              aria-label="Colapsar menú"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted lg:hidden"
+              aria-label="Cerrar menú"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Nav */}
+      <nav className="flex-1 space-y-1 overflow-y-auto p-3">
+        {!collapsed && (
+          <p className="px-3 pb-1 pt-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground/70">
+            Menú
+          </p>
+        )}
+        {collapsed && (
+          <button
+            onClick={() => setSidebarCollapsed(false)}
+            className="mx-auto mb-1 flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted"
+            aria-label="Expandir menú"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        )}
+        {navItems.map((item) => (
+          <NavLink key={item.href} href={item.href} icon={item.icon} label={item.label} collapsed={collapsed} />
+        ))}
+      </nav>
+
+      {/* Account */}
+      <div className="border-t border-border p-3">
+        <AccountMenu collapsed={collapsed} />
+      </div>
+    </div>
+  )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
-      {/* Mobile sidebar overlay */}
+    <div className="min-h-screen bg-background">
+      {/* Mobile sidebar */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-          <div className="fixed left-4 top-4 bottom-4 w-72 dynamic-island-sidebar rounded-3xl shadow-2xl">
-            <div className="flex flex-col h-full">
-              <div className="flex items-center justify-between p-6 border-b border-border/30 min-h-[80px]">
-                <OnControlLogo size="md" />
-                <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(false)} className="hover:bg-primary/10 rounded-full h-9 w-9 p-0">
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-              <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-                {navItems.map((item) => (
-                  <NavItem key={item.href} {...item} />
-                ))}
-              </nav>
-            </div>
+          <div
+            className="fixed inset-0 bg-foreground/30 backdrop-blur-sm"
+            onClick={() => setSidebarOpen(false)}
+            aria-hidden="true"
+          />
+          <div className="fixed inset-y-0 left-0 w-72 bg-sidebar shadow-xl">
+            <SidebarInner />
           </div>
         </div>
       )}
 
-      {/* Desktop sidebar - Dynamic Island Vertical */}
-      <div className={`hidden lg:fixed lg:top-4 lg:bottom-4 lg:left-4 lg:z-50 lg:block dynamic-island-sidebar rounded-3xl transition-all duration-500 ease-out ${sidebarCollapsed ? 'lg:w-20' : 'lg:w-72'}`}>
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-border/30 min-h-[80px]">
-            {!sidebarCollapsed ? (
-              <>
-                <OnControlLogo size="md" />
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                  className="hover:bg-primary/10 transition-all rounded-full h-9 w-9 p-0"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-              </>
-            ) : (
-              <div className="flex flex-col items-center gap-4 w-full">
-                <Link href={`/dashboard/${userType}`} className="transition-transform">
-                  <OnControlLogo size="sm" hideText={true} />
-                </Link>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                  className="hover:bg-primary/10 transition-all rounded-full h-9 w-9 p-0"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            )}
-          </div>
-          
-          {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-            {navItems.map((item) => (
-              <NavItem key={item.href} {...item} collapsed={sidebarCollapsed} />
-            ))}
-          </nav>
-        </div>
-      </div>
+      {/* Desktop sidebar */}
+      <aside
+        className={`hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:flex lg:flex-col border-r border-border bg-sidebar transition-[width] duration-300 ease-out ${
+          sidebarCollapsed ? "lg:w-16" : "lg:w-64"
+        }`}
+      >
+        <SidebarInner collapsed={sidebarCollapsed} />
+      </aside>
 
-      {/* Main content */}
-      <div className={`transition-all duration-500 ease-out ${sidebarCollapsed ? 'lg:pl-28' : 'lg:pl-80'}`}>
-        {/* Top bar - Dynamic Island Horizontal */}
-        <header className="sticky top-4 z-40 mx-4 mt-4 mb-6 dynamic-island-navbar rounded-2xl shadow-lg">
-          <div className="flex items-center justify-between px-6 py-4">
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="lg:hidden hover:bg-primary/10 rounded-full h-9 w-9 p-0 shadow-sm" 
-                onClick={() => setSidebarOpen(true)}
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
-              <div className="hidden lg:block">
-                <h2 className="text-xl font-bold text-foreground">
-                  {userType === "organizacion" ? "Panel de Organización" : 
-                   userType === "medico" ? "Panel Médico" : "Panel Paciente"}
-                </h2>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <ModeToggle />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full hover:ring-2 hover:ring-primary/20 transition-all">
-                    <Avatar className="h-10 w-10 ring-2 ring-border/50">
-                      <AvatarImage src="/hombre-62-a-os-profesional.jpg" alt="Usuario" />
-                      <AvatarFallback className="bg-primary/10">
-                        {user?.type === 'ORGANIZATION' && 'organizationName' in user
-                          ? user.organizationName?.[0] || 'O'
-                          : user?.type === 'DOCTOR' && 'profile' in user
-                          ? `${user.profile.firstName?.[0] || ''}${user.profile.lastName?.[0] || ''}`
-                          : user?.type === 'PATIENT' && 'profile' in user
-                          ? `${user.profile.firstName?.[0] || ''}${user.profile.lastName?.[0] || ''}`
-                          : 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 dynamic-island rounded-xl border-border/50" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {user?.type === 'ORGANIZATION' && 'organizationName' in user
-                          ? user.organizationName
-                          : user?.type === 'DOCTOR' && 'profile' in user
-                          ? `Dr. ${user.profile.firstName} ${user.profile.lastName}`
-                          : user?.type === 'PATIENT' && 'profile' in user
-                          ? `${user.profile.firstName} ${user.profile.lastName}`
-                          : 'Usuario'}
-                      </p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {user?.type === 'ORGANIZATION' && 'email' in user
-                          ? user.email
-                          : user?.type === 'DOCTOR' && 'profile' in user
-                          ? user.profile.email
-                          : user?.type === 'PATIENT' && 'profile' in user
-                          ? user.profile.email
-                          : ''}
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {userType !== 'organizacion' && (
-                    <>
-                      <DropdownMenuItem asChild>
-                        <Link href={`/dashboard/${userType}/perfil`}>
-                          <Settings className="mr-2 h-4 w-4" />
-                          <span>Configuración</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
-                  <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Cerrar sesión</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+      {/* Main column */}
+      <div className={`transition-[padding] duration-300 ease-out ${sidebarCollapsed ? "lg:pl-16" : "lg:pl-64"}`}>
+        {/* Top bar */}
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/85 px-4 backdrop-blur lg:px-8">
+          <div className="flex items-center gap-3">
+            <button
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted lg:hidden"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Abrir menú"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="hidden text-muted-foreground sm:inline">{ROLE_LABEL[userType]}</span>
+              <span className="hidden text-border sm:inline">/</span>
+              <span className="font-medium text-foreground">{currentSection}</span>
             </div>
           </div>
+          <ModeToggle />
         </header>
 
         {/* Page content */}
-        <main className="px-4 lg:px-8 pb-8 max-w-7xl mx-auto min-h-[calc(100vh-120px)]">{children}</main>
+        <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 pb-10 pt-6 lg:px-8">{children}</main>
+
+        {/* Footer */}
+        <footer className="border-t border-border">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-6 text-sm text-muted-foreground sm:flex-row lg:px-8">
+            <div className="flex items-center gap-2">
+              <Heart className="h-4 w-4 text-primary" aria-hidden="true" />
+              <span>OnControl 3D · Gestión oncológica</span>
+            </div>
+            <p className="text-xs">© {new Date().getFullYear()} OnControl. Todos los derechos reservados.</p>
+          </div>
+        </footer>
       </div>
     </div>
   )
