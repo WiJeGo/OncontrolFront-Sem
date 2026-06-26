@@ -15,7 +15,8 @@ import { useAuthContext } from "@/contexts/auth-context"
 import { doctors, appointments as appointmentsApi, treatments, medicalHistory } from "@/lib/api"
 import type { PatientProfileResponse, AppointmentResponse, TreatmentResponse, HistoryEntryResponse, AllergyResponse } from "@/lib/api"
 import { isDoctorUser } from "@/types/organization"
-import { 
+import { appointmentTypeLabel, treatmentTypeLabel } from "@/lib/labels"
+import {
   ArrowLeft,
   User, 
   Calendar, 
@@ -534,7 +535,7 @@ export default function PatientDetailsPage() {
                                     <Badge className={`${getAppointmentStatusColor(appointment.status)} border font-semibold`}>
                                       {getStatusText(appointment.status)}
                                     </Badge>
-                                    <Badge variant="outline" className="border font-semibold">{appointment.type}</Badge>
+                                    <Badge variant="outline" className="border font-semibold">{appointmentTypeLabel(appointment.type)}</Badge>
                                   </div>
                                   <Link href={`/dashboard/medico/citas/${appointment.id}`}>
                                     <Button variant="outline" size="sm" className="border hover:bg-primary hover:text-primary-foreground transition-all">
@@ -611,7 +612,7 @@ export default function PatientDetailsPage() {
                               <div className="space-y-4">
                                 <div className="flex items-start justify-between gap-4">
                                   <div className="flex-1">
-                                    <h4 className="text-lg font-bold mb-1">{treatment.type}</h4>
+                                    <h4 className="font-semibold mb-1">{treatmentTypeLabel(treatment.type)}</h4>
                                     <p className="text-sm font-medium text-muted-foreground">{treatment.protocol}</p>
                                   </div>
                                   <Badge variant={getStatusBadgeVariant(treatment.status)} className="border font-semibold">

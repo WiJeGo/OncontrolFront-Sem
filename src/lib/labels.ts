@@ -21,3 +21,19 @@ export function appointmentTypeLabel(type?: string): string {
   if (!type) return "Cita"
   return APPOINTMENT_TYPE_LABELS[type] || type.replace(/_/g, " ").toLowerCase()
 }
+
+const TREATMENT_TYPE_LABELS: Record<string, string> = {
+  CHEMOTHERAPY: "Quimioterapia",
+  RADIOTHERAPY: "Radioterapia",
+  IMMUNOTHERAPY: "Inmunoterapia",
+  SURGERY: "Cirugía",
+  HORMONE_THERAPY: "Terapia hormonal",
+  TARGETED_THERAPY: "Terapia dirigida",
+  STEM_CELL_TRANSPLANT: "Trasplante de células madre",
+}
+
+/** Maps a treatment type enum (e.g. CHEMOTHERAPY) to a readable Spanish label. */
+export function treatmentTypeLabel(type?: string): string {
+  if (!type) return "Tratamiento"
+  return TREATMENT_TYPE_LABELS[type] || type.replace(/_/g, " ").toLowerCase()
+}

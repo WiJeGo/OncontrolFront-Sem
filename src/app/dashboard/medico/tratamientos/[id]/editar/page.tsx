@@ -294,7 +294,7 @@ export default function EditarTratamientoPage() {
                 <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20">
                   <CheckCircle className="h-10 w-10 text-primary" />
                 </div>
-                <h2 className="text-3xl font-bold mb-3 text-foreground">
+                <h2 className="text-xl font-semibold mb-3 text-foreground">
                   ¡Tratamiento actualizado exitosamente!
                 </h2>
                 <p className="text-muted-foreground mb-8 text-lg font-medium">
@@ -330,7 +330,7 @@ export default function EditarTratamientoPage() {
                 <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                   Editar Tratamiento
                 </h1>
-                <p className="text-muted-foreground text-lg">Actualiza la información del tratamiento de {treatment.patientName}</p>
+                <p className="text-sm text-muted-foreground">Actualiza la información del tratamiento de {treatment.patientName}</p>
               </div>
           </div>
 
@@ -350,11 +350,11 @@ export default function EditarTratamientoPage() {
                     </div>
                     Información del Paciente
                   </CardTitle>
-                  <CardDescription className="mt-1 text-base">Paciente asignado a este tratamiento</CardDescription>
+                  <CardDescription className="mt-0.5">Paciente asignado a este tratamiento</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
                   {selectedPatient && (
-                    <div className="p-5 bg-gradient-to-br from-accent/10 to-accent/5 rounded-xl border border-chart-5/20">
+                    <div className="p-5 bg-muted/40 rounded-xl border border-chart-5/20">
                       <h4 className="font-bold text-lg mb-2">{selectedPatient.firstName} {selectedPatient.lastName}</h4>
                       <p className="text-sm text-muted-foreground font-semibold mb-1">
                         {selectedPatient.cancerType} {selectedPatient.cancerStage && `- ${selectedPatient.cancerStage}`}
@@ -374,19 +374,19 @@ export default function EditarTratamientoPage() {
                     </div>
                     Tipo y Protocolo
                   </CardTitle>
-                  <CardDescription className="mt-1 text-base">El tipo y protocolo no se pueden modificar</CardDescription>
+                  <CardDescription className="mt-0.5">El tipo y protocolo no se pueden modificar</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-2">Tipo de Tratamiento</p>
-                      <p className="text-lg font-bold text-foreground">
+                      <p className="font-semibold text-foreground">
                         {treatmentTypes.find(t => t.value === treatment.type)?.label || treatment.type}
                       </p>
                     </div>
                     <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-2">Protocolo</p>
-                      <p className="text-lg font-bold text-foreground">{treatment.protocol}</p>
+                      <p className="font-semibold text-foreground">{treatment.protocol}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -401,7 +401,7 @@ export default function EditarTratamientoPage() {
                     </div>
                     Configuración del Tratamiento
                   </CardTitle>
-                  <CardDescription className="mt-1 text-base">Actualiza los parámetros del tratamiento</CardDescription>
+                  <CardDescription className="mt-0.5">Actualiza los parámetros del tratamiento</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -464,7 +464,7 @@ export default function EditarTratamientoPage() {
                     </div>
                     Medicamentos
                   </CardTitle>
-                  <CardDescription className="mt-1 text-base">Actualiza los medicamentos del protocolo</CardDescription>
+                  <CardDescription className="mt-0.5">Actualiza los medicamentos del protocolo</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6 space-y-6">
                   <div className="flex gap-3">
@@ -539,7 +539,7 @@ export default function EditarTratamientoPage() {
                   </div>
                   Información Adicional
                 </CardTitle>
-                <CardDescription className="mt-1 text-base">Notas e instrucciones para el tratamiento</CardDescription>
+                <CardDescription className="mt-0.5">Notas e instrucciones para el tratamiento</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 <div className="space-y-2">

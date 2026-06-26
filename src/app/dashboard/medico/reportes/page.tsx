@@ -343,7 +343,7 @@ export default function ReportesPage() {
                 <div className="space-y-4">
                   {patientsByMonth?.data.map((item, index) => (
                     <div key={index} className="space-y-2">
-                      <div className="flex justify-between text-sm font-bold">
+                      <div className="flex justify-between text-sm font-medium">
                         <span>{item.monthName}</span>
                         <span>{item.count}</span>
                       </div>
@@ -371,7 +371,7 @@ export default function ReportesPage() {
                 <div className="space-y-4">
                   {treatmentsByType?.data.map((item, index) => (
                     <div key={index} className="space-y-2">
-                      <div className="flex justify-between text-sm font-bold">
+                      <div className="flex justify-between text-sm font-medium">
                         <span>{tipoNames[item.type] || item.type}</span>
                         <span>{item.percentage.toFixed(0)}%</span>
                       </div>
@@ -406,8 +406,8 @@ export default function ReportesPage() {
                         style={{ height: `${item.count > 0 ? (item.count / Math.max(...appointmentsByDay.data.map(d => d.count || 1))) * 100 : 5}%` }}
                       />
                     </div>
-                    <span className="text-xs font-bold text-muted-foreground">{item.dayName}</span>
-                    <span className="text-sm font-bold">{item.count}</span>
+                    <span className="text-xs font-medium text-muted-foreground">{item.dayName}</span>
+                    <span className="text-sm font-medium">{item.count}</span>
                   </div>
                 ))}
               </div>
