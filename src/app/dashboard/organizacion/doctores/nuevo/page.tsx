@@ -141,7 +141,7 @@ export default function NewDoctorPage() {
             label="Volver a doctores"
             className="mb-2"
           />
-          <h1 className="text-4xl font-bold text-foreground">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Agregar Nuevo Doctor
           </h1>
           <p className="text-muted-foreground text-lg">Registra un médico en tu organización</p>

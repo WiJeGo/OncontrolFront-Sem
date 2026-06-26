@@ -125,7 +125,7 @@ export default function TratamientoPacientePage() {
         <div className="space-y-8">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Mi Tratamiento
         </h1>
         <p className="text-muted-foreground text-lg">Información detallada sobre tu protocolo de tratamiento actual</p>

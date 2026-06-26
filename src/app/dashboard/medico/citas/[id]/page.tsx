@@ -258,7 +258,7 @@ export default function AppointmentDetailsPage() {
             </Link>
             <div className="flex items-start justify-between">
               <div className="space-y-2">
-                <h1 className="text-4xl font-bold text-foreground">
+                <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                   Detalles de Cita
                 </h1>
                 <p className="text-muted-foreground text-lg">Información completa de la cita médica</p>

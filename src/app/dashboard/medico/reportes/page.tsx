@@ -273,7 +273,7 @@ export default function ReportesPage() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tight text-foreground">
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                 Reportes y Análisis
               </h1>
               <p className="text-muted-foreground text-lg">Métricas reales de tu práctica médica</p>

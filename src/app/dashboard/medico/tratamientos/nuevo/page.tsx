@@ -286,7 +286,7 @@ export default function NuevoTratamientoPage() {
               </Button>
               </Link>
               <div className="space-y-2">
-                <h1 className="text-4xl font-bold text-foreground">
+                <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                   Nuevo Tratamiento
                 </h1>
                 <p className="text-muted-foreground text-lg">Registra un nuevo tratamiento oncológico para un paciente</p>
