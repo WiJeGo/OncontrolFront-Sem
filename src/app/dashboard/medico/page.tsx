@@ -37,6 +37,32 @@ function appointmentStatusPill(status?: string) {
   }
 }
 
+const pct = (n: number, d: number) => (d > 0 ? Math.round((n / d) * 100) : 0)
+
+function CountUp({ value, className }: { value: number; className?: string }) {
+  const [display, setDisplay] = useState(0)
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduce || value <= 0) {
+      setDisplay(value)
+      return
+    }
+    const duration = 700
+    const start = performance.now()
+    let raf = 0
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration)
+      const eased = 1 - Math.pow(1 - p, 3)
+      setDisplay(Math.round(value * eased))
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [value])
+  return <span className={className}>{display}</span>
+}
+
 export default function MedicoDashboard() {
   const { user } = useAuthContext()
   const [doctorProfileId, setDoctorProfileId] = useState<number | null>(null)
@@ -89,6 +115,9 @@ export default function MedicoDashboard() {
       icon: Users,
       tint: "bg-primary/10 text-primary",
       tile: "bg-primary/[0.06]",
+      pct: pct(dashboard.activePatients, dashboard.totalPatients),
+      bar: "bg-primary",
+      chip: "bg-primary/10 text-primary",
     },
     {
       label: "Citas totales",
@@ -97,6 +126,9 @@ export default function MedicoDashboard() {
       icon: Calendar,
       tint: "bg-chart-2/10 text-chart-2",
       tile: "bg-chart-2/[0.06]",
+      pct: pct(dashboard.completedAppointments, dashboard.totalAppointments),
+      bar: "bg-chart-2",
+      chip: "bg-chart-2/10 text-chart-2",
     },
     {
       label: "Próximas citas",
@@ -105,6 +137,9 @@ export default function MedicoDashboard() {
       icon: Clock,
       tint: "bg-chart-5/10 text-chart-5",
       tile: "bg-chart-5/[0.06]",
+      pct: pct(dashboard.upcomingAppointments, dashboard.totalAppointments),
+      bar: "bg-chart-5",
+      chip: "bg-chart-5/10 text-chart-5",
     },
     {
       label: "Síntomas críticos",
@@ -114,6 +149,9 @@ export default function MedicoDashboard() {
       tint: "bg-destructive/10 text-destructive",
       tile: "bg-destructive/[0.06]",
       emphasize: dashboard.criticalSymptoms > 0,
+      pct: pct(dashboard.criticalSymptoms, dashboard.totalSymptomsReported),
+      bar: "bg-destructive",
+      chip: "bg-destructive/10 text-destructive",
     },
   ]
 
@@ -129,7 +167,7 @@ export default function MedicoDashboard() {
       <DashboardLayout>
         <div className="space-y-7">
           {/* Welcome banner */}
-          <div className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary/10 via-card to-chart-2/10 px-5 py-5 shadow-sm sm:px-6">
+          <div className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary/10 via-card to-chart-2/10 px-5 py-5 shadow-sm duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none sm:px-6">
             <div
               className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-primary/10 blur-3xl"
               aria-hidden="true"
@@ -164,7 +202,10 @@ export default function MedicoDashboard() {
           </div>
 
           {/* KPI strip — connected hairline tiles */}
-          <div className="grid grid-cols-2 divide-x divide-y divide-border overflow-hidden rounded-xl border border-border bg-card shadow-sm lg:grid-cols-4 lg:divide-y-0">
+          <div
+            className="grid grid-cols-2 divide-x divide-y divide-border overflow-hidden rounded-xl border border-border bg-card shadow-sm duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none lg:grid-cols-4 lg:divide-y-0"
+            style={{ animationDelay: "80ms", animationFillMode: "both" }}
+          >
             {kpis.map((kpi) => (
               <div key={kpi.label} className={`p-5 ${kpi.tile}`}>
                 <div className="mb-3 flex items-center gap-2 text-[13px] text-muted-foreground">
@@ -173,19 +214,35 @@ export default function MedicoDashboard() {
                   </span>
                   {kpi.label}
                 </div>
-                <div
-                  className={`font-mono text-3xl font-semibold tabular-nums ${
-                    kpi.emphasize ? "text-destructive" : "text-foreground"
-                  }`}
-                >
-                  {kpi.value}
+                <div className="flex items-end justify-between gap-2">
+                  <CountUp
+                    value={kpi.value}
+                    className={`font-mono text-3xl font-semibold tabular-nums ${
+                      kpi.emphasize ? "text-destructive" : "text-foreground"
+                    }`}
+                  />
+                  <span
+                    className={`mb-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium tabular-nums ${kpi.chip}`}
+                  >
+                    {kpi.pct}%
+                  </span>
                 </div>
-                <div className="mt-1 text-xs tabular-nums text-muted-foreground">{kpi.sub}</div>
+                <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-muted">
+                  <div
+                    className={`h-full rounded-full ${kpi.bar}`}
+                    style={{ width: `${kpi.pct}%` }}
+                    aria-hidden="true"
+                  />
+                </div>
+                <div className="mt-1.5 text-xs tabular-nums text-muted-foreground">{kpi.sub}</div>
               </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+          <div
+            className="grid grid-cols-1 gap-5 duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none lg:grid-cols-2"
+            style={{ animationDelay: "160ms", animationFillMode: "both" }}
+          >
             {/* Upcoming appointments */}
             <section className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
               <header className="flex items-center justify-between border-b border-border px-5 py-4">
@@ -200,10 +257,15 @@ export default function MedicoDashboard() {
 
               {dashboard.upcomingAppointmentsList.length === 0 ? (
                 <div className="px-5 py-12 text-center">
-                  <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-muted">
-                    <Calendar className="h-7 w-7 text-muted-foreground" />
+                  <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+                    <span className="absolute inset-0 rounded-full bg-chart-2/5" aria-hidden="true" />
+                    <span className="absolute inset-[10px] rounded-full bg-chart-2/10" aria-hidden="true" />
+                    <Calendar className="relative h-8 w-8 text-chart-2/70" aria-hidden="true" />
                   </div>
-                  <p className="mb-4 text-sm text-muted-foreground">No hay citas próximas</p>
+                  <h3 className="mb-1 font-semibold text-foreground">Sin citas próximas</h3>
+                  <p className="mx-auto mb-5 max-w-xs text-sm text-muted-foreground">
+                    Cuando programes citas aparecerán aquí, ordenadas por fecha.
+                  </p>
                   <Button asChild variant="outline" className="border-border hover:bg-muted/60">
                     <Link href="/dashboard/medico/citas/nueva">
                       <Plus className="mr-1.5 h-4 w-4" />
@@ -269,8 +331,10 @@ export default function MedicoDashboard() {
 
               {dashboard.patients.length === 0 ? (
                 <div className="px-5 py-12 text-center">
-                  <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-primary/10">
-                    <Users className="h-7 w-7 text-primary" />
+                  <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+                    <span className="absolute inset-0 rounded-full bg-primary/5" aria-hidden="true" />
+                    <span className="absolute inset-[10px] rounded-full bg-primary/10" aria-hidden="true" />
+                    <Users className="relative h-8 w-8 text-primary/70" aria-hidden="true" />
                   </div>
                   <h3 className="mb-1 font-semibold text-foreground">Aún no hay pacientes</h3>
                   <p className="mx-auto mb-5 max-w-xs text-sm text-muted-foreground">
@@ -326,7 +390,10 @@ export default function MedicoDashboard() {
           </div>
 
           {/* Quick actions */}
-          <div>
+          <div
+            className="duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none"
+            style={{ animationDelay: "240ms", animationFillMode: "both" }}
+          >
             <h2 className="mb-3 text-sm font-medium text-muted-foreground">Accesos rápidos</h2>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {quickActions.map((action) => (
@@ -345,7 +412,10 @@ export default function MedicoDashboard() {
           </div>
 
           {/* Professional profile */}
-          <section className="overflow-hidden rounded-xl border border-border bg-card">
+          <section
+            className="overflow-hidden rounded-xl border border-border bg-card shadow-sm duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none"
+            style={{ animationDelay: "320ms", animationFillMode: "both" }}
+          >
             <header className="flex items-center justify-between border-b border-border px-5 py-4">
               <h2 className="text-base font-semibold text-foreground">Tu perfil profesional</h2>
               <Button asChild variant="outline" size="sm" className="border-border hover:bg-muted/60">
