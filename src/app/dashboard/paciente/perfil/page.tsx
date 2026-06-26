@@ -174,13 +174,13 @@ export default function PacientePerfilPage() {
           <Card className="border shadow-sm ">
             <CardContent className="pt-8 pb-8">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-                <Avatar className="h-28 w-28 ring-4 ring-primary/20 shadow-sm">
-                  <AvatarFallback className="text-3xl font-bold bg-primary/15 text-primary">
+                <Avatar className="h-28 w-28 ring-1 ring-border shadow-sm">
+                  <AvatarFallback className="text-xl font-semibold bg-primary/15 text-primary">
                     {patientData.firstName.charAt(0)}{patientData.lastName.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 text-center md:text-left space-y-3">
-                  <h2 className="text-3xl font-bold text-foreground">
+                  <h2 className="text-xl font-semibold text-foreground">
                     {patientData.firstName} {patientData.lastName}
                   </h2>
                   <p className="text-xl text-muted-foreground font-semibold">
@@ -206,13 +206,13 @@ export default function PacientePerfilPage() {
             {/* Personal Information */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <User className="w-5 h-5 text-primary" />
                   </div>
                   Información Personal
                 </CardTitle>
-                <CardDescription className="mt-1 text-base">Información básica de identificación</CardDescription>
+                <CardDescription className="mt-0.5">Información básica de identificación</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 <div className="space-y-2">
@@ -277,13 +277,13 @@ export default function PacientePerfilPage() {
             {/* Medical Information */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Heart className="w-5 h-5 text-chart-2" />
                   </div>
                   Información Médica
                 </CardTitle>
-                <CardDescription className="mt-1 text-base">Detalles de tu condición y tratamiento</CardDescription>
+                <CardDescription className="mt-0.5">Detalles de tu condición y tratamiento</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 {patientData.cancerType && (
@@ -347,13 +347,13 @@ export default function PacientePerfilPage() {
           {patientData.address && (
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-chart-5/10">
                     <Settings className="w-5 h-5 text-chart-5" />
                   </div>
                   Dirección
                 </CardTitle>
-                <CardDescription className="mt-1 text-base">Tu dirección de residencia</CardDescription>
+                <CardDescription className="mt-0.5">Tu dirección de residencia</CardDescription>
               </CardHeader>
               <CardContent className="p-6">
                 <div className="space-y-2">
@@ -373,25 +373,27 @@ export default function PacientePerfilPage() {
           {/* Statistics */}
           <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="flex items-center gap-3 text-xl font-bold">
+              <CardTitle className="flex items-center gap-3 text-base font-semibold">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <Activity className="w-5 h-5 text-primary" />
                 </div>
                 Estadísticas
               </CardTitle>
-              <CardDescription className="mt-1 text-base">Tu actividad en la plataforma</CardDescription>
+              <CardDescription className="mt-0.5">Tu actividad en la plataforma</CardDescription>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="text-center p-6 border border-primary/20 rounded-xl bg-muted/50 hover:border-primary/40 hover:shadow-md transition-all relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12"></div>
-                  <p className="text-4xl font-bold text-primary mb-2 relative z-10">{patientData.activeTreatments}</p>
-                  <p className="text-sm text-muted-foreground font-semibold relative z-10">Tratamientos Activos</p>
+              <div className="grid grid-cols-2 divide-x divide-border overflow-hidden rounded-xl border border-border">
+                <div className="bg-primary/[0.06] p-5">
+                  <div className="font-mono text-3xl font-semibold tabular-nums text-foreground">
+                    {patientData.activeTreatments}
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">Tratamientos activos</p>
                 </div>
-                <div className="text-center p-6 border border-chart-2/20 rounded-xl bg-muted/50 hover:border-chart-2/40 hover:shadow-md transition-all relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-chart-2/5 rounded-full -mr-12 -mt-12"></div>
-                  <p className="text-4xl font-bold text-chart-2 mb-2 relative z-10">{patientData.upcomingAppointments}</p>
-                  <p className="text-sm text-muted-foreground font-semibold relative z-10">Citas Próximas</p>
+                <div className="bg-chart-2/[0.06] p-5">
+                  <div className="font-mono text-3xl font-semibold tabular-nums text-foreground">
+                    {patientData.upcomingAppointments}
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">Citas próximas</p>
                 </div>
               </div>
             </CardContent>

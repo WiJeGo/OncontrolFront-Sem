@@ -157,13 +157,13 @@ export default function MedicoPerfilPage() {
           <Card className="border shadow-sm ">
             <CardContent className="pt-8 pb-8">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-                <Avatar className="h-28 w-28 ring-4 ring-primary/20 shadow-sm">
-                  <AvatarFallback className="text-3xl font-bold bg-primary/15 text-primary">
+                <Avatar className="h-28 w-28 ring-1 ring-border shadow-sm">
+                  <AvatarFallback className="text-xl font-semibold bg-primary/15 text-primary">
                     {doctorData.firstName.charAt(0)}{doctorData.lastName.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 text-center md:text-left space-y-3">
-                  <h2 className="text-3xl font-bold text-foreground">
+                  <h2 className="text-xl font-semibold text-foreground">
                     Dr. {doctorData.firstName} {doctorData.lastName}
                   </h2>
                   <p className="text-xl text-muted-foreground font-semibold">{doctorData.specialization}</p>
@@ -187,13 +187,13 @@ export default function MedicoPerfilPage() {
             {/* Personal Information */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <User className="w-5 h-5 text-primary" />
                   </div>
                   Información Personal
                 </CardTitle>
-                <CardDescription className="mt-1 text-base">Información básica de identificación</CardDescription>
+                <CardDescription className="mt-0.5">Información básica de identificación</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 <div className="space-y-2">
@@ -247,13 +247,13 @@ export default function MedicoPerfilPage() {
             {/* Professional Information */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <GraduationCap className="w-5 h-5 text-chart-2" />
                   </div>
                   Información Profesional
                 </CardTitle>
-                <CardDescription className="mt-1 text-base">Credenciales y especialización</CardDescription>
+                <CardDescription className="mt-0.5">Credenciales y especialización</CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
                 <div className="space-y-2">
@@ -308,13 +308,13 @@ export default function MedicoPerfilPage() {
           {/* Biography */}
           <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="flex items-center gap-3 text-xl font-bold">
+              <CardTitle className="flex items-center gap-3 text-base font-semibold">
                 <div className="p-2 rounded-lg bg-chart-5/10">
                   <Settings className="w-5 h-5 text-chart-5" />
                 </div>
                 Biografía Profesional
               </CardTitle>
-              <CardDescription className="mt-1 text-base">Información adicional sobre tu práctica médica</CardDescription>
+              <CardDescription className="mt-0.5">Información adicional sobre tu práctica médica</CardDescription>
             </CardHeader>
             <CardContent className="p-6 space-y-6">
               <div className="space-y-2">
