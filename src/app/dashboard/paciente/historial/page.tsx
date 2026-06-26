@@ -147,11 +147,9 @@ export default function HistorialPage() {
       <DashboardLayout>
         <div className="space-y-8">
           {/* Header */}
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">
-              Historial Médico
-            </h1>
-            <p className="text-muted-foreground text-lg">Registro completo de tu atención médica</p>
+          <div className="space-y-1">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Historial médico</h1>
+            <p className="text-sm text-muted-foreground">Registro completo de tu atención médica</p>
           </div>
 
           {/* Tabs */}
@@ -165,66 +163,47 @@ export default function HistorialPage() {
 
             {/* Medical History Tab */}
             <TabsContent value="historial" className="space-y-4">
-              {/* Filter Buttons */}
-              <Card className="border shadow-sm">
-                <CardHeader className="border-b">
-                  <CardTitle className="text-xl font-bold">Filtros</CardTitle>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <div className="flex flex-wrap gap-3">
-                    <Button
-                      variant={filtroTipo === "todos" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setFiltroTipo("todos")}
-                      className={filtroTipo === "todos" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
+              {/* Filter chips */}
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { value: "todos", label: "Todos" },
+                  { value: "CONSULTATION", label: "Consultas" },
+                  { value: "PROCEDURE", label: "Procedimientos" },
+                  { value: "SURGERY", label: "Cirugías" },
+                  { value: "LAB_RESULT", label: "Laboratorio" },
+                ].map((opt) => {
+                  const count =
+                    opt.value === "todos"
+                      ? historyEntries.length
+                      : historyEntries.filter((e) => e.type === opt.value).length
+                  const active = filtroTipo === opt.value
+                  return (
+                    <button
+                      key={opt.value}
+                      onClick={() => setFiltroTipo(opt.value)}
+                      className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
+                        active
+                          ? "border-primary/40 bg-primary/10 text-primary"
+                          : "border-border text-muted-foreground hover:bg-muted"
+                      }`}
                     >
-                      Todos ({historyEntries.length})
-                    </Button>
-                    <Button
-                      variant={filtroTipo === "CONSULTATION" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setFiltroTipo("CONSULTATION")}
-                      className={filtroTipo === "CONSULTATION" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
-                    >
-                      Consultas ({historyEntries.filter(e => e.type === "CONSULTATION").length})
-                    </Button>
-                    <Button
-                      variant={filtroTipo === "PROCEDURE" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setFiltroTipo("PROCEDURE")}
-                      className={filtroTipo === "PROCEDURE" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
-                    >
-                      Procedimientos ({historyEntries.filter(e => e.type === "PROCEDURE").length})
-                    </Button>
-                    <Button
-                      variant={filtroTipo === "SURGERY" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setFiltroTipo("SURGERY")}
-                      className={filtroTipo === "SURGERY" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
-                    >
-                      Cirugías ({historyEntries.filter(e => e.type === "SURGERY").length})
-                    </Button>
-                    <Button
-                      variant={filtroTipo === "LAB_RESULT" ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setFiltroTipo("LAB_RESULT")}
-                      className={filtroTipo === "LAB_RESULT" ? "bg-primary text-primary-foreground border-0" : "border hover:bg-primary hover:text-primary-foreground"}
-                    >
-                      Laboratorio ({historyEntries.filter(e => e.type === "LAB_RESULT").length})
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                      {opt.label} <span className="tabular-nums opacity-70">{count}</span>
+                    </button>
+                  )
+                })}
+              </div>
 
               {/* History Entries */}
               {filteredHistory.length === 0 ? (
                 <Card className="border shadow-sm">
                   <CardContent className="py-16 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
-                      <FileText className="w-10 h-10 text-muted-foreground" />
+                    <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+                      <span className="absolute inset-0 rounded-full bg-primary/5" aria-hidden="true" />
+                      <span className="absolute inset-[10px] rounded-full bg-primary/10" aria-hidden="true" />
+                      <FileText className="relative h-8 w-8 text-primary/70" aria-hidden="true" />
                     </div>
-                    <h3 className="text-xl font-bold mb-2">No hay entradas en tu historial médico</h3>
-                    <p className="text-muted-foreground">Las entradas aparecerán aquí cuando tengas registros médicos</p>
+                    <h3 className="mb-1 font-semibold text-foreground">Sin registros en tu historial</h3>
+                    <p className="text-sm text-muted-foreground">Las entradas aparecerán aquí cuando tengas registros médicos.</p>
                   </CardContent>
                 </Card>
               ) : (
@@ -233,15 +212,13 @@ export default function HistorialPage() {
                     <Card key={entry.id} className="border shadow-sm hover:border-primary/40 hover:shadow-md transition-all">
                       <CardHeader className="border-b">
                         <div className="flex items-start justify-between gap-4">
-                          <div className="flex items-center gap-4 flex-1">
-                            <div className="p-3 rounded-lg bg-primary/10">
+                          <div className="flex items-center gap-3 flex-1">
+                            <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg ${getTypeColor(entry.type)}`}>
                               {getTypeIcon(entry.type)}
                             </div>
                             <div className="flex-1">
-                              <CardTitle className="text-xl font-bold mb-1">{entry.title}</CardTitle>
-                              <CardDescription className="text-base font-medium">
-                                {entry.doctorName}
-                              </CardDescription>
+                              <CardTitle className="text-base font-semibold">{entry.title}</CardTitle>
+                              <CardDescription className="text-sm">{entry.doctorName}</CardDescription>
                             </div>
                           </div>
                           <div className="text-right space-y-2">
@@ -290,11 +267,13 @@ export default function HistorialPage() {
               {allergies.length === 0 ? (
                 <Card className="border shadow-sm">
                   <CardContent className="py-16 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
-                      <AlertTriangle className="w-10 h-10 text-muted-foreground" />
+                    <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+                      <span className="absolute inset-0 rounded-full bg-success/5" aria-hidden="true" />
+                      <span className="absolute inset-[10px] rounded-full bg-success/10" aria-hidden="true" />
+                      <AlertTriangle className="relative h-8 w-8 text-success/70" aria-hidden="true" />
                     </div>
-                    <h3 className="text-xl font-bold mb-2">No tienes alergias registradas</h3>
-                    <p className="text-muted-foreground">Las alergias aparecerán aquí cuando estén registradas</p>
+                    <h3 className="mb-1 font-semibold text-foreground">Sin alergias registradas</h3>
+                    <p className="text-sm text-muted-foreground">Las alergias aparecerán aquí cuando estén registradas.</p>
                   </CardContent>
                 </Card>
               ) : (
@@ -303,10 +282,10 @@ export default function HistorialPage() {
                     <Card key={allergy.id} className="border shadow-sm hover:border-destructive/40 hover:shadow-md transition-all">
                       <CardHeader className="border-b">
                         <div className="flex items-start justify-between gap-4">
-                          <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                            <div className="p-2 rounded-lg bg-destructive/10">
-                              <AlertTriangle className="w-5 h-5 text-destructive" />
-                            </div>
+                          <CardTitle className="flex items-center gap-2 text-base font-semibold">
+                            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-destructive/10">
+                              <AlertTriangle className="h-4 w-4 text-destructive" />
+                            </span>
                             {allergy.allergen}
                           </CardTitle>
                           <Badge 

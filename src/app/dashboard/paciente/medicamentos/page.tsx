@@ -22,6 +22,29 @@ const routeNames: Record<string, string> = {
   TOPICAL: "Tópica"
 }
 
+function CountUp({ value, className }: { value: number; className?: string }) {
+  const [display, setDisplay] = useState(0)
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduce || value <= 0) {
+      setDisplay(value)
+      return
+    }
+    const duration = 700
+    const start = performance.now()
+    let raf = 0
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration)
+      setDisplay(Math.round(value * (1 - Math.pow(1 - p, 3))))
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [value])
+  return <span className={className}>{display}</span>
+}
+
 export default function MedicamentosPage() {
   const { user } = useAuthContext()
   const [patientProfileId, setPatientProfileId] = useState<number | null>(null)
@@ -111,80 +134,40 @@ export default function MedicamentosPage() {
       <DashboardLayout>
         <div className="space-y-8">
           {/* Header */}
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">
-              Mis Medicamentos
-            </h1>
-            <p className="text-muted-foreground">Gestiona tus medicamentos y recordatorios</p>
+          <div className="space-y-1">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Mis medicamentos</h1>
+            <p className="text-sm text-muted-foreground">Gestiona tus medicamentos y recordatorios</p>
           </div>
 
-          {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="border border-primary/20 hover:border-primary/40 transition-colors hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Medicamentos Activos</CardTitle>
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <Pill className="h-5 w-5 text-primary" />
+          {/* KPI strip */}
+          <div className="grid grid-cols-3 divide-x divide-border overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+            {[
+              { label: "Activos", value: medicationsList.length, sub: "Medicamentos", icon: Pill, tint: "bg-primary/10 text-primary", tile: "bg-primary/[0.06]" },
+              { label: "Próximas 24h", value: upcomingDoses.length, sub: "Dosis", icon: Clock, tint: "bg-chart-2/10 text-chart-2", tile: "bg-chart-2/[0.06]" },
+              { label: "Pendientes", value: upcomingDoses.filter((d) => !d.taken).length, sub: "Por tomar", icon: CheckCircle, tint: "bg-warning/15 text-warning-foreground", tile: "bg-warning/[0.06]" },
+            ].map((kpi) => (
+              <div key={kpi.label} className={`p-5 ${kpi.tile}`}>
+                <div className="mb-3 flex items-center gap-2 text-[13px] text-muted-foreground">
+                  <span className={`grid h-7 w-7 place-items-center rounded-lg ${kpi.tint}`}>
+                    <kpi.icon className="h-4 w-4" />
+                  </span>
+                  <span className="hidden sm:inline">{kpi.label}</span>
                 </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">{medicationsList.length}</div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true"></span>
-                  Medicamentos activos
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-colors hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Dosis Próximas (24h)</CardTitle>
-                <div className="p-2 rounded-lg bg-chart-2/10">
-                  <Clock className="h-5 w-5 text-chart-2" />
-                </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">{upcomingDoses.length}</div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-chart-2" aria-hidden="true"></span>
-                  Próximas 24 horas
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-warning/20 hover:border-warning/40 transition-colors hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-warning/5 rounded-full -mr-16 -mt-16" aria-hidden="true"></div>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-muted-foreground">Dosis Pendientes</CardTitle>
-                <div className="p-2 rounded-lg bg-warning/15">
-                  <CheckCircle className="h-5 w-5 text-warning-foreground" />
-                </div>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <div className="text-3xl font-bold text-foreground mb-1 tabular-nums">
-                  {upcomingDoses.filter(d => !d.taken).length}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-warning" aria-hidden="true"></span>
-                  Por tomar
-                </p>
-              </CardContent>
-            </Card>
+                <CountUp value={kpi.value} className="font-mono text-3xl font-semibold tabular-nums text-foreground" />
+                <div className="mt-1 text-xs text-muted-foreground">{kpi.sub}</div>
+              </div>
+            ))}
           </div>
 
           {/* Upcoming Doses */}
           {upcomingDoses.length > 0 && (
             <Card className="border shadow-sm">
-              <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Clock className="w-6 h-6 text-primary" />
-                  </div>
-                  Próximas Dosis
+              <CardHeader className="border-b border-border">
+                <CardTitle className="flex items-center gap-2 text-base font-semibold">
+                  <Clock className="h-4 w-4 text-primary" />
+                  Próximas dosis
                 </CardTitle>
-                <CardDescription className="mt-1">Medicamentos que debes tomar en las próximas 24 horas</CardDescription>
+                <CardDescription className="mt-0.5">Medicamentos a tomar en las próximas 24 horas</CardDescription>
               </CardHeader>
               <CardContent className="p-6">
                 <div className="space-y-4">
@@ -239,23 +222,21 @@ export default function MedicamentosPage() {
 
           {/* Active Medications */}
           <div className="space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-primary/10">
-                <Pill className="w-6 h-6 text-primary" />
-              </div>
-              <h2 className="text-2xl font-bold tracking-tight text-foreground">
-                Medicamentos Activos
-              </h2>
+            <div className="flex items-center gap-2">
+              <Pill className="h-4 w-4 text-primary" />
+              <h2 className="text-base font-semibold text-foreground">Medicamentos activos</h2>
             </div>
 
             {medicationsList.length === 0 ? (
               <Card className="border shadow-sm">
                 <CardContent className="py-16 text-center">
-                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-6">
-                    <Pill className="w-10 h-10 text-muted-foreground" />
+                  <div className="relative mx-auto mb-4 grid h-20 w-20 place-items-center">
+                    <span className="absolute inset-0 rounded-full bg-primary/5" aria-hidden="true" />
+                    <span className="absolute inset-[10px] rounded-full bg-primary/10" aria-hidden="true" />
+                    <Pill className="relative h-8 w-8 text-primary/70" aria-hidden="true" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">No tienes medicamentos activos registrados</h3>
-                  <p className="text-muted-foreground">Los medicamentos aparecerán aquí cuando estén prescritos</p>
+                  <h3 className="mb-1 font-semibold text-foreground">Sin medicamentos activos</h3>
+                  <p className="text-sm text-muted-foreground">Aparecerán aquí cuando tu médico te los prescriba.</p>
                 </CardContent>
               </Card>
             ) : (
