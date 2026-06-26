@@ -17,6 +17,7 @@ import { useAuthContext } from "@/contexts/auth-context"
 import { appointments } from "@/lib/api"
 import type { AppointmentResponse } from "@/lib/api"
 import { isDoctorUser } from "@/types/organization"
+import { appointmentTypeLabel } from "@/lib/labels"
 import { Search, Plus, MoreHorizontal, Eye, Calendar, Clock, MapPin, Check, CheckCircle, X } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
@@ -422,7 +423,7 @@ export default function AppointmentsPage() {
                             </p>
                           </TableCell>
                           <TableCell>
-                            <span className="text-sm text-foreground">{appointment.type}</span>
+                            <span className="text-sm text-foreground">{appointmentTypeLabel(appointment.type)}</span>
                           </TableCell>
                           <TableCell className="tabular-nums text-muted-foreground">
                             {appointment.durationMinutes} min

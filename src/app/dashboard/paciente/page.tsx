@@ -11,6 +11,7 @@ import { usePatientDashboard } from "@/hooks/use-patients"
 import { medications } from "@/lib/api"
 import type { UpcomingDoseResponse } from "@/lib/api"
 import { isPatientUser } from "@/types/organization"
+import { appointmentTypeLabel } from "@/lib/labels"
 import {
   Plus,
   Calendar,
@@ -440,7 +441,8 @@ export default function PacienteDashboard() {
                         <div className="min-w-0 flex-1">
                           <p className="truncate font-medium text-foreground">Dr. {appointment.doctorName}</p>
                           <p className="truncate text-xs text-muted-foreground">
-                            {appointment.type} · <span className="tabular-nums">{appointment.durationMinutes} min</span>
+                            {appointmentTypeLabel(appointment.type)} ·{" "}
+                            <span className="tabular-nums">{appointment.durationMinutes} min</span>
                           </p>
                         </div>
                         <span className="font-mono text-sm tabular-nums text-foreground">{time}</span>

@@ -16,13 +16,12 @@ import { patients } from "@/lib/api"
 import type { PatientProfileResponse, UpdatePatientRequest } from "@/lib/api"
 import { isPatientUser } from "@/types/organization"
 import { 
-  User, 
-  Mail, 
-  Heart, 
+  User,
+  Mail,
+  Heart,
   Settings,
   Save,
-  Edit,
-  Activity
+  Edit
 } from "lucide-react"
 
 export default function PacientePerfilPage() {
@@ -369,35 +368,6 @@ export default function PacientePerfilPage() {
               </CardContent>
             </Card>
           )}
-
-          {/* Statistics */}
-          <Card className="border shadow-sm">
-            <CardHeader className="border-b">
-              <CardTitle className="flex items-center gap-3 text-base font-semibold">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <Activity className="w-5 h-5 text-primary" />
-                </div>
-                Estadísticas
-              </CardTitle>
-              <CardDescription className="mt-0.5">Tu actividad en la plataforma</CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="grid grid-cols-2 divide-x divide-border overflow-hidden rounded-xl border border-border">
-                <div className="bg-primary/[0.06] p-5">
-                  <div className="font-mono text-3xl font-semibold tabular-nums text-foreground">
-                    {patientData.activeTreatments}
-                  </div>
-                  <p className="mt-1 text-sm text-muted-foreground">Tratamientos activos</p>
-                </div>
-                <div className="bg-chart-2/[0.06] p-5">
-                  <div className="font-mono text-3xl font-semibold tabular-nums text-foreground">
-                    {patientData.upcomingAppointments}
-                  </div>
-                  <p className="mt-1 text-sm text-muted-foreground">Citas próximas</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Save Button */}
           {isEditing && (

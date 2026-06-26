@@ -25,16 +25,18 @@ const tipoNames: Record<string, string> = {
 
 const estadoNames: Record<string, string> = {
   ACTIVE: "Activo",
-  PAUSED: "Pausado",
+  SUSPENDED: "Suspendido",
   COMPLETED: "Completado",
-  SUSPENDED: "Suspendido"
+  CANCELLED: "Cancelado",
+  FOLLOW_UP: "Seguimiento",
 }
 
-const estadoColors = {
-  ACTIVE: "bg-primary/20 text-primary-foreground",
-  PAUSED: "bg-primary/10 text-primary-foreground",
+const estadoColors: Record<string, string> = {
+  ACTIVE: "bg-success/15 text-success",
+  SUSPENDED: "bg-warning/20 text-warning-foreground",
   COMPLETED: "bg-muted text-muted-foreground",
-  SUSPENDED: "bg-muted/50 text-muted-foreground",
+  CANCELLED: "bg-destructive/15 text-destructive",
+  FOLLOW_UP: "bg-chart-2/15 text-chart-2",
 }
 
 export default function TratamientoPacientePage() {
@@ -128,7 +130,7 @@ export default function TratamientoPacientePage() {
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Mi Tratamiento
         </h1>
-        <p className="text-muted-foreground text-lg">Información detallada sobre tu protocolo de tratamiento actual</p>
+        <p className="text-sm text-muted-foreground">Información detallada sobre tu protocolo de tratamiento actual</p>
       </div>
 
       {/* Resumen del tratamiento */}
@@ -137,11 +139,11 @@ export default function TratamientoPacientePage() {
           <div className="flex items-center justify-between mb-4">
             <div className="space-y-2">
               <h2 className="text-lg font-semibold text-foreground">{treatment.protocol}</h2>
-              <p className="text-muted-foreground font-semibold text-lg">{tipoNames[treatment.type] || treatment.type}</p>
+              <p className="text-sm text-muted-foreground">{tipoNames[treatment.type] || treatment.type}</p>
             </div>
-            <Badge className={`${estadoColors[treatment.status as keyof typeof estadoColors]} border font-bold text-lg px-4 py-2`}>
+            <span className={`shrink-0 rounded-md px-2.5 py-1 text-xs font-medium ${estadoColors[treatment.status] || "bg-muted text-muted-foreground"}`}>
               {estadoNames[treatment.status] || treatment.status}
-            </Badge>
+            </span>
           </div>
         </CardHeader>
         <CardContent className="p-6">
@@ -165,13 +167,13 @@ export default function TratamientoPacientePage() {
             </div>
             <div className="space-y-2">
               <p className="text-sm font-semibold text-muted-foreground">Fecha de Inicio</p>
-              <p className="text-foreground font-bold text-lg">
+              <p className="font-semibold text-foreground">
                 {new Date(treatment.startDate).toLocaleDateString('es-ES')}
               </p>
             </div>
             <div className="space-y-2">
               <p className="text-sm font-semibold text-muted-foreground">Próxima Sesión</p>
-              <p className="text-foreground font-bold text-lg">
+              <p className="font-semibold text-foreground">
                 {treatment.nextSession 
                   ? new Date(treatment.nextSession).toLocaleDateString('es-ES')
                   : 'Por programar'}
@@ -204,30 +206,30 @@ export default function TratamientoPacientePage() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground font-semibold">Ciclo Actual:</span>
-                    <span className="font-bold text-lg text-foreground">
+                    <span className="font-semibold text-foreground">
                       {treatment.currentCycle}/{treatment.totalCycles}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground font-semibold">Progreso:</span>
-                    <span className="font-bold text-lg text-primary">{treatment.progressPercentage}%</span>
+                    <span className="font-semibold text-primary">{treatment.progressPercentage}%</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground font-semibold">Estado:</span>
-                    <Badge className="bg-primary/20 text-primary-foreground border font-semibold">
+                    <span className={`rounded-md px-2 py-0.5 text-xs font-medium ${estadoColors[treatment.status] || "bg-muted text-muted-foreground"}`}>
                       {estadoNames[treatment.status] || treatment.status}
-                    </Badge>
+                    </span>
                   </div>
                   {treatment.effectiveness && (
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground font-semibold">Efectividad:</span>
-                      <span className="font-bold text-lg text-chart-2">{treatment.effectiveness.toFixed(1)}%</span>
+                      <span className="font-semibold text-chart-2">{treatment.effectiveness.toFixed(1)}%</span>
                     </div>
                   )}
                   {treatment.adherence && (
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground font-semibold">Adherencia:</span>
-                      <span className="font-bold text-lg text-chart-5">{treatment.adherence.toFixed(1)}%</span>
+                      <span className="font-semibold text-chart-5">{treatment.adherence.toFixed(1)}%</span>
                     </div>
                   )}
                 </div>
@@ -248,19 +250,19 @@ export default function TratamientoPacientePage() {
                   {treatment.location && (
                     <div>
                       <p className="text-sm text-muted-foreground font-semibold mb-1">Ubicación:</p>
-                      <p className="font-bold text-lg text-foreground">{treatment.location}</p>
+                      <p className="font-semibold text-foreground">{treatment.location}</p>
                     </div>
                   )}
                   {treatment.sessionDurationMinutes && (
                     <div>
                       <p className="text-sm text-muted-foreground font-semibold mb-1">Duración de sesión:</p>
-                      <p className="font-bold text-lg text-foreground">{treatment.sessionDurationMinutes} minutos</p>
+                      <p className="font-semibold text-foreground">{treatment.sessionDurationMinutes} minutos</p>
                     </div>
                   )}
                   {treatment.doctorName && (
                     <div>
                       <p className="text-sm text-muted-foreground font-semibold mb-1">Tu médico:</p>
-                      <p className="font-bold text-lg text-primary">{treatment.doctorName}</p>
+                      <p className="font-semibold text-primary">{treatment.doctorName}</p>
                     </div>
                   )}
                 </div>
@@ -318,7 +320,7 @@ export default function TratamientoPacientePage() {
                   {treatment.medications.map((medicamento, index) => (
                     <div key={index} className="border border-border/50 rounded-xl p-4 hover:border-primary/40 hover:shadow-md transition-all bg-card">
                       <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-bold text-lg text-foreground">{medicamento}</h3>
+                        <h3 className="font-semibold text-foreground">{medicamento}</h3>
                         <Badge variant="outline" className="border font-semibold">Activo</Badge>
                       </div>
                     </div>
@@ -353,7 +355,7 @@ export default function TratamientoPacientePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   {treatment.sideEffects.map((efecto, index) => (
                     <div key={index} className="border border-destructive/20 rounded-xl p-4 hover:border-destructive/40 hover:shadow-md transition-all bg-card">
-                      <h3 className="font-bold text-lg text-foreground">{efecto}</h3>
+                      <h3 className="font-semibold text-foreground">{efecto}</h3>
                     </div>
                   ))}
                 </div>
@@ -391,7 +393,7 @@ export default function TratamientoPacientePage() {
                     <div key={session.id} className="border border-border/50 rounded-xl p-5 hover:border-primary/40 hover:shadow-md transition-all bg-card">
                       <div className="flex justify-between items-start gap-4">
                         <div className="flex-1">
-                          <h3 className="font-bold text-xl text-foreground mb-2">
+                          <h3 className="text-base font-semibold text-foreground mb-2">
                             Sesión #{session.sessionNumber} - Ciclo {session.cycleNumber}
                           </h3>
                           <div className="flex items-center gap-4 text-sm text-muted-foreground font-medium mb-2">

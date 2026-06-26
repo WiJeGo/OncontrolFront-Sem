@@ -11,6 +11,7 @@ import { useAuthContext } from "@/contexts/auth-context"
 import { appointments as appointmentsApi } from "@/lib/api"
 import type { AppointmentResponse } from "@/lib/api"
 import { isPatientUser } from "@/types/organization"
+import { appointmentTypeLabel } from "@/lib/labels"
 import { Calendar, Clock, MapPin, User, CheckCircle, X, AlertTriangle, Plus } from "lucide-react"
 import { format, parseISO, isFuture, isPast } from "date-fns"
 import { es } from "date-fns/locale"
@@ -284,7 +285,7 @@ export default function CitasPacientePage() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="font-semibold text-foreground">{appointment.type}</h3>
+                          <h3 className="font-semibold text-foreground">{appointmentTypeLabel(appointment.type)}</h3>
                           <span className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium ${pill.className}`}>
                             <pill.icon className="h-3 w-3" aria-hidden="true" />
                             {pill.label}

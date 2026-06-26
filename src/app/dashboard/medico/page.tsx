@@ -10,6 +10,7 @@ import { Loading } from "@/components/loading"
 import { useAuthContext } from "@/contexts/auth-context"
 import { useDoctorDashboard } from "@/hooks/use-doctors"
 import { isDoctorUser } from "@/types/organization"
+import { appointmentTypeLabel } from "@/lib/labels"
 import {
   Plus,
   Calendar,
@@ -294,7 +295,8 @@ export default function MedicoDashboard() {
                         <div className="min-w-0 flex-1">
                           <p className="truncate font-medium text-foreground">{appointment.patientName}</p>
                           <p className="truncate text-xs text-muted-foreground">
-                            {appointment.type} · <span className="tabular-nums">{appointment.durationMinutes} min</span>
+                            {appointmentTypeLabel(appointment.type)} ·{" "}
+                            <span className="tabular-nums">{appointment.durationMinutes} min</span>
                           </p>
                         </div>
                         <div className="flex flex-col items-end gap-1">
