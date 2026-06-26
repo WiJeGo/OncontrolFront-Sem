@@ -310,58 +310,24 @@ export default function ReportesPage() {
           </div>
 
           {/* Métricas principales */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="border shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-bold text-muted-foreground">Pacientes</CardTitle>
-                <Users className="h-5 w-5 text-primary" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{overview?.patients.total}</div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  <span className="text-primary font-bold">{overview?.patients.active}</span> pacientes activos
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-bold text-muted-foreground">Tratamientos</CardTitle>
-                <Activity className="h-5 w-5 text-chart-2" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{overview?.treatments.active}</div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  En curso actualmente
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-bold text-muted-foreground">Citas del Mes</CardTitle>
-                <Calendar className="h-5 w-5 text-chart-5" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{overview?.appointments.totalMonth}</div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Programadas este mes
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-bold text-muted-foreground">Adherencia</CardTitle>
-                <Heart className="h-5 w-5 text-destructive" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{overview?.treatments.averageAdherence}%</div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Cumplimiento promedio
-                </p>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-2 divide-x divide-y divide-border overflow-hidden rounded-xl border border-border bg-card shadow-sm lg:grid-cols-4 lg:divide-y-0">
+            {[
+              { label: "Pacientes", value: overview?.patients.total ?? 0, sub: `${overview?.patients.active ?? 0} activos`, icon: Users, tint: "bg-primary/10 text-primary", tile: "bg-primary/[0.06]" },
+              { label: "Tratamientos", value: overview?.treatments.active ?? 0, sub: "En curso", icon: Activity, tint: "bg-chart-2/10 text-chart-2", tile: "bg-chart-2/[0.06]" },
+              { label: "Citas del mes", value: overview?.appointments.totalMonth ?? 0, sub: "Programadas", icon: Calendar, tint: "bg-chart-5/10 text-chart-5", tile: "bg-chart-5/[0.06]" },
+              { label: "Adherencia", value: `${overview?.treatments.averageAdherence ?? 0}%`, sub: "Promedio", icon: Heart, tint: "bg-destructive/10 text-destructive", tile: "bg-destructive/[0.06]" },
+            ].map((kpi) => (
+              <div key={kpi.label} className={`p-5 ${kpi.tile}`}>
+                <div className="mb-3 flex items-center gap-2 text-[13px] text-muted-foreground">
+                  <span className={`grid h-7 w-7 place-items-center rounded-lg ${kpi.tint}`}>
+                    <kpi.icon className="h-4 w-4" />
+                  </span>
+                  {kpi.label}
+                </div>
+                <div className="font-mono text-3xl font-semibold tabular-nums text-foreground">{kpi.value}</div>
+                <div className="mt-1 text-xs tabular-nums text-muted-foreground">{kpi.sub}</div>
+              </div>
+            ))}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
