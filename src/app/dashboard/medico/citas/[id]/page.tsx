@@ -232,7 +232,7 @@ export default function AppointmentDetailsPage() {
           <div className="max-w-2xl mx-auto py-12">
             <Card className="border shadow-sm">
               <CardContent className="p-12 text-center">
-                <h3 className="text-xl font-bold text-destructive mb-4">{error || 'Cita no encontrada'}</h3>
+                <h3 className="text-base font-semibold text-destructive mb-4">{error || 'Cita no encontrada'}</h3>
                 <Button asChild>
                   <Link href="/dashboard/medico/citas">Volver a Citas</Link>
                 </Button>
@@ -272,7 +272,7 @@ export default function AppointmentDetailsPage() {
           {/* Patient Info */}
           <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="flex items-center gap-3 text-2xl font-bold">
+              <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <User className="h-6 w-6 text-primary" />
                 </div>
@@ -283,7 +283,7 @@ export default function AppointmentDetailsPage() {
               <div className="space-y-4">
                 <div>
                   <p className="text-sm font-semibold text-muted-foreground mb-1">Paciente</p>
-                  <p className="text-xl font-bold text-foreground">{appointment.patientName}</p>
+                  <p className="text-base font-semibold text-foreground">{appointment.patientName}</p>
                 </div>
               </div>
             </CardContent>
@@ -292,7 +292,7 @@ export default function AppointmentDetailsPage() {
           {/* Appointment Details */}
           <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="flex items-center gap-3 text-2xl font-bold">
+              <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                 <div className="p-2 rounded-lg bg-chart-2/10">
                   <Calendar className="h-6 w-6 text-chart-2" />
                 </div>
@@ -375,7 +375,7 @@ export default function AppointmentDetailsPage() {
           {/* Actions */}
           <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="text-xl font-bold">Acciones</CardTitle>
+              <CardTitle className="text-base font-semibold">Acciones</CardTitle>
             </CardHeader>
             <CardContent className="p-6">
               <div className="flex flex-wrap gap-3">

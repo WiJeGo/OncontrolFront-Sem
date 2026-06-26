@@ -136,7 +136,7 @@ export default function TratamientoPacientePage() {
         <CardHeader className="border-b border-primary/30">
           <div className="flex items-center justify-between mb-4">
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-foreground">{treatment.protocol}</h2>
+              <h2 className="text-lg font-semibold text-foreground">{treatment.protocol}</h2>
               <p className="text-muted-foreground font-semibold text-lg">{tipoNames[treatment.type] || treatment.type}</p>
             </div>
             <Badge className={`${estadoColors[treatment.status as keyof typeof estadoColors]} border font-bold text-lg px-4 py-2`}>
@@ -193,7 +193,7 @@ export default function TratamientoPacientePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <Activity className="w-5 h-5 text-primary" />
                   </div>
@@ -236,7 +236,7 @@ export default function TratamientoPacientePage() {
 
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Calendar className="w-5 h-5 text-chart-2" />
                   </div>
@@ -271,7 +271,7 @@ export default function TratamientoPacientePage() {
           {treatment.notes && (
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-destructive/10">
                     <Heart className="w-5 h-5 text-destructive" />
                   </div>
@@ -287,7 +287,7 @@ export default function TratamientoPacientePage() {
           {treatment.preparationInstructions && (
             <Card className="border border-border shadow-sm ">
               <CardHeader className="border-b border-border">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold text-chart-2">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold text-chart-2">
                   <div className="p-2 rounded-lg bg-chart-2/20">
                     <AlertCircle className="w-5 h-5 text-chart-2" />
                   </div>
@@ -304,7 +304,7 @@ export default function TratamientoPacientePage() {
         <TabsContent value="medicamentos" className="space-y-6">
           <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="flex items-center gap-3 text-2xl font-bold">
+              <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <Pill className="w-6 h-6 text-primary" />
                 </div>
@@ -340,7 +340,7 @@ export default function TratamientoPacientePage() {
         <TabsContent value="efectos" className="space-y-6">
           <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="flex items-center gap-3 text-2xl font-bold">
+              <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                 <div className="p-2 rounded-lg bg-chart-2/10">
                   <AlertCircle className="w-6 h-6 text-chart-2" />
                 </div>
@@ -376,7 +376,7 @@ export default function TratamientoPacientePage() {
         <TabsContent value="sesiones" className="space-y-6">
           <Card className="border shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle className="flex items-center gap-3 text-2xl font-bold">
+              <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <Calendar className="w-6 h-6 text-primary" />
                 </div>

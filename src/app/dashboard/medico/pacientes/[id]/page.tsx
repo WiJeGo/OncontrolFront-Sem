@@ -340,7 +340,7 @@ export default function PatientDetailsPage() {
                 {/* Cancer Information */}
                 <Card className="border shadow-sm">
                   <CardHeader className="border-b">
-                    <CardTitle className="text-xl font-bold flex items-center gap-3">
+                    <CardTitle className="text-base font-semibold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Stethoscope className="h-6 w-6 text-primary" />
                       </div>
@@ -374,7 +374,7 @@ export default function PatientDetailsPage() {
                 {/* Medical Details */}
                 <Card className="border shadow-sm">
                   <CardHeader className="border-b">
-                    <CardTitle className="text-xl font-bold flex items-center gap-3">
+                    <CardTitle className="text-base font-semibold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-chart-2/10">
                         <Heart className="h-6 w-6 text-chart-2" />
                       </div>
@@ -405,7 +405,7 @@ export default function PatientDetailsPage() {
                 {(patient.insuranceProvider || patient.insuranceNumber) && (
                   <Card className="border shadow-sm">
                     <CardHeader className="border-b">
-                      <CardTitle className="text-xl font-bold flex items-center gap-3">
+                      <CardTitle className="text-base font-semibold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-chart-5/10">
                           <Shield className="h-6 w-6 text-chart-5" />
                         </div>
@@ -429,7 +429,7 @@ export default function PatientDetailsPage() {
                 {patient.emergencyContactName && (
                   <Card className="border shadow-sm border-primary/20">
                     <CardHeader className="border-b bg-gradient-to-r from-primary/10 to-background">
-                      <CardTitle className="text-xl font-bold flex items-center gap-3">
+                      <CardTitle className="text-base font-semibold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-primary/20">
                           <AlertTriangle className="h-6 w-6 text-primary" />
                         </div>
@@ -462,7 +462,7 @@ export default function PatientDetailsPage() {
               {allergies.length > 0 && (
                 <Card className="border shadow-sm border-destructive/20">
                   <CardHeader className="border-b bg-gradient-to-r from-destructive/10 to-background">
-                    <CardTitle className="text-xl font-bold flex items-center gap-3">
+                    <CardTitle className="text-base font-semibold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-destructive/20">
                         <Shield className="h-6 w-6 text-destructive" />
                       </div>
@@ -498,7 +498,7 @@ export default function PatientDetailsPage() {
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
                   <div className="flex justify-between items-center">
-                    <CardTitle className="text-xl font-bold flex items-center gap-3">
+                    <CardTitle className="text-base font-semibold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Calendar className="h-6 w-6 text-primary" />
                       </div>
@@ -581,7 +581,7 @@ export default function PatientDetailsPage() {
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
                   <div className="flex justify-between items-center">
-                    <CardTitle className="text-xl font-bold flex items-center gap-3">
+                    <CardTitle className="text-base font-semibold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Activity className="h-6 w-6 text-primary" />
                       </div>
@@ -663,7 +663,7 @@ export default function PatientDetailsPage() {
             <TabsContent value="history" className="space-y-6">
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
-                  <CardTitle className="text-xl font-bold flex items-center gap-3">
+                  <CardTitle className="text-base font-semibold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <FileText className="h-6 w-6 text-primary" />
                     </div>

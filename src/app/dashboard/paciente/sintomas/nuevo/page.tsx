@@ -226,7 +226,7 @@ export default function NuevoSintomaPage() {
               {/* Basic Information */}
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
-                  <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                  <CardTitle className="flex items-center gap-3 text-base font-semibold">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Activity className="h-5 w-5 text-primary" />
                     </div>
@@ -346,7 +346,7 @@ export default function NuevoSintomaPage() {
               {/* Additional Information */}
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
-                  <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                  <CardTitle className="flex items-center gap-3 text-base font-semibold">
                     <div className="p-2 rounded-lg bg-chart-2/10">
                       <AlertTriangle className="h-5 w-5 text-chart-2" />
                     </div>
@@ -437,7 +437,7 @@ export default function NuevoSintomaPage() {
             {/* Summary Card */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="text-xl font-bold">Resumen del Síntoma</CardTitle>
+                <CardTitle className="text-base font-semibold">Resumen del Síntoma</CardTitle>
                 <CardDescription className="mt-1 text-base">Revisa la información antes de enviar</CardDescription>
               </CardHeader>
               <CardContent className="p-6">

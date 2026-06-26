@@ -172,7 +172,7 @@ export default function NuevaCitaPage() {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold mb-3 text-foreground">
+                    <h3 className="text-lg font-semibold mb-3 text-foreground">
                       ¡Solicitud Enviada!
                     </h3>
                     <p className="text-muted-foreground text-lg font-medium">

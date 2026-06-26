@@ -358,15 +358,15 @@ export default function MedicoPerfilPage() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center p-4 border rounded-lg">
-                  <p className="text-2xl font-bold text-primary">0</p>
+                  <p className="text-lg font-semibold text-primary">0</p>
                   <p className="text-sm text-muted-foreground">Pacientes Activos</p>
                 </div>
                 <div className="text-center p-4 border rounded-lg">
-                  <p className="text-2xl font-bold text-primary">0</p>
+                  <p className="text-lg font-semibold text-primary">0</p>
                   <p className="text-sm text-muted-foreground">Total de Pacientes</p>
                 </div>
                 <div className="text-center p-4 border rounded-lg">
-                  <p className="text-2xl font-bold text-primary">0</p>
+                  <p className="text-lg font-semibold text-primary">0</p>
                   <p className="text-sm text-muted-foreground">Tratamientos Administrados</p>
                 </div>
               </div>

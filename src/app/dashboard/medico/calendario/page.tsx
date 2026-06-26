@@ -346,7 +346,7 @@ export default function CalendarPage() {
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
-                  <h2 className="text-xl font-bold">
+                  <h2 className="text-base font-semibold">
                     {view === 'week' 
                       ? `${format(startOfWeek(currentDate, { weekStartsOn: 1 }), 'd MMM', { locale: es })} - ${format(addDays(startOfWeek(currentDate, { weekStartsOn: 1 }), 6), 'd MMM yyyy', { locale: es })}`
                       : format(currentDate, 'MMMM yyyy', { locale: es })
@@ -373,7 +373,7 @@ export default function CalendarPage() {
           {getAppointmentsForDate(new Date()).length > 0 && (
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="text-2xl font-bold">Citas de Hoy</CardTitle>
+                <CardTitle className="text-lg font-semibold">Citas de Hoy</CardTitle>
                 <CardDescription className="mt-1">
                   {getAppointmentsForDate(new Date()).length} {getAppointmentsForDate(new Date()).length === 1 ? 'cita programada' : 'citas programadas'} para hoy
                 </CardDescription>

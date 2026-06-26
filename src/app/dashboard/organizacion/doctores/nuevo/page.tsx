@@ -149,7 +149,7 @@ export default function NewDoctorPage() {
 
       <Card className="border shadow-sm">
         <CardHeader className="border-b">
-          <CardTitle className="text-2xl font-bold">Información del Doctor</CardTitle>
+          <CardTitle className="text-lg font-semibold">Información del Doctor</CardTitle>
           <CardDescription className="mt-1">Completa todos los campos requeridos (*)</CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
@@ -181,7 +181,7 @@ export default function NewDoctorPage() {
                 <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                   <UserPlus className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold">Información Personal</h3>
+                <h3 className="text-base font-semibold">Información Personal</h3>
               </div>
               
               <div className="grid grid-cols-2 gap-4">
@@ -294,7 +294,7 @@ export default function NewDoctorPage() {
                 <div className="h-10 w-10 rounded-lg bg-chart-2/10 flex items-center justify-center">
                   <Award className="h-5 w-5 text-chart-2" />
                 </div>
-                <h3 className="text-xl font-bold">Información Profesional</h3>
+                <h3 className="text-base font-semibold">Información Profesional</h3>
               </div>
               
               <div className="grid grid-cols-2 gap-4">

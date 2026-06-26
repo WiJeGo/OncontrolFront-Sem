@@ -283,7 +283,6 @@ export default function TreatmentDetailsPage() {
           {/* Progress Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -299,7 +298,6 @@ export default function TreatmentDetailsPage() {
             </Card>
             
             <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
@@ -316,7 +314,6 @@ export default function TreatmentDetailsPage() {
             </Card>
             
             <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
@@ -347,7 +344,7 @@ export default function TreatmentDetailsPage() {
                 {/* Treatment Information */}
                 <Card className="border shadow-sm">
                   <CardHeader className="border-b">
-                    <CardTitle className="text-xl font-bold flex items-center gap-3">
+                    <CardTitle className="text-base font-semibold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Heart className="h-6 w-6 text-primary" />
                       </div>
@@ -387,7 +384,7 @@ export default function TreatmentDetailsPage() {
                 {/* Dates and Location */}
                 <Card className="border shadow-sm">
                   <CardHeader className="border-b">
-                    <CardTitle className="text-xl font-bold flex items-center gap-3">
+                    <CardTitle className="text-base font-semibold flex items-center gap-3">
                       <div className="p-2 rounded-lg bg-chart-2/10">
                         <Calendar className="h-6 w-6 text-chart-2" />
                       </div>
@@ -424,7 +421,7 @@ export default function TreatmentDetailsPage() {
                 {treatment.notes && (
                   <Card className="lg:col-span-2 border shadow-sm">
                     <CardHeader className="border-b">
-                      <CardTitle className="text-xl font-bold flex items-center gap-3">
+                      <CardTitle className="text-base font-semibold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-chart-5/10">
                           <FileText className="h-6 w-6 text-chart-5" />
                         </div>
@@ -441,7 +438,7 @@ export default function TreatmentDetailsPage() {
                 {treatment.preparationInstructions && (
                   <Card className="lg:col-span-2 border shadow-sm border-primary/20">
                     <CardHeader className="border-b bg-gradient-to-r from-primary/10 to-background">
-                      <CardTitle className="text-xl font-bold flex items-center gap-3">
+                      <CardTitle className="text-base font-semibold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-primary/20">
                           <AlertTriangle className="h-6 w-6 text-primary" />
                         </div>
@@ -458,7 +455,7 @@ export default function TreatmentDetailsPage() {
                 {patient && (
                   <Card className="lg:col-span-2 border shadow-sm">
                     <CardHeader className="border-b">
-                      <CardTitle className="text-xl font-bold flex items-center gap-3">
+                      <CardTitle className="text-base font-semibold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-chart-2/10">
                           <User className="h-6 w-6 text-chart-2" />
                         </div>
@@ -505,7 +502,7 @@ export default function TreatmentDetailsPage() {
             <TabsContent value="sessions" className="space-y-6">
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
-                  <CardTitle className="text-xl font-bold flex items-center gap-3">
+                  <CardTitle className="text-base font-semibold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Calendar className="h-6 w-6 text-primary" />
                     </div>
@@ -590,7 +587,7 @@ export default function TreatmentDetailsPage() {
             <TabsContent value="medications" className="space-y-6">
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
-                  <CardTitle className="text-xl font-bold flex items-center gap-3">
+                  <CardTitle className="text-base font-semibold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Pill className="h-6 w-6 text-primary" />
                     </div>

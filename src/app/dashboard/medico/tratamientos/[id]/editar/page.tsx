@@ -272,7 +272,7 @@ export default function EditarTratamientoPage() {
           <div className="max-w-2xl mx-auto py-12">
             <Card className="border shadow-sm">
               <CardContent className="p-12 text-center">
-                <h3 className="text-xl font-bold text-destructive mb-4">{error}</h3>
+                <h3 className="text-base font-semibold text-destructive mb-4">{error}</h3>
                 <Button asChild>
                   <Link href="/dashboard/medico/tratamientos">Volver a Tratamientos</Link>
                 </Button>
@@ -344,7 +344,7 @@ export default function EditarTratamientoPage() {
             {/* Patient Info (Read-only) */}
               <Card className="border shadow-sm bg-muted/30">
                 <CardHeader className="border-b">
-                  <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                  <CardTitle className="flex items-center gap-3 text-base font-semibold">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <User className="h-5 w-5 text-primary" />
                     </div>
@@ -368,7 +368,7 @@ export default function EditarTratamientoPage() {
             {/* Treatment Type & Protocol (Read-only) */}
               <Card className="border shadow-sm bg-muted/30">
                 <CardHeader className="border-b">
-                  <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                  <CardTitle className="flex items-center gap-3 text-base font-semibold">
                     <div className="p-2 rounded-lg bg-chart-2/10">
                       <Activity className="h-5 w-5 text-chart-2" />
                     </div>
@@ -395,7 +395,7 @@ export default function EditarTratamientoPage() {
             {/* Editable Fields */}
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
-                  <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                  <CardTitle className="flex items-center gap-3 text-base font-semibold">
                     <div className="p-2 rounded-lg bg-chart-2/10">
                       <Activity className="h-5 w-5 text-chart-2" />
                     </div>
@@ -458,7 +458,7 @@ export default function EditarTratamientoPage() {
             {/* Medications */}
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
-                  <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                  <CardTitle className="flex items-center gap-3 text-base font-semibold">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Pill className="h-5 w-5 text-primary" />
                     </div>
@@ -533,7 +533,7 @@ export default function EditarTratamientoPage() {
             {/* Additional Information */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-chart-5/10">
                     <FileText className="h-5 w-5 text-chart-5" />
                   </div>

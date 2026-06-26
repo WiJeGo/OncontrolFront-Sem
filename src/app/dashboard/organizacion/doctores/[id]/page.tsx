@@ -113,7 +113,7 @@ export default function DoctorDetailsPage() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-6 flex-1">
                     <Avatar className="h-20 w-20 ring-4 ring-primary/20 shadow-sm">
-                      <AvatarFallback className="text-2xl font-bold bg-primary/15 text-primary">
+                      <AvatarFallback className="text-lg font-semibold bg-primary/15 text-primary">
                         {doctor.firstName[0]}{doctor.lastName[0]}
                       </AvatarFallback>
                     </Avatar>
@@ -181,12 +181,11 @@ export default function DoctorDetailsPage() {
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
               <CardContent className="pt-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold text-muted-foreground">Especialización</p>
-                    <p className="text-xl font-bold text-foreground mt-1">{doctor.specialization}</p>
+                    <p className="text-base font-semibold text-foreground mt-1">{doctor.specialization}</p>
                   </div>
                   <div className="p-3 rounded-lg bg-primary/10">
                     <Stethoscope className="h-8 w-8 text-primary" />
@@ -197,7 +196,6 @@ export default function DoctorDetailsPage() {
             
             {doctor.rating !== undefined && (
               <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-chart-2/5 rounded-full -mr-16 -mt-16"></div>
                 <CardContent className="pt-6 relative z-10">
                   <div className="flex items-center justify-between">
                     <div>
@@ -217,7 +215,6 @@ export default function DoctorDetailsPage() {
 
             {doctor.yearsOfExperience !== undefined && (
               <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-chart-5/5 rounded-full -mr-16 -mt-16"></div>
                 <CardContent className="pt-6 relative z-10">
                   <div className="flex items-center justify-between">
                     <div>
@@ -238,7 +235,7 @@ export default function DoctorDetailsPage() {
             {/* Professional Information */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="text-xl font-bold flex items-center gap-3">
+                <CardTitle className="text-base font-semibold flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <Stethoscope className="h-6 w-6 text-primary" />
                   </div>
@@ -278,7 +275,7 @@ export default function DoctorDetailsPage() {
             {/* Personal Information */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="text-xl font-bold flex items-center gap-3">
+                <CardTitle className="text-base font-semibold flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Users className="h-6 w-6 text-chart-2" />
                   </div>
@@ -321,7 +318,7 @@ export default function DoctorDetailsPage() {
             {doctor.organizationName && (
               <Card className="border shadow-sm lg:col-span-2">
                 <CardHeader className="border-b">
-                  <CardTitle className="text-xl font-bold flex items-center gap-3">
+                  <CardTitle className="text-base font-semibold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-chart-5/10">
                       <Building2 className="h-6 w-6 text-chart-5" />
                     </div>
@@ -340,7 +337,7 @@ export default function DoctorDetailsPage() {
             {doctor.bio && (
               <Card className="border shadow-sm lg:col-span-2">
                 <CardHeader className="border-b">
-                  <CardTitle className="text-xl font-bold flex items-center gap-3">
+                  <CardTitle className="text-base font-semibold flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Activity className="h-6 w-6 text-primary" />
                     </div>
@@ -356,7 +353,7 @@ export default function DoctorDetailsPage() {
             {/* Status Information */}
             <Card className="border shadow-sm lg:col-span-2">
               <CardHeader className="border-b">
-                <CardTitle className="text-xl font-bold flex items-center gap-3">
+                <CardTitle className="text-base font-semibold flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Activity className="h-6 w-6 text-chart-2" />
                   </div>
@@ -402,7 +399,7 @@ export default function DoctorDetailsPage() {
                   {doctor.rating !== undefined && (
                     <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-2">Calificación</p>
-                      <p className="text-2xl font-bold">{doctor.rating.toFixed(1)} / 5.0</p>
+                      <p className="text-lg font-semibold">{doctor.rating.toFixed(1)} / 5.0</p>
                       {doctor.totalReviews !== undefined && (
                         <p className="text-xs text-muted-foreground font-medium mt-1">
                           Basado en {doctor.totalReviews} {doctor.totalReviews === 1 ? 'reseña' : 'reseñas'}

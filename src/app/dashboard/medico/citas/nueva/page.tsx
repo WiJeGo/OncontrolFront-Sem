@@ -232,7 +232,7 @@ export default function NuevaCitaPage() {
             {/* Patient Selection */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <User className="h-5 w-5 text-primary" />
                   </div>
@@ -274,7 +274,7 @@ export default function NuevaCitaPage() {
             {/* Date and Time */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <CalendarIcon className="h-5 w-5 text-chart-2" />
                   </div>
@@ -354,7 +354,7 @@ export default function NuevaCitaPage() {
             {/* Appointment Details */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-base font-semibold">
                   <div className="p-2 rounded-lg bg-chart-5/10">
                     <FileText className="h-5 w-5 text-chart-5" />
                   </div>

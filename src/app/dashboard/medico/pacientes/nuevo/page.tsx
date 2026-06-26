@@ -263,7 +263,7 @@ export default function NuevoPacientePage() {
             {/* Información Personal */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-2xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                   <div className="p-2 rounded-lg bg-primary/10">
                     <UserPlus className="h-6 w-6 text-primary" />
                   </div>
@@ -401,7 +401,7 @@ export default function NuevoPacientePage() {
             {/* Información Médica */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-2xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <Activity className="h-6 w-6 text-chart-2" />
                   </div>
@@ -645,7 +645,7 @@ export default function NuevoPacientePage() {
             {/* Contacto de Emergencia */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-2xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                   <div className="p-2 rounded-lg bg-chart-5/10">
                     <UserPlus className="h-6 w-6 text-chart-5" />
                   </div>
@@ -700,7 +700,7 @@ export default function NuevoPacientePage() {
             {/* Información de Seguro */}
             <Card className="border shadow-sm">
               <CardHeader className="border-b">
-                <CardTitle className="flex items-center gap-3 text-2xl font-bold">
+                <CardTitle className="flex items-center gap-3 text-lg font-semibold">
                   <div className="p-2 rounded-lg bg-chart-2/10">
                     <UserPlus className="h-6 w-6 text-chart-2" />
                   </div>
