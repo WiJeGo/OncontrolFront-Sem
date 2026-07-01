@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { AuthGuard } from "@/components/auth-guard-updated"
 import { DashboardLayout } from "@/components/dashboard-layout"
+import { TomographyViewer } from "@/components/medical-imaging/TomographyViewer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -328,12 +329,13 @@ export default function PatientDetailsPage() {
 
           {/* Tabs */}
           <Tabs defaultValue="medical" className="space-y-4">
-            <TabsList>
+            <TabsList className="flex h-auto flex-wrap justify-start">
               <TabsTrigger value="medical">Información Médica</TabsTrigger>
               <TabsTrigger value="appointments">Citas</TabsTrigger>
               <TabsTrigger value="treatments">Tratamientos</TabsTrigger>
               <TabsTrigger value="history">Historial</TabsTrigger>
-            </TabsList>
+              <TabsTrigger value="imaging">Tomografía 3D</TabsTrigger>
+          </TabsList>
 
             {/* Medical Information Tab */}
             <TabsContent value="medical" className="space-y-6">
@@ -724,6 +726,13 @@ export default function PatientDetailsPage() {
                   )}
                 </CardContent>
               </Card>
+            </TabsContent>
+            {/* Imaging Tab */}
+            <TabsContent value="imaging" className="space-y-6">
+              <TomographyViewer
+                patientId={patient.id}
+                patientName={`${patient.firstName} ${patient.lastName}`}
+              />
             </TabsContent>
           </Tabs>
         </div>
