@@ -1184,6 +1184,12 @@ class ApiClient {
     return response.medications;
   }
 
+  async getPatientImagingStudies(patientProfileId: number): Promise<ImagingStudyResponse[]> {
+    return this.request<ImagingStudyResponse[]>(
+      `/api/imaging/patients/${patientProfileId}/studies`
+    );
+  }
+
   async getDoctorMedications(doctorProfileId: number): Promise<MedicationResponse[]> {
     const response = await this.request<{ medications: MedicationResponse[]; count: number }>(
       `/api/medications/doctor/${doctorProfileId}`
@@ -1430,6 +1436,21 @@ export const medications = {
     apiClient.getUpcomingDoses(patientProfileId, days),
   markDoseTaken: (medicationId: number, data: MarkDoseTakenRequest) =>
     apiClient.markDoseTaken(medicationId, data),
+};
+
+export interface ImagingStudyResponse {
+  id: number;
+  patientProfileId: number;
+  orthancStudyId: string;
+  label?: string;
+  modality?: string;
+  description?: string;
+  bodyPart?: string;
+  acquisitionDate?: string;
+}
+
+export const imagingStudies = {
+  getByPatient: (patientProfileId: number) => apiClient.getPatientImagingStudies(patientProfileId),
 };
 
 export const medicalHistory = {

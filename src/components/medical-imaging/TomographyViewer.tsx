@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   AlertTriangle,
   ExternalLink,
@@ -21,10 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  getImagingStudiesByPatientId,
-  type ImagingStudy,
-} from "@/lib/imaging-studies"
+import { imagingStudies, type ImagingStudyResponse } from "@/lib/api"
 
 type TomographyViewerProps = {
   patientId: string | number
@@ -35,7 +32,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? ""
 const ORTHANC_WEB_URL =
   process.env.NEXT_PUBLIC_ORTHANC_WEB_URL ?? "/orthanc"
 
-function formatModality(modality: ImagingStudy["modality"]) {
+function formatModality(modality?: string) {
   switch (modality) {
     case "CT":
       return "Tomografía"
@@ -54,21 +51,30 @@ export function TomographyViewer({
   patientId,
   patientName,
 }: TomographyViewerProps) {
-  const studies = useMemo(
-    () => getImagingStudiesByPatientId(patientId),
-    [patientId]
-  )
-
-  const [selectedStudyId, setSelectedStudyId] = useState<string | null>(null)
+  const [studies, setStudies] = useState<ImagingStudyResponse[]>([])
+  const [selectedStudyId, setSelectedStudyId] = useState<number | null>(null)
   const [viewerUrl, setViewerUrl] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Studies now come from the DB (imaging_studies) via the backend, keyed by
+  // patient_profile_id — no more hardcoded mapping.
   useEffect(() => {
-    if (studies.length > 0) {
-      setSelectedStudyId((current) => current ?? studies[0].id)
+    let active = true
+    imagingStudies
+      .getByPatient(Number(patientId))
+      .then((data) => {
+        if (!active) return
+        setStudies(data)
+        setSelectedStudyId((current) => current ?? (data[0]?.id ?? null))
+      })
+      .catch(() => {
+        if (active) setStudies([])
+      })
+    return () => {
+      active = false
     }
-  }, [studies])
+  }, [patientId])
 
   const selectedStudy =
     studies.find((study) => study.id === selectedStudyId) ?? studies[0]
@@ -141,10 +147,9 @@ export function TomographyViewer({
           <Alert className="border-yellow-300 bg-yellow-50 text-yellow-900">
             <Info className="h-5 w-5" />
             <AlertDescription className="font-medium">
-              Para mostrar una tomografía, registra el{" "}
-              <strong>orthancStudyId</strong> en{" "}
-              <code>src/lib/imaging-studies.ts</code> y asócialo al{" "}
-              <strong>patientId</strong> de OnControl.
+              Este paciente no tiene estudios de imagen vinculados. Sube la
+              tomografía a Orthanc y asóciala al paciente mediante{" "}
+              <code>POST /api/imaging/patients/{"{"}id{"}"}/studies</code>.
             </AlertDescription>
           </Alert>
 
