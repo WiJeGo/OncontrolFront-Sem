@@ -6,7 +6,7 @@ import {
   ExternalLink,
   FileSearch,
   ImageIcon,
-  Info,
+  Loader2,
   ScanLine,
   ShieldCheck,
   Upload,
@@ -58,6 +58,7 @@ export function TomographyViewer({
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [isLoadingStudies, setIsLoadingStudies] = useState(true)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Studies now come from the DB (imaging_studies) via the backend, keyed by
@@ -75,7 +76,8 @@ export function TomographyViewer({
   }, [patientId])
 
   useEffect(() => {
-    loadStudies()
+    setIsLoadingStudies(true)
+    loadStudies().finally(() => setIsLoadingStudies(false))
   }, [loadStudies])
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -174,6 +176,17 @@ export function TomographyViewer({
     }
   }
 
+  if (isLoadingStudies) {
+    return (
+      <Card className="border shadow-sm">
+        <CardContent className="flex items-center justify-center gap-3 p-12 text-muted-foreground">
+          <Loader2 className="h-5 w-5 animate-spin" />
+          <span className="text-sm font-medium">Cargando estudios de imagen…</span>
+        </CardContent>
+      </Card>
+    )
+  }
+
   if (studies.length === 0) {
     return (
       <Card className="border shadow-sm">
@@ -185,20 +198,11 @@ export function TomographyViewer({
             Imágenes médicas
           </CardTitle>
           <CardDescription>
-            No hay estudios configurados para este paciente.
+            Este paciente aún no tiene una tomografía vinculada.
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-4 p-6">
-          <Alert className="border-yellow-300 bg-yellow-50 text-yellow-900">
-            <Info className="h-5 w-5" />
-            <AlertDescription className="font-medium">
-              Este paciente no tiene estudios de imagen vinculados. Sube la
-              tomografía a Orthanc y asóciala al paciente mediante{" "}
-              <code>POST /api/imaging/patients/{"{"}id{"}"}/studies</code>.
-            </AlertDescription>
-          </Alert>
-
+        <CardContent className="p-6">
           <div className="rounded-xl border border-dashed p-8 text-center">
             <FileSearch className="mx-auto mb-3 h-12 w-12 text-muted-foreground" />
             <p className="text-base font-semibold text-muted-foreground">
