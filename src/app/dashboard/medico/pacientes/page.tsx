@@ -28,6 +28,7 @@ import {
   Download,
   UserX,
   Pencil,
+  ScanLine,
 } from "lucide-react"
 
 function CountUp({ value, className }: { value: number; className?: string }) {
@@ -343,6 +344,16 @@ export default function PatientsPage() {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-1.5">
+                            <Button
+                              asChild
+                              size="sm"
+                              className="border border-primary/30 bg-primary/10 text-primary shadow-sm hover:bg-primary/20"
+                            >
+                              <Link href={`/dashboard/medico/pacientes/${patient.id}?tab=imaging`}>
+                                <ScanLine className="mr-1.5 h-4 w-4" />
+                                TC 3D
+                              </Link>
+                            </Button>
                             <Button asChild variant="outline" size="sm" className="border-border hover:bg-muted">
                               <Link href={`/dashboard/medico/pacientes/${patient.id}`}>
                                 <Eye className="mr-1.5 h-4 w-4" />

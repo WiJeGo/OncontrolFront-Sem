@@ -41,6 +41,16 @@ import { es } from "date-fns/locale"
 export default function PatientDetailsPage() {
   const { user } = useAuthContext()
   const params = useParams()
+  const [activeTab, setActiveTab] = useState("medical")
+
+  // Deep-link support: open directly on a given tab (e.g. ?tab=imaging from the
+  // patients list "TC 3D" button). Read on mount to avoid the useSearchParams
+  // Suspense requirement; the tabs only render after the patient loads, so there
+  // is no visible flash.
+  useEffect(() => {
+    const tab = new URLSearchParams(window.location.search).get("tab")
+    if (tab) setActiveTab(tab)
+  }, [])
   const patientId = params.id as string
 
   const getStatusText = (status: string) => {
@@ -328,7 +338,7 @@ export default function PatientDetailsPage() {
           </div>
 
           {/* Tabs */}
-          <Tabs defaultValue="medical" className="space-y-4">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
             <TabsList className="flex h-auto flex-wrap justify-start">
               <TabsTrigger value="medical">Información Médica</TabsTrigger>
               <TabsTrigger value="appointments">Citas</TabsTrigger>
