@@ -1190,6 +1190,26 @@ class ApiClient {
     );
   }
 
+  async uploadPatientImagingStudy(patientProfileId: number, file: File): Promise<ImagingStudyResponse> {
+    this.loadTokenFromStorage();
+    const form = new FormData();
+    form.append("file", file);
+    // Note: do NOT set Content-Type — the browser sets the multipart boundary.
+    const response = await fetch(
+      `${this.baseURL}/api/imaging/patients/${patientProfileId}/upload`,
+      {
+        method: "POST",
+        headers: { ...(this.token && { Authorization: `Bearer ${this.token}` }) },
+        body: form,
+      }
+    );
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(text || "No se pudo subir la tomografía.");
+    }
+    return response.json();
+  }
+
   async getDoctorMedications(doctorProfileId: number): Promise<MedicationResponse[]> {
     const response = await this.request<{ medications: MedicationResponse[]; count: number }>(
       `/api/medications/doctor/${doctorProfileId}`
@@ -1451,6 +1471,8 @@ export interface ImagingStudyResponse {
 
 export const imagingStudies = {
   getByPatient: (patientProfileId: number) => apiClient.getPatientImagingStudies(patientProfileId),
+  upload: (patientProfileId: number, file: File) =>
+    apiClient.uploadPatientImagingStudy(patientProfileId, file),
 };
 
 export const medicalHistory = {

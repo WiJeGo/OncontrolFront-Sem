@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import {
   AlertTriangle,
   ExternalLink,
@@ -9,6 +9,7 @@ import {
   Info,
   ScanLine,
   ShieldCheck,
+  Upload,
 } from "lucide-react"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -56,25 +57,70 @@ export function TomographyViewer({
   const [viewerUrl, setViewerUrl] = useState<string | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Studies now come from the DB (imaging_studies) via the backend, keyed by
   // patient_profile_id — no more hardcoded mapping.
-  useEffect(() => {
-    let active = true
-    imagingStudies
-      .getByPatient(Number(patientId))
-      .then((data) => {
-        if (!active) return
-        setStudies(data)
-        setSelectedStudyId((current) => current ?? (data[0]?.id ?? null))
-      })
-      .catch(() => {
-        if (active) setStudies([])
-      })
-    return () => {
-      active = false
+  const loadStudies = useCallback(async () => {
+    try {
+      const data = await imagingStudies.getByPatient(Number(patientId))
+      setStudies(data)
+      setSelectedStudyId((current) => current ?? (data[0]?.id ?? null))
+      return data
+    } catch {
+      setStudies([])
+      return [] as ImagingStudyResponse[]
     }
   }, [patientId])
+
+  useEffect(() => {
+    loadStudies()
+  }, [loadStudies])
+
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    event.target.value = "" // allow re-selecting the same file
+    if (!file) return
+
+    try {
+      setIsUploading(true)
+      setError(null)
+      const created = await imagingStudies.upload(Number(patientId), file)
+      await loadStudies()
+      setSelectedStudyId(created.id)
+      setViewerUrl(null)
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "No se pudo subir la tomografía."
+      )
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
+  const uploadControls = (
+    <>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".dcm,.zip,application/dicom,application/zip"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => fileInputRef.current?.click()}
+        disabled={isUploading}
+      >
+        <Upload className="mr-2 h-4 w-4" />
+        {isUploading ? "Subiendo tomografía..." : "Subir tomografía"}
+      </Button>
+    </>
+  )
 
   const selectedStudy =
     studies.find((study) => study.id === selectedStudyId) ?? studies[0]
@@ -162,12 +208,19 @@ export function TomographyViewer({
               Paciente: {patientName || patientId}
             </p>
 
-            <Button asChild variant="outline" className="mt-5">
-              <a href={ORTHANC_WEB_URL} target="_blank" rel="noreferrer">
-                Abrir Orthanc
-                <ExternalLink className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+              {uploadControls}
+              <Button asChild variant="ghost">
+                <a href={ORTHANC_WEB_URL} target="_blank" rel="noreferrer">
+                  Abrir Orthanc
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </div>
+
+            {error && (
+              <p className="mt-3 text-sm font-medium text-destructive">{error}</p>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -272,7 +325,9 @@ export function TomographyViewer({
                     : "Generar reconstrucción pulmonar 3D"}
                 </Button>
 
-                <Button asChild variant="outline">
+                {uploadControls}
+
+                <Button asChild variant="ghost">
                   <a href={ORTHANC_WEB_URL} target="_blank" rel="noreferrer">
                     Abrir Orthanc
                     <ExternalLink className="ml-2 h-4 w-4" />
