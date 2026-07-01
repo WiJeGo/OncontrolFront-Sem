@@ -61,7 +61,10 @@ export default function PacientePerfilPage() {
 
     try {
       const payload: UpdatePatientRequest = {
+        firstName: patientData.firstName || undefined,
+        lastName: patientData.lastName || undefined,
         phone: patientData.phone,
+        birthDate: patientData.birthDate || undefined,
         address: patientData.address || undefined,
       }
 
@@ -219,8 +222,9 @@ export default function PacientePerfilPage() {
                   <Input
                     id="firstName"
                     value={patientData.firstName}
-                    disabled={true}
-                    className="h-12 text-base border bg-muted/50"
+                    onChange={(e) => setPatientData({ ...patientData, firstName: e.target.value })}
+                    disabled={!isEditing}
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
 
@@ -229,8 +233,9 @@ export default function PacientePerfilPage() {
                   <Input
                     id="lastName"
                     value={patientData.lastName}
-                    disabled={true}
-                    className="h-12 text-base border bg-muted/50"
+                    onChange={(e) => setPatientData({ ...patientData, lastName: e.target.value })}
+                    disabled={!isEditing}
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
 
@@ -265,9 +270,10 @@ export default function PacientePerfilPage() {
                   <Input
                     id="dateOfBirth"
                     type="date"
-                    value={patientData.birthDate || ''}
-                    disabled={true}
-                    className="h-12 text-base border bg-muted/50"
+                    value={patientData.birthDate?.slice(0, 10) || ''}
+                    onChange={(e) => setPatientData({ ...patientData, birthDate: e.target.value })}
+                    disabled={!isEditing}
+                    className="h-12 text-base border focus:border-primary"
                   />
                 </div>
               </CardContent>

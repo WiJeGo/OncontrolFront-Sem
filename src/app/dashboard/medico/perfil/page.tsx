@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Loading } from "@/components/loading"
@@ -57,6 +58,7 @@ export default function MedicoPerfilPage() {
         licenseNumber: doctorData.licenseNumber,
         bio: doctorData.bio || undefined,
         address: doctorData.address || undefined,
+        isAvailable: doctorData.isAvailable,
       }
 
       const updated = await doctors.updateProfile(doctorData.id, payload)
@@ -294,12 +296,19 @@ export default function MedicoPerfilPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="status" className="text-base font-semibold">Disponibilidad</Label>
-                  <Input
-                    id="status"
-                    value={doctorData.isAvailable ? 'Disponible' : 'No disponible'}
-                    disabled={true}
-                    className="h-12 text-base border bg-muted/50"
-                  />
+                  <Select
+                    value={doctorData.isAvailable ? "true" : "false"}
+                    onValueChange={(v) => setDoctorData({ ...doctorData, isAvailable: v === "true" })}
+                    disabled={!isEditing}
+                  >
+                    <SelectTrigger id="status" className="h-12 text-base border">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="true">Disponible</SelectItem>
+                      <SelectItem value="false">No disponible</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </CardContent>
             </Card>

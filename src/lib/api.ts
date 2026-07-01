@@ -101,12 +101,23 @@ export interface UpdateDoctorRequest {
 
 // Partial update of a patient's own profile — every field optional (omit = unchanged).
 export interface UpdatePatientRequest {
+  // Demographic (patient-editable)
   firstName?: string;
   lastName?: string;
   phone?: string;
   birthDate?: string; // LocalDate in backend
   city?: string;
   address?: string;
+  // Clinical (doctor-managed)
+  cancerType?: string;
+  cancerStage?: string;
+  diagnosisDate?: string; // LocalDate in backend
+  treatmentStatus?: string;
+  bloodType?: string;
+  allergies?: string;
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
+  emergencyContactRelationship?: string;
 }
 
 export interface CreatePatientRequest {
