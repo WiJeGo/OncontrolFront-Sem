@@ -62,6 +62,12 @@ const nextConfig: NextConfig = {
   // (localhost defaults) and in production (set these on Vercel to the
   // deployed/tunnelled HTTPS origins to avoid mixed-content and CORS).
   async rewrites() {
+    // Only proxy in local dev. In production the app calls the backend via the
+    // absolute NEXT_PUBLIC_API_URL and the 3D viewer loads from its own HTTPS
+    // origin (Azure), so these rewrites are unused there — returning [] guarantees
+    // they never shadow a same-origin path in prod.
+    if (process.env.NODE_ENV !== "development") return [];
+
     const BACKEND_ORIGIN = process.env.BACKEND_ORIGIN ?? "http://localhost:8081";
     const IMAGING_ORIGIN = process.env.IMAGING_ORIGIN ?? "http://localhost:8001";
     const ORTHANC_ORIGIN = process.env.ORTHANC_ORIGIN ?? "http://localhost:8042";
