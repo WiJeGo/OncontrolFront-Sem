@@ -54,74 +54,33 @@ const nextConfig: NextConfig = {
     return config;
   },
 
-    // Local gateway/proxy for backend, Orthanc and imaging-service
+  // Gateway/proxy for backend, Orthanc and imaging-service.
+  // Destinations are env-driven so the same code works in local dev
+  // (localhost defaults) and in production (set these on Vercel to the
+  // deployed/tunnelled HTTPS origins to avoid mixed-content and CORS).
   async rewrites() {
+    const BACKEND_ORIGIN = process.env.BACKEND_ORIGIN ?? "http://localhost:8081";
+    const IMAGING_ORIGIN = process.env.IMAGING_ORIGIN ?? "http://localhost:8001";
+    const ORTHANC_ORIGIN = process.env.ORTHANC_ORIGIN ?? "http://localhost:8042";
+
     return [
       // Spring Boot backend
-      {
-        source: "/api/:path*",
-        destination: "http://localhost:8081/api/:path*",
-      },
+      { source: "/api/:path*", destination: `${BACKEND_ORIGIN}/api/:path*` },
 
       // FastAPI imaging-service
-      {
-        source: "/imaging/:path*",
-        destination: "http://localhost:8001/:path*",
-      },
+      { source: "/imaging/:path*", destination: `${IMAGING_ORIGIN}/:path*` },
 
-      // Orthanc web UI
-      {
-        source: "/orthanc/:path*",
-        destination: "http://localhost:8042/:path*",
-      },
-
-      // Orthanc OHIF plugin
-      {
-        source: "/ohif/:path*",
-        destination: "http://localhost:8042/ohif/:path*",
-      },
-
-      // Orthanc UI nueva
-      {
-        source: "/ui/:path*",
-        destination: "http://localhost:8042/ui/:path*",
-      },
-
-      // Orthanc VolView plugin
-      {
-        source: "/volview/:path*",
-        destination: "http://localhost:8042/volview/:path*",
-      },
-
-      // Orthanc DICOMweb
-      {
-        source: "/dicom-web/:path*",
-        destination: "http://localhost:8042/dicom-web/:path*",
-      },
-
-      // Orthanc WADO
-      {
-        source: "/wado/:path*",
-        destination: "http://localhost:8042/wado/:path*",
-      },
-
-      // Some Orthanc REST routes used by plugins/viewers
-      {
-        source: "/studies/:path*",
-        destination: "http://localhost:8042/studies/:path*",
-      },
-      {
-        source: "/series/:path*",
-        destination: "http://localhost:8042/series/:path*",
-      },
-      {
-        source: "/instances/:path*",
-        destination: "http://localhost:8042/instances/:path*",
-      },
-      {
-        source: "/patients/:path*",
-        destination: "http://localhost:8042/patients/:path*",
-      },
+      // Orthanc web UI + plugins + REST used by viewers
+      { source: "/orthanc/:path*", destination: `${ORTHANC_ORIGIN}/:path*` },
+      { source: "/ohif/:path*", destination: `${ORTHANC_ORIGIN}/ohif/:path*` },
+      { source: "/ui/:path*", destination: `${ORTHANC_ORIGIN}/ui/:path*` },
+      { source: "/volview/:path*", destination: `${ORTHANC_ORIGIN}/volview/:path*` },
+      { source: "/dicom-web/:path*", destination: `${ORTHANC_ORIGIN}/dicom-web/:path*` },
+      { source: "/wado/:path*", destination: `${ORTHANC_ORIGIN}/wado/:path*` },
+      { source: "/studies/:path*", destination: `${ORTHANC_ORIGIN}/studies/:path*` },
+      { source: "/series/:path*", destination: `${ORTHANC_ORIGIN}/series/:path*` },
+      { source: "/instances/:path*", destination: `${ORTHANC_ORIGIN}/instances/:path*` },
+      { source: "/patients/:path*", destination: `${ORTHANC_ORIGIN}/patients/:path*` },
     ];
   },
 
