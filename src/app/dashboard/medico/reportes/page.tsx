@@ -5,7 +5,6 @@ import { AuthGuard } from "@/components/auth-guard-updated"
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Loading } from "@/components/loading"
 import { useAuthContext } from "@/contexts/auth-context"
@@ -63,7 +62,6 @@ export default function ReportesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [periodoSeleccionado, setPeriodoSeleccionado] = useState("mes")
 
   useEffect(() => {
     if (user && isDoctorUser(user)) {
@@ -195,8 +193,8 @@ export default function ReportesPage() {
 
   const generarReporte = async () => {
     toast({
-      title: "Generando reporte",
-      description: `Analizando datos para el período: ${periodoSeleccionado}`,
+      title: "Actualizando reporte",
+      description: "Recargando los datos más recientes",
     })
     // Re-trigger the loadReports logic (already handles filtering/simulation)
     window.location.reload()
@@ -279,19 +277,9 @@ export default function ReportesPage() {
               <p className="text-muted-foreground text-lg">Métricas reales de tu práctica médica</p>
             </div>
             <div className="flex gap-3 flex-wrap">
-              <Select value={periodoSeleccionado} onValueChange={setPeriodoSeleccionado}>
-                <SelectTrigger className="w-full sm:w-[180px] h-11 border">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  <SelectValue placeholder="Período" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="semana">Esta semana</SelectItem>
-                  <SelectItem value="mes">Este mes</SelectItem>
-                  <SelectItem value="trimestre">Este trimestre</SelectItem>
-                  <SelectItem value="año">Este año</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button 
+              {/* The period selector was removed: it never filtered the data
+                  (it only changed a toast message), which was misleading. */}
+              <Button
                 variant="outline" 
                 onClick={generarReporte} 
                 className="border hover:bg-primary hover:text-primary-foreground h-11 px-6"
