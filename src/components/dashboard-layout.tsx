@@ -346,8 +346,15 @@ export const DashboardLayout = memo(function DashboardLayout({ children }: Dashb
           <ModeToggle />
         </header>
 
-        {/* Page content */}
-        <main className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 pb-10 pt-6 lg:px-8">{children}</main>
+        {/* Page content. DashboardLayout mounts per page, so the entrance runs
+            on every navigation — pages without their own staggered blocks still
+            get a consistent, motion-reduce-safe entrance. */}
+        <main
+          className="mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 pb-10 pt-6 duration-500 animate-in fade-in-0 slide-in-from-bottom-2 motion-reduce:animate-none lg:px-8"
+          style={{ animationFillMode: "both" }}
+        >
+          {children}
+        </main>
 
         {/* Footer */}
         <footer className="border-t border-border">
