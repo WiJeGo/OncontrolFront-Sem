@@ -13,18 +13,18 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loading } from "@/components/loading"
 import { useAuthContext } from "@/contexts/auth-context"
-import { doctors, appointments as appointmentsApi, treatments, medicalHistory } from "@/lib/api"
-import type { PatientProfileResponse, AppointmentResponse, TreatmentResponse, HistoryEntryResponse, AllergyResponse } from "@/lib/api"
+import { doctors, appointments as appointmentsApi, treatments, medicalHistory, medications } from "@/lib/api"
+import type { PatientProfileResponse, AppointmentResponse, TreatmentResponse, HistoryEntryResponse, AllergyResponse, SymptomResponse, MedicationResponse } from "@/lib/api"
 import { isDoctorUser } from "@/types/organization"
 import { appointmentTypeLabel, treatmentTypeLabel } from "@/lib/labels"
 import {
   ArrowLeft,
-  User, 
-  Calendar, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Activity, 
+  User,
+  Calendar,
+  Phone,
+  Mail,
+  MapPin,
+  Activity,
   Heart,
   FileText,
   Clock,
@@ -32,11 +32,30 @@ import {
   Shield,
   Edit,
   Stethoscope,
-  Eye
+  Eye,
+  Pill,
+  Thermometer
 } from "lucide-react"
 import Link from "next/link"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
+
+const symptomSeverityPill = (severity?: string) => {
+  const s = (severity || "").toUpperCase()
+  if (s.includes("CRIT")) return { label: "Crítica", cls: "bg-destructive/15 text-destructive" }
+  if (s.includes("SEVER")) return { label: "Severa", cls: "bg-warning/20 text-warning-foreground" }
+  if (s.includes("MODERAD")) return { label: "Moderada", cls: "bg-chart-5/15 text-chart-5" }
+  if (s.includes("LEVE") || s.includes("MILD")) return { label: "Leve", cls: "bg-success/15 text-success" }
+  return { label: severity || "—", cls: "bg-muted text-muted-foreground" }
+}
+
+const medStatusPill = (m: MedicationResponse) => {
+  const s = (m.status || "").toUpperCase()
+  if (m.isActive || s === "ACTIVE") return { label: "Activo", cls: "bg-success/15 text-success" }
+  if (s === "DISCONTINUED" || s === "SUSPENDED") return { label: "Suspendido", cls: "bg-warning/20 text-warning-foreground" }
+  if (s === "COMPLETED") return { label: "Completado", cls: "bg-muted text-muted-foreground" }
+  return { label: m.status || "—", cls: "bg-muted text-muted-foreground" }
+}
 
 export default function PatientDetailsPage() {
   const { user } = useAuthContext()
@@ -75,6 +94,8 @@ export default function PatientDetailsPage() {
   const [treatmentsData, setTreatmentsData] = useState<TreatmentResponse[]>([])
   const [medicalHistoryEntries, setMedicalHistoryEntries] = useState<HistoryEntryResponse[]>([])
   const [allergies, setAllergies] = useState<AllergyResponse[]>([])
+  const [symptomsData, setSymptomsData] = useState<SymptomResponse[]>([])
+  const [medicationsData, setMedicationsData] = useState<MedicationResponse[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
 
@@ -111,17 +132,23 @@ export default function PatientDetailsPage() {
         // underlying profile server-side). The previous client-side filter
         // compared appointment.patientId (= profiles.id) against the URL's
         // patient_profile_id, so appointments never matched.
-        const [appointmentsResult, treatmentsResult, historyData, allergiesData] = await Promise.all([
+        const [appointmentsResult, treatmentsResult, historyData, allergiesData, symptomsResult, medicationsResult] = await Promise.all([
           appointmentsApi.getPatientAppointments(Number(patientId)).catch(() => []),
           treatments.getPatientTreatments(Number(patientId)).catch(() => []),
           medicalHistory.getHistory(Number(patientId)).catch(() => []),
           medicalHistory.getAllergies(Number(patientId)).catch(() => []),
+          // Symptoms the patient reported — the doctor must see them (ePRO sync).
+          doctors.getPatientSymptoms(doctorProfileId, Number(patientId)).catch(() => []),
+          // The patient's medications, so the doctor sees them in one place.
+          medications.getPatientMedications(Number(patientId)).catch(() => []),
         ])
-        
+
         setAppointmentsData(appointmentsResult)
         setTreatmentsData(treatmentsResult)
         setMedicalHistoryEntries(historyData)
         setAllergies(allergiesData)
+        setSymptomsData(symptomsResult)
+        setMedicationsData(medicationsResult)
         
       } catch (err) {
         console.error("Error loading patient data:", err)
@@ -343,6 +370,8 @@ export default function PatientDetailsPage() {
               <TabsTrigger value="medical">Información Médica</TabsTrigger>
               <TabsTrigger value="appointments">Citas</TabsTrigger>
               <TabsTrigger value="treatments">Tratamientos</TabsTrigger>
+              <TabsTrigger value="symptoms">Síntomas</TabsTrigger>
+              <TabsTrigger value="medications">Medicamentos</TabsTrigger>
               <TabsTrigger value="history">Historial</TabsTrigger>
               <TabsTrigger value="imaging">Tomografía 3D</TabsTrigger>
           </TabsList>
@@ -666,6 +695,91 @@ export default function PatientDetailsPage() {
                           </Card>
                         </Link>
                       ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Symptoms Tab — what the patient reported, now visible to the doctor */}
+            <TabsContent value="symptoms" className="space-y-6">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
+                  <CardTitle className="flex items-center gap-3 text-base font-semibold">
+                    <div className="rounded-lg bg-chart-5/10 p-2"><Thermometer className="h-5 w-5 text-chart-5" /></div>
+                    Síntomas reportados
+                  </CardTitle>
+                  <CardDescription className="mt-0.5">Lo que el paciente registró desde su cuenta</CardDescription>
+                </CardHeader>
+                <CardContent className="p-6">
+                  {symptomsData.length > 0 ? (
+                    <div className="space-y-3">
+                      {symptomsData.map((s) => {
+                        const pill = symptomSeverityPill(s.severity)
+                        return (
+                          <div key={s.id} className="rounded-xl border border-border p-4">
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <p className="font-semibold text-foreground">{s.symptomName}</p>
+                                <p className="mt-0.5 text-xs text-muted-foreground">
+                                  {s.occurrenceDate}{s.occurrenceTime ? ` · ${s.occurrenceTime}` : ""}
+                                </p>
+                              </div>
+                              <div className="flex shrink-0 items-center gap-2">
+                                {s.requiresMedicalAttention && (
+                                  <span className="rounded-md bg-destructive/15 px-2 py-0.5 text-xs font-medium text-destructive">Requiere atención</span>
+                                )}
+                                <span className={`rounded-md px-2 py-0.5 text-xs font-medium ${pill.cls}`}>{pill.label}</span>
+                              </div>
+                            </div>
+                            {s.notes && <p className="mt-2 text-sm text-muted-foreground">{s.notes}</p>}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-dashed p-8 text-center">
+                      <Thermometer className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
+                      <p className="text-sm font-medium text-muted-foreground">El paciente aún no ha reportado síntomas.</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Medications Tab — the patient's medication, visible to the doctor */}
+            <TabsContent value="medications" className="space-y-6">
+              <Card className="border shadow-sm">
+                <CardHeader className="border-b">
+                  <CardTitle className="flex items-center gap-3 text-base font-semibold">
+                    <div className="rounded-lg bg-primary/10 p-2"><Pill className="h-5 w-5 text-primary" /></div>
+                    Medicamentos
+                  </CardTitle>
+                  <CardDescription className="mt-0.5">Medicación registrada para el paciente</CardDescription>
+                </CardHeader>
+                <CardContent className="p-6">
+                  {medicationsData.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      {medicationsData.map((m) => {
+                        const pill = medStatusPill(m)
+                        return (
+                          <div key={m.id} className="rounded-xl border border-border p-4">
+                            <div className="flex items-start justify-between gap-3">
+                              <p className="font-semibold text-foreground">{m.name}</p>
+                              <span className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-medium ${pill.cls}`}>{pill.label}</span>
+                            </div>
+                            <p className="mt-1 text-sm text-muted-foreground">
+                              {[m.dosage, m.frequency].filter(Boolean).join(" · ")}
+                            </p>
+                            {m.instructions && <p className="mt-1 text-xs text-muted-foreground">{m.instructions}</p>}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <div className="rounded-xl border border-dashed p-8 text-center">
+                      <Pill className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
+                      <p className="text-sm font-medium text-muted-foreground">Sin medicamentos registrados para este paciente.</p>
                     </div>
                   )}
                 </CardContent>
