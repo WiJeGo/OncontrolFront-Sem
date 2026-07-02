@@ -219,37 +219,60 @@ export default function OrganizationDashboardPage() {
               </div>
             ) : (
               <div>
-                {dashboard.doctors.slice(0, 5).map((doctor) => (
-                  <div
-                    key={doctor.id}
-                    className="flex items-center gap-3 border-t border-border px-5 py-3.5 transition-colors hover:bg-muted/40"
-                  >
-                    <Avatar className="h-9 w-9">
-                      <AvatarFallback className="bg-primary/10 text-xs font-medium text-primary">
-                        {doctor.firstName?.[0]}
-                        {doctor.lastName?.[0]}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate font-medium text-foreground">
-                        Dr. {doctor.firstName} {doctor.lastName}
-                      </p>
-                      <p className="truncate text-xs text-muted-foreground">
-                        {doctor.specialization} · {doctor.email}
-                      </p>
-                    </div>
-                    <span
-                      className={`hidden shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium sm:inline ${
-                        doctor.isAvailable ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"
-                      }`}
-                    >
-                      {doctor.isAvailable ? "Disponible" : "No disp."}
-                    </span>
-                    <Button asChild variant="outline" size="sm" className="border-border hover:bg-muted/60">
-                      <Link href={`/dashboard/organizacion/doctores/${doctor.id}`}>Ver</Link>
-                    </Button>
-                  </div>
-                ))}
+                {(() => {
+                  // Workload context: patients per doctor, as a share of the busiest doctor.
+                  const maxPatients = Math.max(
+                    1,
+                    ...dashboard.doctors.map((d) => dashboard.doctorStatistics?.[d.id]?.totalPatients ?? 0)
+                  )
+                  return dashboard.doctors.slice(0, 5).map((doctor) => {
+                    const stats = dashboard.doctorStatistics?.[doctor.id]
+                    return (
+                      <div
+                        key={doctor.id}
+                        className="flex items-center gap-3 border-t border-border px-5 py-3.5 transition-colors hover:bg-muted/40"
+                      >
+                        <Avatar className="h-9 w-9">
+                          <AvatarFallback className="bg-primary/10 text-xs font-medium text-primary">
+                            {doctor.firstName?.[0]}
+                            {doctor.lastName?.[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-foreground">
+                            Dr. {doctor.firstName} {doctor.lastName}
+                          </p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {doctor.specialization} · {doctor.email}
+                          </p>
+                          {stats && (
+                            <div className="mt-1.5 flex items-center gap-2">
+                              <div className="h-1 w-24 overflow-hidden rounded-full bg-muted" aria-hidden="true">
+                                <div
+                                  className="h-full rounded-full bg-primary/70"
+                                  style={{ width: `${Math.round(((stats.totalPatients ?? 0) / maxPatients) * 100)}%` }}
+                                />
+                              </div>
+                              <span className="text-[11px] tabular-nums text-muted-foreground">
+                                {stats.totalPatients ?? 0} pacientes · {stats.upcomingAppointments ?? 0} citas próx.
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <span
+                          className={`hidden shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium sm:inline ${
+                            doctor.isAvailable ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          {doctor.isAvailable ? "Disponible" : "No disp."}
+                        </span>
+                        <Button asChild variant="outline" size="sm" className="border-border hover:bg-muted/60">
+                          <Link href={`/dashboard/organizacion/doctores/${doctor.id}`}>Ver</Link>
+                        </Button>
+                      </div>
+                    )
+                  })
+                })()}
                 <Link
                   href="/dashboard/organizacion/doctores"
                   className="flex items-center justify-center gap-1.5 border-t border-border px-5 py-3 text-sm font-medium text-primary transition-colors hover:bg-muted/40"
