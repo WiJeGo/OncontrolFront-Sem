@@ -16,6 +16,7 @@ import { useAuthContext } from "@/contexts/auth-context"
 import { appointments } from "@/lib/api"
 import type { AppointmentResponse } from "@/lib/api"
 import { isDoctorUser } from "@/types/organization"
+import { appointmentTypeLabel } from "@/lib/labels"
 import { 
   ArrowLeft,
   Calendar,
@@ -185,7 +186,7 @@ export default function AppointmentDetailsPage() {
     switch (status?.toLowerCase()) {
       case 'confirmada':
       case 'confirmed':
-        return 'bg-primary/20 text-primary-foreground border-primary/30'
+        return 'bg-success/15 text-success border-success/30'
       case 'programada':
       case 'scheduled':
         return 'bg-chart-2/10 text-chart-2 border-chart-2/20'
@@ -194,7 +195,7 @@ export default function AppointmentDetailsPage() {
         return 'bg-chart-5/10 text-chart-5 border-chart-5/20'
       case 'cancelada':
       case 'cancelled':
-        return 'bg-destructive/10 text-destructive-foreground border-destructive/20'
+        return 'bg-destructive/10 text-destructive border-destructive/20'
       default:
         return 'bg-muted text-muted-foreground'
     }
@@ -263,7 +264,7 @@ export default function AppointmentDetailsPage() {
                 </h1>
                 <p className="text-muted-foreground text-lg">Información completa de la cita médica</p>
               </div>
-              <Badge className={`${getStatusColor(appointment.status)} border text-lg px-4 py-2 font-semibold`}>
+              <Badge className={`${getStatusColor(appointment.status)} border px-2.5 py-1 text-xs font-medium`}>
                 {getStatusText(appointment.status)}
               </Badge>
             </div>
@@ -306,7 +307,7 @@ export default function AppointmentDetailsPage() {
                     <Calendar className="h-5 w-5 text-primary" />
                     <p className="text-sm font-semibold text-muted-foreground">Fecha</p>
                   </div>
-                  <p className="text-lg font-bold text-foreground">
+                  <p className="font-semibold text-foreground">
                     {new Date(appointment.appointmentDate).toLocaleDateString('es-ES', {
                       weekday: 'long',
                       year: 'numeric',
@@ -321,7 +322,7 @@ export default function AppointmentDetailsPage() {
                     <Clock className="h-5 w-5 text-primary" />
                     <p className="text-sm font-semibold text-muted-foreground">Hora</p>
                   </div>
-                  <p className="text-lg font-bold text-foreground">
+                  <p className="font-semibold text-foreground">
                     {new Date(appointment.appointmentDate).toLocaleTimeString('es-ES', {
                       hour: '2-digit',
                       minute: '2-digit'
@@ -334,7 +335,7 @@ export default function AppointmentDetailsPage() {
                     <FileText className="h-5 w-5 text-primary" />
                     <p className="text-sm font-semibold text-muted-foreground">Tipo</p>
                   </div>
-                  <p className="text-lg font-bold text-foreground">{appointment.type}</p>
+                  <p className="font-semibold text-foreground">{appointmentTypeLabel(appointment.type)}</p>
                 </div>
 
                 <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
@@ -342,7 +343,7 @@ export default function AppointmentDetailsPage() {
                     <Clock className="h-5 w-5 text-primary" />
                     <p className="text-sm font-semibold text-muted-foreground">Duración</p>
                   </div>
-                  <p className="text-lg font-bold text-foreground">{appointment.durationMinutes} minutos</p>
+                  <p className="font-semibold text-foreground">{appointment.durationMinutes} minutos</p>
                 </div>
 
                 {appointment.location && (
@@ -351,7 +352,7 @@ export default function AppointmentDetailsPage() {
                       <MapPin className="h-5 w-5 text-primary" />
                       <p className="text-sm font-semibold text-muted-foreground">Ubicación</p>
                     </div>
-                    <p className="text-lg font-bold text-foreground">{appointment.location}</p>
+                    <p className="font-semibold text-foreground">{appointment.location}</p>
                   </div>
                 )}
               </div>
@@ -403,7 +404,7 @@ export default function AppointmentDetailsPage() {
                   <>
                     <Button 
                       onClick={handleCompleteAppointment}
-                      className="bg-gradient-to-r from-accent to-primary text-white hover:opacity-90"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90"
                     >
                       <CheckCircle className="mr-2 h-4 w-4" />
                       Marcar como Completada

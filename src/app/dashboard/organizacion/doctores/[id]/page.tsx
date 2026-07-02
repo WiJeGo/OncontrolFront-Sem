@@ -118,18 +118,18 @@ export default function DoctorDetailsPage() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="space-y-2 flex-1">
-                      <CardTitle className="text-3xl font-bold">
+                      <CardTitle className="text-xl font-semibold tracking-tight">
                         Dr. {doctor.firstName} {doctor.lastName}
                       </CardTitle>
                       <CardDescription className="flex items-center gap-3 text-base">
                         <code className="text-sm bg-muted px-3 py-1.5 rounded-lg border font-semibold">
                           {doctor.profileId}
                         </code>
-                        <Badge variant={doctor.isActive ? "default" : "secondary"} className="border font-semibold">
+                        <Badge className={`border px-2.5 py-0.5 text-xs font-medium ${doctor.isActive ? "bg-success/15 text-success border-success/30" : "bg-muted text-muted-foreground"}`}>
                           {doctor.isActive ? "Activo" : "Inactivo"}
                         </Badge>
                         {doctor.isAvailable !== undefined && (
-                          <Badge variant={doctor.isAvailable ? "default" : "outline"} className="border font-semibold">
+                          <Badge className={`border px-2.5 py-0.5 text-xs font-medium ${doctor.isAvailable ? "bg-chart-2/15 text-chart-2 border-chart-2/30" : "bg-muted text-muted-foreground"}`}>
                             {doctor.isAvailable ? "Disponible" : "No disponible"}
                           </Badge>
                         )}
@@ -144,14 +144,14 @@ export default function DoctorDetailsPage() {
                     <div className="p-2 rounded-lg bg-primary/10">
                       <Mail className="h-5 w-5 text-primary" />
                     </div>
-                    <span className="text-sm font-bold">{doctor.email}</span>
+                    <span className="text-sm font-semibold">{doctor.email}</span>
                   </div>
                   {doctor.phone && (
                     <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-xl border border-border/50">
                       <div className="p-2 rounded-lg bg-primary/10">
                         <Phone className="h-5 w-5 text-primary" />
                       </div>
-                      <span className="text-sm font-bold">{doctor.phone}</span>
+                      <span className="text-sm font-semibold">{doctor.phone}</span>
                     </div>
                   )}
                   {doctor.city && (
@@ -159,7 +159,7 @@ export default function DoctorDetailsPage() {
                       <div className="p-2 rounded-lg bg-primary/10">
                         <MapPin className="h-5 w-5 text-primary" />
                       </div>
-                      <span className="text-sm font-bold">{doctor.city}</span>
+                      <span className="text-sm font-semibold">{doctor.city}</span>
                     </div>
                   )}
                   {doctor.birthDate && (
@@ -169,7 +169,7 @@ export default function DoctorDetailsPage() {
                       </div>
                       <div>
                         <span className="text-xs text-muted-foreground font-semibold block">Edad:</span>
-                        <span className="text-sm font-bold">{calculateAge(doctor.birthDate)} años</span>
+                        <span className="text-sm font-semibold">{calculateAge(doctor.birthDate)} años</span>
                       </div>
                     </div>
                   )}
@@ -178,56 +178,37 @@ export default function DoctorDetailsPage() {
             </Card>
           </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
-              <CardContent className="pt-6 relative z-10">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground">Especialización</p>
-                    <p className="text-base font-semibold text-foreground mt-1">{doctor.specialization}</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-primary/10">
-                    <Stethoscope className="h-8 w-8 text-primary" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            {doctor.rating !== undefined && (
-              <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
-                <CardContent className="pt-6 relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-muted-foreground">Calificación</p>
-                      <p className="text-3xl font-bold text-foreground">{doctor.rating.toFixed(1)}</p>
-                      <p className="text-xs text-muted-foreground font-medium mt-1">
-                        {doctor.totalReviews || 0} {doctor.totalReviews === 1 ? 'reseña' : 'reseñas'}
-                      </p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-chart-2/10">
-                      <Award className="h-8 w-8 text-chart-2" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {doctor.yearsOfExperience !== undefined && (
-              <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
-                <CardContent className="pt-6 relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-muted-foreground">Años de Experiencia</p>
-                      <p className="text-3xl font-bold text-foreground">{doctor.yearsOfExperience}</p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-chart-5/10">
-                      <GraduationCap className="h-8 w-8 text-chart-5" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+          {/* Quick Stats — connected KPI strip */}
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border shadow-sm md:grid-cols-3">
+            <div className="bg-card p-5">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <span className="rounded-md bg-primary/10 p-1.5 text-primary"><Stethoscope className="h-4 w-4" /></span>
+                Especialización
+              </div>
+              <p className="mt-2 font-semibold text-foreground">{doctor.specialization}</p>
+            </div>
+            <div className="bg-card p-5">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <span className="rounded-md bg-chart-2/10 p-1.5 text-chart-2"><Award className="h-4 w-4" /></span>
+                Calificación
+              </div>
+              <p className="mt-2 font-mono text-3xl font-semibold tabular-nums text-foreground">
+                {doctor.rating !== undefined ? doctor.rating.toFixed(1) : "—"}
+              </p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                {doctor.totalReviews || 0} {doctor.totalReviews === 1 ? "reseña" : "reseñas"}
+              </p>
+            </div>
+            <div className="bg-card p-5">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <span className="rounded-md bg-chart-5/10 p-1.5 text-chart-5"><GraduationCap className="h-4 w-4" /></span>
+                Experiencia
+              </div>
+              <p className="mt-2 font-mono text-3xl font-semibold tabular-nums text-foreground">
+                {doctor.yearsOfExperience ?? "—"}
+              </p>
+              <p className="mt-0.5 text-xs text-muted-foreground">años</p>
+            </div>
           </div>
 
           {/* Information Cards */}
@@ -245,28 +226,28 @@ export default function DoctorDetailsPage() {
               <CardContent className="p-6 space-y-4">
                 <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                   <p className="text-sm font-semibold text-muted-foreground mb-1">Especialización</p>
-                  <p className="text-base font-bold">{doctor.specialization}</p>
+                  <p className="font-semibold">{doctor.specialization}</p>
                 </div>
                 <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                   <p className="text-sm font-semibold text-muted-foreground mb-1">Número de Licencia</p>
-                  <p className="text-base font-bold">{doctor.licenseNumber}</p>
+                  <p className="font-semibold">{doctor.licenseNumber}</p>
                 </div>
                 {doctor.yearsOfExperience !== undefined && (
                   <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Años de Experiencia</p>
-                    <p className="text-base font-bold">{doctor.yearsOfExperience} años</p>
+                    <p className="font-semibold">{doctor.yearsOfExperience} años</p>
                   </div>
                 )}
                 {doctor.hospitalAffiliation && (
                   <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Afiliación Hospitalaria</p>
-                    <p className="text-base font-bold">{doctor.hospitalAffiliation}</p>
+                    <p className="font-semibold">{doctor.hospitalAffiliation}</p>
                   </div>
                 )}
                 {doctor.consultationFee && (
                   <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Tarifa de Consulta</p>
-                    <p className="text-base font-bold">${parseFloat(doctor.consultationFee).toFixed(2)}</p>
+                    <p className="font-semibold">${parseFloat(doctor.consultationFee).toFixed(2)}</p>
                   </div>
                 )}
               </CardContent>
@@ -285,30 +266,30 @@ export default function DoctorDetailsPage() {
               <CardContent className="p-6 space-y-4">
                 <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                   <p className="text-sm font-semibold text-muted-foreground mb-1">Email</p>
-                  <p className="text-base font-bold">{doctor.email}</p>
+                  <p className="font-semibold">{doctor.email}</p>
                 </div>
                 {doctor.phone && (
                   <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Teléfono</p>
-                    <p className="text-base font-bold">{doctor.phone}</p>
+                    <p className="font-semibold">{doctor.phone}</p>
                   </div>
                 )}
                 {doctor.birthDate && (
                   <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Fecha de Nacimiento</p>
-                    <p className="text-base font-bold">{formatDate(doctor.birthDate)} ({calculateAge(doctor.birthDate)} años)</p>
+                    <p className="font-semibold">{formatDate(doctor.birthDate)} ({calculateAge(doctor.birthDate)} años)</p>
                   </div>
                 )}
                 {doctor.city && (
                   <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Ciudad</p>
-                    <p className="text-base font-bold">{doctor.city}</p>
+                    <p className="font-semibold">{doctor.city}</p>
                   </div>
                 )}
                 {doctor.address && (
                   <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                     <p className="text-sm font-semibold text-muted-foreground mb-1">Dirección</p>
-                    <p className="text-base font-bold">{doctor.address}</p>
+                    <p className="font-semibold">{doctor.address}</p>
                   </div>
                 )}
               </CardContent>
@@ -327,7 +308,7 @@ export default function DoctorDetailsPage() {
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
-                    <p className="text-base font-bold">{doctor.organizationName}</p>
+                    <p className="font-semibold">{doctor.organizationName}</p>
                   </div>
                 </CardContent>
               </Card>

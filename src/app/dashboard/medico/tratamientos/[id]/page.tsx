@@ -6,7 +6,6 @@ import { AuthGuard } from "@/components/auth-guard-updated"
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -15,7 +14,8 @@ import { useAuthContext } from "@/contexts/auth-context"
 import { treatments, doctors } from "@/lib/api"
 import type { TreatmentResponse, TreatmentSessionResponse, PatientProfileResponse } from "@/lib/api"
 import { isDoctorUser } from "@/types/organization"
-import { 
+import { treatmentTypeLabel } from "@/lib/labels"
+import {
   ArrowLeft,
   Activity, 
   Calendar, 
@@ -116,22 +116,39 @@ export default function TreatmentDetailsPage() {
     }
   }
 
-  const getStatusBadgeVariant = (status: string): "default" | "secondary" | "destructive" | "outline" => {
+  const statusPill = (status: string) => {
     switch (status?.toUpperCase()) {
       case "ACTIVE":
       case "ACTIVO":
-        return "default"
+        return { label: "Activo", cls: "bg-success/15 text-success" }
       case "COMPLETED":
       case "COMPLETADO":
-        return "secondary"
+        return { label: "Completado", cls: "bg-muted text-muted-foreground" }
       case "CANCELLED":
       case "CANCELADO":
-        return "destructive"
+        return { label: "Cancelado", cls: "bg-destructive/15 text-destructive" }
+      case "SUSPENDED":
       case "PAUSED":
       case "PAUSADO":
-        return "outline"
+        return { label: "Suspendido", cls: "bg-warning/20 text-warning-foreground" }
+      case "FOLLOW_UP":
+        return { label: "Seguimiento", cls: "bg-chart-2/15 text-chart-2" }
       default:
-        return "outline"
+        return { label: status || "—", cls: "bg-muted text-muted-foreground" }
+    }
+  }
+
+  const sessionStatusLabel = (status: string) => {
+    switch (status?.toUpperCase()) {
+      case "SCHEDULED":
+      case "PROGRAMADA": return "Programada"
+      case "COMPLETED":
+      case "COMPLETADA": return "Completada"
+      case "CANCELLED":
+      case "CANCELADA": return "Cancelada"
+      case "IN_PROGRESS":
+      case "EN_PROGRESO": return "En curso"
+      default: return status
     }
   }
 
@@ -209,17 +226,17 @@ export default function TreatmentDetailsPage() {
               <CardHeader className="border-b">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-3 flex-1">
-                    <CardTitle className="text-3xl font-bold flex items-center gap-3">
-                      <div className="p-3 rounded-lg bg-primary/10">
-                        <Activity className="h-7 w-7 text-primary" />
+                    <CardTitle className="flex items-center gap-3 text-xl font-semibold tracking-tight">
+                      <div className="rounded-lg bg-primary/10 p-2.5">
+                        <Activity className="h-6 w-6 text-primary" />
                       </div>
-                      {treatment.type}
+                      {treatmentTypeLabel(treatment.type)}
                     </CardTitle>
-                    <CardDescription className="flex items-center gap-3 text-base">
-                      <Badge variant={getStatusBadgeVariant(treatment.status)} className="border font-semibold">
-                        {treatment.status}
-                      </Badge>
-                      <span className="text-base font-semibold">Protocolo: {treatment.protocol}</span>
+                    <CardDescription className="flex flex-wrap items-center gap-3">
+                      <span className={`rounded-md px-2 py-0.5 text-xs font-medium ${statusPill(treatment.status).cls}`}>
+                        {statusPill(treatment.status).label}
+                      </span>
+                      <span className="text-sm text-muted-foreground">Protocolo: <span className="font-medium text-foreground">{treatment.protocol}</span></span>
                     </CardDescription>
                   </div>
                   <div className="flex gap-2">
@@ -241,7 +258,7 @@ export default function TreatmentDetailsPage() {
                       </div>
                       <Link 
                         href={`/dashboard/medico/pacientes/${patient.id}`}
-                        className="text-sm font-bold hover:text-primary transition-colors"
+                        className="text-sm font-semibold hover:text-primary transition-colors"
                       >
                         {patient.firstName} {patient.lastName}
                       </Link>
@@ -253,7 +270,7 @@ export default function TreatmentDetailsPage() {
                     </div>
                     <div>
                       <span className="text-xs text-muted-foreground font-semibold block">Inicio:</span>
-                      <span className="text-sm font-bold">{formatDate(treatment.startDate)}</span>
+                      <span className="text-sm font-semibold">{formatDate(treatment.startDate)}</span>
                     </div>
                   </div>
                   {treatment.endDate && (
@@ -263,7 +280,7 @@ export default function TreatmentDetailsPage() {
                       </div>
                       <div>
                         <span className="text-xs text-muted-foreground font-semibold block">Fin:</span>
-                        <span className="text-sm font-bold">{formatDate(treatment.endDate)}</span>
+                        <span className="text-sm font-semibold">{formatDate(treatment.endDate)}</span>
                       </div>
                     </div>
                   )}
@@ -272,7 +289,7 @@ export default function TreatmentDetailsPage() {
                       <div className="p-2 rounded-lg bg-primary/10">
                         <MapPin className="h-5 w-5 text-primary" />
                       </div>
-                      <span className="text-sm font-bold">{treatment.location}</span>
+                      <span className="text-sm font-semibold">{treatment.location}</span>
                     </div>
                   )}
                 </div>
@@ -280,54 +297,40 @@ export default function TreatmentDetailsPage() {
             </Card>
           </div>
 
-          {/* Progress Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="border border-primary/20 hover:border-primary/40 transition-all hover:shadow-md relative overflow-hidden">
-              <CardContent className="pt-6 relative z-10">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold text-muted-foreground">Progreso del Tratamiento</p>
-                    <p className="text-3xl font-bold text-primary">{completionPercentage}%</p>
-                  </div>
-                  <Progress value={completionPercentage} className="h-3 border border-primary/20" />
-                  <p className="text-xs text-muted-foreground font-medium">
-                    {treatment.currentCycle} de {treatment.totalCycles} ciclos completados
-                  </p>
+          {/* Progress Stats — connected KPI strip */}
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border shadow-sm md:grid-cols-3">
+            <div className="bg-card p-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                  <span className="rounded-md bg-primary/10 p-1.5 text-primary"><Activity className="h-4 w-4" /></span>
+                  Progreso
                 </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border border-chart-2/20 hover:border-chart-2/40 transition-all hover:shadow-md relative overflow-hidden">
-              <CardContent className="pt-6 relative z-10">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground">Sesiones Programadas</p>
-                    <p className="text-3xl font-bold text-foreground">
-                      {sessions.filter(s => s.status === 'SCHEDULED' || s.status === 'PROGRAMADA').length}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-chart-2/10">
-                    <Calendar className="h-8 w-8 text-chart-2" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="border border-chart-5/20 hover:border-chart-5/40 transition-all hover:shadow-md relative overflow-hidden">
-              <CardContent className="pt-6 relative z-10">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground">Sesiones Completadas</p>
-                    <p className="text-3xl font-bold text-foreground">
-                      {sessions.filter(s => s.status === 'COMPLETED' || s.status === 'COMPLETADA').length}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-chart-5/10">
-                    <CheckCircle className="h-8 w-8 text-chart-5" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                <span className="font-mono text-2xl font-semibold tabular-nums text-primary">{completionPercentage}%</span>
+              </div>
+              <Progress value={completionPercentage} className="mt-3 h-2" />
+              <p className="mt-2 text-xs text-muted-foreground">
+                Ciclo <span className="font-mono tabular-nums">{treatment.currentCycle}</span> de{" "}
+                <span className="font-mono tabular-nums">{treatment.totalCycles}</span>
+              </p>
+            </div>
+            <div className="bg-card p-5">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <span className="rounded-md bg-chart-2/10 p-1.5 text-chart-2"><Calendar className="h-4 w-4" /></span>
+                Sesiones programadas
+              </div>
+              <div className="mt-2 font-mono text-3xl font-semibold tabular-nums text-foreground">
+                {sessions.filter(s => s.status === 'SCHEDULED' || s.status === 'PROGRAMADA').length}
+              </div>
+            </div>
+            <div className="bg-card p-5">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <span className="rounded-md bg-chart-5/10 p-1.5 text-chart-5"><CheckCircle className="h-4 w-4" /></span>
+                Sesiones completadas
+              </div>
+              <div className="mt-2 font-mono text-3xl font-semibold tabular-nums text-foreground">
+                {sessions.filter(s => s.status === 'COMPLETED' || s.status === 'COMPLETADA').length}
+              </div>
+            </div>
           </div>
 
           {/* Tabs */}
@@ -354,28 +357,28 @@ export default function TreatmentDetailsPage() {
                   <CardContent className="p-6 space-y-4">
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Tipo de Tratamiento</p>
-                      <p className="text-base font-bold">{treatment.type}</p>
+                      <p className="font-semibold">{treatmentTypeLabel(treatment.type)}</p>
                     </div>
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Protocolo</p>
-                      <p className="text-base font-bold">{treatment.protocol}</p>
+                      <p className="font-semibold">{treatment.protocol}</p>
                     </div>
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Estado</p>
-                      <Badge variant={getStatusBadgeVariant(treatment.status)} className="border font-semibold">
-                        {treatment.status}
-                      </Badge>
+                      <span className={`inline-block rounded-md px-2 py-0.5 text-xs font-medium ${statusPill(treatment.status).cls}`}>
+                        {statusPill(treatment.status).label}
+                      </span>
                     </div>
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Ciclos</p>
-                      <p className="text-base font-bold">
+                      <p className="font-semibold">
                         {treatment.currentCycle} / {treatment.totalCycles}
                       </p>
                     </div>
                     {treatment.sessionDurationMinutes && (
                       <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Duración por Sesión</p>
-                        <p className="text-base font-bold">{treatment.sessionDurationMinutes} minutos</p>
+                        <p className="font-semibold">{treatment.sessionDurationMinutes} minutos</p>
                       </div>
                     )}
                   </CardContent>
@@ -394,24 +397,24 @@ export default function TreatmentDetailsPage() {
                   <CardContent className="p-6 space-y-4">
                     <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                       <p className="text-sm font-semibold text-muted-foreground mb-1">Fecha de Inicio</p>
-                      <p className="text-base font-bold">{formatDate(treatment.startDate)}</p>
+                      <p className="font-semibold">{formatDate(treatment.startDate)}</p>
                     </div>
                     {treatment.endDate && (
                       <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Fecha de Finalización</p>
-                        <p className="text-base font-bold">{formatDate(treatment.endDate)}</p>
+                        <p className="font-semibold">{formatDate(treatment.endDate)}</p>
                       </div>
                     )}
                     {treatment.nextSession && (
                       <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Próxima Sesión</p>
-                        <p className="text-base font-bold">{formatDate(treatment.nextSession)}</p>
+                        <p className="font-semibold">{formatDate(treatment.nextSession)}</p>
                       </div>
                     )}
                     {treatment.location && (
                       <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                         <p className="text-sm font-semibold text-muted-foreground mb-1">Ubicación</p>
-                        <p className="text-base font-bold">{treatment.location}</p>
+                        <p className="font-semibold">{treatment.location}</p>
                       </div>
                     )}
                   </CardContent>
@@ -437,7 +440,7 @@ export default function TreatmentDetailsPage() {
                 {/* Preparation Instructions */}
                 {treatment.preparationInstructions && (
                   <Card className="lg:col-span-2 border shadow-sm border-primary/20">
-                    <CardHeader className="border-b bg-gradient-to-r from-primary/10 to-background">
+                    <CardHeader className="border-b ">
                       <CardTitle className="text-base font-semibold flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-primary/20">
                           <AlertTriangle className="h-6 w-6 text-primary" />
@@ -468,7 +471,7 @@ export default function TreatmentDetailsPage() {
                           <p className="text-sm font-semibold text-muted-foreground mb-1">Nombre</p>
                           <Link 
                             href={`/dashboard/medico/pacientes/${patient.id}`}
-                            className="text-base font-bold hover:text-primary transition-colors"
+                            className="font-semibold hover:text-primary transition-colors"
                           >
                             {patient.firstName} {patient.lastName}
                           </Link>
@@ -482,13 +485,13 @@ export default function TreatmentDetailsPage() {
                         {patient.cancerType && (
                           <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                             <p className="text-sm font-semibold text-muted-foreground mb-1">Tipo de Cáncer</p>
-                            <p className="text-base font-bold">{patient.cancerType}</p>
+                            <p className="font-semibold">{patient.cancerType}</p>
                           </div>
                         )}
                         {patient.cancerStage && (
                           <div className="p-3 bg-muted/50 rounded-xl border border-border/50">
                             <p className="text-sm font-semibold text-muted-foreground mb-1">Etapa</p>
-                            <p className="text-base font-bold">{patient.cancerStage}</p>
+                            <p className="font-semibold">{patient.cancerStage}</p>
                           </div>
                         )}
                       </div>
@@ -527,10 +530,10 @@ export default function TreatmentDetailsPage() {
                                 <div className="flex items-start justify-between">
                                   <div className="space-y-2 flex-1">
                                     <div className="flex items-center gap-3">
-                                      <Badge className={`${getSessionStatusColor(session.status)} border font-semibold`}>
-                                        {session.status}
-                                      </Badge>
-                                      <span className="text-base font-bold">
+                                      <span className={`rounded-md px-2 py-0.5 text-xs font-medium ${getSessionStatusColor(session.status)}`}>
+                                        {sessionStatusLabel(session.status)}
+                                      </span>
+                                      <span className="font-semibold">
                                         Sesión #{session.sessionNumber}
                                       </span>
                                     </div>
@@ -605,7 +608,7 @@ export default function TreatmentDetailsPage() {
                           <div className="p-2 rounded-lg bg-primary/10">
                             <Pill className="h-5 w-5 text-primary" />
                           </div>
-                          <span className="text-base font-bold">{medication}</span>
+                          <span className="font-semibold">{medication}</span>
                         </div>
                       ))}
                     </div>
