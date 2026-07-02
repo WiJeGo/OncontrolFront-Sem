@@ -40,7 +40,8 @@ import {
   Stethoscope,
   Eye,
   Pill,
-  Thermometer
+  Thermometer,
+  Trash2
 } from "lucide-react"
 import Link from "next/link"
 import { format } from "date-fns"
@@ -146,6 +147,84 @@ export default function PatientDetailsPage() {
       })
     } finally {
       setRxSaving(false)
+    }
+  }
+
+  // Add-history-entry dialog
+  const emptyHx = {
+    type: "CONSULTATION", date: new Date().toISOString().slice(0, 10),
+    title: "", description: "", category: "",
+  }
+  const [hxOpen, setHxOpen] = useState(false)
+  const [hxSaving, setHxSaving] = useState(false)
+  const [hx, setHx] = useState(emptyHx)
+
+  const handleAddEntry = async () => {
+    if (!patient) return
+    if (!hx.title.trim() || !hx.date) {
+      toast({ title: "Faltan datos", description: "Título y fecha son obligatorios.", variant: "destructive" })
+      return
+    }
+    setHxSaving(true)
+    try {
+      await medicalHistory.createEntry(patient.id, {
+        type: hx.type as Parameters<typeof medicalHistory.createEntry>[1]["type"],
+        date: hx.date,
+        title: hx.title.trim(),
+        description: hx.description.trim() || undefined,
+        category: hx.category.trim() || undefined,
+      })
+      setMedicalHistoryEntries(await medicalHistory.getHistory(patient.id).catch(() => medicalHistoryEntries))
+      setHx(emptyHx)
+      setHxOpen(false)
+      toast({ title: "Entrada agregada", description: "El historial del paciente se actualizó." })
+    } catch (err) {
+      toast({ title: "No se pudo agregar", description: err instanceof Error ? err.message : "Error al crear la entrada", variant: "destructive" })
+    } finally {
+      setHxSaving(false)
+    }
+  }
+
+  // Add/delete-allergy dialog
+  const emptyAl = { allergen: "", type: "MEDICATION", severity: "MEDIUM", reaction: "" }
+  const [alOpen, setAlOpen] = useState(false)
+  const [alSaving, setAlSaving] = useState(false)
+  const [al, setAl] = useState(emptyAl)
+
+  const handleAddAllergy = async () => {
+    if (!patient) return
+    if (!al.allergen.trim()) {
+      toast({ title: "Faltan datos", description: "El alérgeno es obligatorio.", variant: "destructive" })
+      return
+    }
+    setAlSaving(true)
+    try {
+      await medicalHistory.createAllergy(patient.id, {
+        allergen: al.allergen.trim(),
+        type: al.type as Parameters<typeof medicalHistory.createAllergy>[1]["type"],
+        severity: al.severity as Parameters<typeof medicalHistory.createAllergy>[1]["severity"],
+        reaction: al.reaction.trim() || undefined,
+      })
+      setAllergies(await medicalHistory.getAllergies(patient.id).catch(() => allergies))
+      setAl(emptyAl)
+      setAlOpen(false)
+      toast({ title: "Alergia registrada", description: `${al.allergen} quedó registrada para ${patient.firstName}.` })
+    } catch (err) {
+      toast({ title: "No se pudo registrar", description: err instanceof Error ? err.message : "Error al crear la alergia", variant: "destructive" })
+    } finally {
+      setAlSaving(false)
+    }
+  }
+
+  const handleDeleteAllergy = async (allergyId: number, allergen: string) => {
+    if (!patient) return
+    if (!confirm(`¿Eliminar la alergia "${allergen}"?`)) return
+    try {
+      await medicalHistory.deleteAllergy(allergyId)
+      setAllergies(await medicalHistory.getAllergies(patient.id).catch(() => allergies.filter(a => a.id !== allergyId)))
+      toast({ title: "Alergia eliminada" })
+    } catch (err) {
+      toast({ title: "No se pudo eliminar", description: err instanceof Error ? err.message : "Error", variant: "destructive" })
     }
   }
 
@@ -551,17 +630,89 @@ export default function PatientDetailsPage() {
               </div>
 
               {/* Allergies */}
-              {allergies.length > 0 && (
-                <Card className="border shadow-sm border-destructive/20">
-                  <CardHeader className="border-b bg-gradient-to-r from-destructive/10 to-background">
+              <Card className="border shadow-sm border-destructive/20">
+                <CardHeader className="border-b">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
                     <CardTitle className="text-base font-semibold flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-destructive/20">
-                        <Shield className="h-6 w-6 text-destructive" />
+                      <div className="p-2 rounded-lg bg-destructive/15">
+                        <Shield className="h-5 w-5 text-destructive" />
                       </div>
-                      Alergias Detalladas
+                      Alergias
                     </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6">
+                    <Dialog open={alOpen} onOpenChange={setAlOpen}>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" size="sm" className="border">
+                          <Shield className="mr-1.5 h-4 w-4" />
+                          Agregar alergia
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>Registrar alergia</DialogTitle>
+                          <DialogDescription>
+                            Para {patient?.firstName} {patient?.lastName}. Aparecerá también en su historial.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-2">
+                          <div className="space-y-2">
+                            <Label htmlFor="al-allergen">Alérgeno *</Label>
+                            <Input id="al-allergen" placeholder="Ej: Penicilina" value={al.allergen}
+                              onChange={(e) => setAl({ ...al, allergen: e.target.value })} />
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label>Tipo</Label>
+                              <Select value={al.type} onValueChange={(v) => setAl({ ...al, type: v })}>
+                                <SelectTrigger className="border"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="MEDICATION">Medicamento</SelectItem>
+                                  <SelectItem value="FOOD">Alimento</SelectItem>
+                                  <SelectItem value="ENVIRONMENTAL">Ambiental</SelectItem>
+                                  <SelectItem value="ANIMAL">Animal</SelectItem>
+                                  <SelectItem value="INSECT">Insecto</SelectItem>
+                                  <SelectItem value="CHEMICAL">Químico</SelectItem>
+                                  <SelectItem value="OTHER">Otro</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Severidad</Label>
+                              <Select value={al.severity} onValueChange={(v) => setAl({ ...al, severity: v })}>
+                                <SelectTrigger className="border"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="LOW">Baja</SelectItem>
+                                  <SelectItem value="MEDIUM">Media</SelectItem>
+                                  <SelectItem value="HIGH">Alta</SelectItem>
+                                  <SelectItem value="CRITICAL">Crítica</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="al-reaction">Reacción (opcional)</Label>
+                            <Input id="al-reaction" placeholder="Ej: Urticaria, dificultad respiratoria" value={al.reaction}
+                              onChange={(e) => setAl({ ...al, reaction: e.target.value })} />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button variant="outline" className="border" onClick={() => setAlOpen(false)} disabled={alSaving}>
+                            Cancelar
+                          </Button>
+                          <Button onClick={handleAddAllergy} disabled={alSaving}
+                            className="bg-primary text-primary-foreground hover:bg-primary/90">
+                            {alSaving ? "Guardando..." : "Registrar"}
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  {allergies.length === 0 ? (
+                    <div className="rounded-xl border border-dashed p-6 text-center">
+                      <p className="text-sm font-medium text-muted-foreground">Sin alergias registradas.</p>
+                    </div>
+                  ) : (
                     <div className="space-y-3">
                       {allergies.map((allergy) => (
                         <div key={allergy.id} className="flex items-start gap-3 p-4 bg-destructive/10 rounded-xl border border-destructive/20 hover:border-destructive/40 transition-all">
@@ -569,7 +720,7 @@ export default function PatientDetailsPage() {
                             <AlertTriangle className="h-5 w-5 text-destructive" />
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold text-destructive text-base">{allergy.allergen}</p>
+                            <p className="font-semibold text-destructive">{allergy.allergen}</p>
                             {allergy.reaction && (
                               <p className="text-sm text-muted-foreground font-medium mt-1">Reacción: {allergy.reaction}</p>
                             )}
@@ -577,12 +728,21 @@ export default function PatientDetailsPage() {
                               Severidad: {allergy.severity}
                             </Badge>
                           </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+                            onClick={() => handleDeleteAllergy(allergy.id, allergy.allergen)}
+                            aria-label={`Eliminar alergia ${allergy.allergen}`}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
-              )}
+                  )}
+                </CardContent>
+              </Card>
             </TabsContent>
 
             {/* Appointments Tab */}
@@ -918,12 +1078,79 @@ export default function PatientDetailsPage() {
             <TabsContent value="history" className="space-y-6">
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
-                  <CardTitle className="text-base font-semibold flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <FileText className="h-6 w-6 text-primary" />
-                    </div>
-                    Historial Médico
-                  </CardTitle>
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <CardTitle className="text-base font-semibold flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-primary/10">
+                        <FileText className="h-6 w-6 text-primary" />
+                      </div>
+                      Historial Médico
+                    </CardTitle>
+                    <Dialog open={hxOpen} onOpenChange={setHxOpen}>
+                      <DialogTrigger asChild>
+                        <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                          <FileText className="mr-2 h-4 w-4" />
+                          Agregar entrada
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-lg">
+                        <DialogHeader>
+                          <DialogTitle>Agregar entrada al historial</DialogTitle>
+                          <DialogDescription>
+                            Para {patient?.firstName} {patient?.lastName}. El paciente la verá en su historial.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-2">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label>Tipo *</Label>
+                              <Select value={hx.type} onValueChange={(v) => setHx({ ...hx, type: v })}>
+                                <SelectTrigger className="border"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="DIAGNOSIS">Diagnóstico</SelectItem>
+                                  <SelectItem value="CONSULTATION">Consulta</SelectItem>
+                                  <SelectItem value="TREATMENT">Tratamiento</SelectItem>
+                                  <SelectItem value="TEST_RESULT">Resultado de examen</SelectItem>
+                                  <SelectItem value="SURGERY">Cirugía</SelectItem>
+                                  <SelectItem value="HOSPITALIZATION">Hospitalización</SelectItem>
+                                  <SelectItem value="FOLLOW_UP">Seguimiento</SelectItem>
+                                  <SelectItem value="OTHER">Otro</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="hx-date">Fecha *</Label>
+                              <Input id="hx-date" type="date" value={hx.date}
+                                onChange={(e) => setHx({ ...hx, date: e.target.value })} />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="hx-title">Título *</Label>
+                            <Input id="hx-title" placeholder="Ej: TAC de tórax de control" value={hx.title}
+                              onChange={(e) => setHx({ ...hx, title: e.target.value })} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="hx-desc">Descripción (opcional)</Label>
+                            <Textarea id="hx-desc" rows={3} placeholder="Detalles clínicos relevantes…"
+                              value={hx.description} onChange={(e) => setHx({ ...hx, description: e.target.value })} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="hx-cat">Categoría (opcional)</Label>
+                            <Input id="hx-cat" placeholder="Ej: Imagenología" value={hx.category}
+                              onChange={(e) => setHx({ ...hx, category: e.target.value })} />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button variant="outline" className="border" onClick={() => setHxOpen(false)} disabled={hxSaving}>
+                            Cancelar
+                          </Button>
+                          <Button onClick={handleAddEntry} disabled={hxSaving}
+                            className="bg-primary text-primary-foreground hover:bg-primary/90">
+                            {hxSaving ? "Guardando..." : "Agregar"}
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </CardHeader>
                 <CardContent className="p-6">
                   {medicalHistoryEntries.length === 0 ? (

@@ -479,15 +479,16 @@ export interface MarkDoseTakenRequest {
 // MEDICAL HISTORY TYPES
 // ============================================
 
+// Matches the backend CreateHistoryEntryRequest (type=HistoryEntryType,
+// severity=SeverityLevel, category free text — there is no doctorName/specialty).
 export interface CreateHistoryEntryRequest {
-  type: 'DIAGNOSIS' | 'CONSULTATION' | 'TREATMENT' | 'TEST_RESULT' | 'HOSPITALIZATION' | 'SURGERY';
+  type: 'DIAGNOSIS' | 'CONSULTATION' | 'TREATMENT' | 'TEST_RESULT' | 'HOSPITALIZATION' | 'SURGERY' | 'EMERGENCY' | 'FOLLOW_UP' | 'REFERRAL' | 'PRESCRIPTION' | 'VACCINATION' | 'ALLERGY' | 'OTHER';
   date: string;
   title: string;
   description?: string;
-  doctorName?: string;
-  specialty?: string;
+  category?: string;
   documents?: string[];
-  severity?: 'LOW' | 'MEDIUM' | 'HIGH';
+  severity?: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 }
 
 export interface HistoryEntryResponse {
@@ -504,12 +505,15 @@ export interface HistoryEntryResponse {
   createdAt: string;
 }
 
+// Matches the backend CreateAllergyRequest (severity=SeverityLevel LOW..CRITICAL,
+// not MILD/MODERATE/SEVERE — sending those returned 400).
 export interface CreateAllergyRequest {
   allergen: string;
-  type: 'MEDICATION' | 'FOOD' | 'ENVIRONMENTAL' | 'OTHER';
-  severity: 'MILD' | 'MODERATE' | 'SEVERE';
+  type: 'MEDICATION' | 'FOOD' | 'ENVIRONMENTAL' | 'ANIMAL' | 'INSECT' | 'CHEMICAL' | 'OTHER';
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   reaction?: string;
   diagnosedDate?: string;
+  notes?: string;
 }
 
 export interface AllergyResponse {
@@ -1274,7 +1278,8 @@ class ApiClient {
         body: JSON.stringify(data),
       }
     );
-    return response.entry;
+    // The controller returns the created entry directly (not wrapped in {entry}).
+    return response as unknown as HistoryEntryResponse;
   }
 
   async getPatientMedicalHistory(patientProfileId: number): Promise<HistoryEntryResponse[]> {
@@ -1313,7 +1318,8 @@ class ApiClient {
         body: JSON.stringify(data),
       }
     );
-    return response.allergy;
+    // The controller returns the created allergy directly (not wrapped in {allergy}).
+    return response as unknown as AllergyResponse;
   }
 
   async getPatientAllergies(patientProfileId: number): Promise<AllergyResponse[]> {
