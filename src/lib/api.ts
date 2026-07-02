@@ -421,11 +421,11 @@ export interface CreateMedicationRequest {
   name: string;
   dosage: string;
   frequency: string;
-  route: 'ORAL' | 'INTRAVENOUS' | 'INTRAMUSCULAR' | 'SUBCUTANEOUS' | 'TOPICAL';
+  route?: 'ORAL' | 'INTRAVENOUS' | 'INTRAMUSCULAR' | 'SUBCUTANEOUS' | 'TOPICAL';
   startDate: string;
   endDate?: string;
   instructions?: string;
-  sideEffects?: string[];
+  sideEffects?: string; // backend field is a plain String, not an array
 }
 
 export interface UpdateMedicationRequest {

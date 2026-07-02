@@ -11,10 +11,16 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Loading } from "@/components/loading"
+import { useToast } from "@/hooks/use-toast"
 import { useAuthContext } from "@/contexts/auth-context"
 import { doctors, appointments as appointmentsApi, treatments, medicalHistory, medications } from "@/lib/api"
-import type { PatientProfileResponse, AppointmentResponse, TreatmentResponse, HistoryEntryResponse, AllergyResponse, SymptomResponse, MedicationResponse } from "@/lib/api"
+import type { PatientProfileResponse, AppointmentResponse, TreatmentResponse, HistoryEntryResponse, AllergyResponse, SymptomResponse, MedicationResponse, CreateMedicationRequest } from "@/lib/api"
 import { isDoctorUser } from "@/types/organization"
 import { appointmentTypeLabel, treatmentTypeLabel } from "@/lib/labels"
 import {
@@ -98,6 +104,50 @@ export default function PatientDetailsPage() {
   const [medicationsData, setMedicationsData] = useState<MedicationResponse[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
+  const { toast } = useToast()
+
+  // Prescribe-medication dialog
+  const emptyRx = {
+    name: "", dosage: "", frequency: "", route: "ORAL",
+    startDate: new Date().toISOString().slice(0, 10), endDate: "", instructions: "",
+  }
+  const [rxOpen, setRxOpen] = useState(false)
+  const [rxSaving, setRxSaving] = useState(false)
+  const [rx, setRx] = useState(emptyRx)
+
+  const handlePrescribe = async () => {
+    if (!doctorProfileId || !patient) return
+    if (!rx.name.trim() || !rx.dosage.trim() || !rx.frequency.trim() || !rx.startDate) {
+      toast({ title: "Faltan datos", description: "Nombre, dosis, frecuencia y fecha de inicio son obligatorios.", variant: "destructive" })
+      return
+    }
+    setRxSaving(true)
+    try {
+      const payload: CreateMedicationRequest = {
+        name: rx.name.trim(),
+        dosage: rx.dosage.trim(),
+        frequency: rx.frequency.trim(),
+        route: rx.route as CreateMedicationRequest["route"],
+        startDate: rx.startDate,
+        endDate: rx.endDate || undefined,
+        instructions: rx.instructions.trim() || undefined,
+      }
+      await medications.create(doctorProfileId, patient.id, payload)
+      const refreshed = await medications.getPatientMedications(patient.id).catch(() => medicationsData)
+      setMedicationsData(refreshed)
+      setRx(emptyRx)
+      setRxOpen(false)
+      toast({ title: "Medicamento recetado", description: `${payload.name} quedó registrado para ${patient.firstName}.` })
+    } catch (err) {
+      toast({
+        title: "No se pudo recetar",
+        description: err instanceof Error ? err.message : "Error al registrar el medicamento",
+        variant: "destructive",
+      })
+    } finally {
+      setRxSaving(false)
+    }
+  }
 
   useEffect(() => {
     if (user && isDoctorUser(user)) {
@@ -751,11 +801,89 @@ export default function PatientDetailsPage() {
             <TabsContent value="medications" className="space-y-6">
               <Card className="border shadow-sm">
                 <CardHeader className="border-b">
-                  <CardTitle className="flex items-center gap-3 text-base font-semibold">
-                    <div className="rounded-lg bg-primary/10 p-2"><Pill className="h-5 w-5 text-primary" /></div>
-                    Medicamentos
-                  </CardTitle>
-                  <CardDescription className="mt-0.5">Medicación registrada para el paciente</CardDescription>
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <CardTitle className="flex items-center gap-3 text-base font-semibold">
+                        <div className="rounded-lg bg-primary/10 p-2"><Pill className="h-5 w-5 text-primary" /></div>
+                        Medicamentos
+                      </CardTitle>
+                      <CardDescription className="mt-0.5">Medicación registrada para el paciente</CardDescription>
+                    </div>
+                    <Dialog open={rxOpen} onOpenChange={setRxOpen}>
+                      <DialogTrigger asChild>
+                        <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                          <Pill className="mr-2 h-4 w-4" />
+                          Recetar medicamento
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-lg">
+                        <DialogHeader>
+                          <DialogTitle>Recetar medicamento</DialogTitle>
+                          <DialogDescription>
+                            Para {patient?.firstName} {patient?.lastName}. El paciente lo verá en su sección de medicamentos.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-2">
+                          <div className="space-y-2">
+                            <Label htmlFor="rx-name">Medicamento *</Label>
+                            <Input id="rx-name" placeholder="Ej: Pembrolizumab" value={rx.name}
+                              onChange={(e) => setRx({ ...rx, name: e.target.value })} />
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="rx-dosage">Dosis *</Label>
+                              <Input id="rx-dosage" placeholder="Ej: 200 mg" value={rx.dosage}
+                                onChange={(e) => setRx({ ...rx, dosage: e.target.value })} />
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="rx-freq">Frecuencia *</Label>
+                              <Input id="rx-freq" placeholder="Ej: Cada 8 horas" value={rx.frequency}
+                                onChange={(e) => setRx({ ...rx, frequency: e.target.value })} />
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label>Vía de administración</Label>
+                              <Select value={rx.route} onValueChange={(v) => setRx({ ...rx, route: v })}>
+                                <SelectTrigger className="border"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="ORAL">Oral</SelectItem>
+                                  <SelectItem value="INTRAVENOUS">Intravenosa</SelectItem>
+                                  <SelectItem value="INTRAMUSCULAR">Intramuscular</SelectItem>
+                                  <SelectItem value="SUBCUTANEOUS">Subcutánea</SelectItem>
+                                  <SelectItem value="TOPICAL">Tópica</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="rx-start">Inicio *</Label>
+                              <Input id="rx-start" type="date" value={rx.startDate}
+                                onChange={(e) => setRx({ ...rx, startDate: e.target.value })} />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="rx-end">Fin (opcional)</Label>
+                            <Input id="rx-end" type="date" value={rx.endDate}
+                              onChange={(e) => setRx({ ...rx, endDate: e.target.value })} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="rx-notes">Instrucciones (opcional)</Label>
+                            <Textarea id="rx-notes" rows={2} placeholder="Ej: Tomar con alimentos"
+                              value={rx.instructions} onChange={(e) => setRx({ ...rx, instructions: e.target.value })} />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button variant="outline" className="border" onClick={() => setRxOpen(false)} disabled={rxSaving}>
+                            Cancelar
+                          </Button>
+                          <Button onClick={handlePrescribe} disabled={rxSaving}
+                            className="bg-primary text-primary-foreground hover:bg-primary/90">
+                            {rxSaving ? "Recetando..." : "Recetar"}
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </CardHeader>
                 <CardContent className="p-6">
                   {medicationsData.length > 0 ? (
