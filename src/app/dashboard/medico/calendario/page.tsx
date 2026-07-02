@@ -318,7 +318,7 @@ export default function CalendarPage() {
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                 Calendario
               </h1>
-              <p className="text-muted-foreground text-lg">
+              <p className="text-sm text-muted-foreground">
                 {format(currentDate, 'MMMM yyyy', { locale: es })} • {appointmentsList.length} {appointmentsList.length === 1 ? 'cita' : 'citas'}
               </p>
             </div>

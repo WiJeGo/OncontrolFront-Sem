@@ -218,7 +218,7 @@ export default function NuevaCitaPage() {
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                 Nueva Cita
               </h1>
-              <p className="text-muted-foreground text-lg">Programa una nueva cita con un paciente</p>
+              <p className="text-sm text-muted-foreground">Programa una nueva cita con un paciente</p>
             </div>
           </div>
 

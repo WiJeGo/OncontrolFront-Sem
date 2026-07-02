@@ -274,7 +274,7 @@ export default function ReportesPage() {
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                 Reportes y Análisis
               </h1>
-              <p className="text-muted-foreground text-lg">Métricas reales de tu práctica médica</p>
+              <p className="text-sm text-muted-foreground">Métricas reales de tu práctica médica</p>
             </div>
             <div className="flex gap-3 flex-wrap">
               {/* The period selector was removed: it never filtered the data

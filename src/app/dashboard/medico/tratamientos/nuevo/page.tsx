@@ -289,7 +289,7 @@ export default function NuevoTratamientoPage() {
                 <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                   Nuevo Tratamiento
                 </h1>
-                <p className="text-muted-foreground text-lg">Registra un nuevo tratamiento oncológico para un paciente</p>
+                <p className="text-sm text-muted-foreground">Registra un nuevo tratamiento oncológico para un paciente</p>
               </div>
           </div>
 

@@ -119,7 +119,7 @@ export default function MedicoPerfilPage() {
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                 Mi Perfil
               </h1>
-              <p className="text-muted-foreground text-lg">Gestiona tu información profesional</p>
+              <p className="text-sm text-muted-foreground">Gestiona tu información profesional</p>
             </div>
             <Button
               variant={isEditing ? "outline" : "default"}

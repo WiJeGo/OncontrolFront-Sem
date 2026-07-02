@@ -144,7 +144,7 @@ export default function NewDoctorPage() {
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Agregar Nuevo Doctor
           </h1>
-          <p className="text-muted-foreground text-lg">Registra un médico en tu organización</p>
+          <p className="text-sm text-muted-foreground">Registra un médico en tu organización</p>
         </div>
 
       <Card className="border shadow-sm">

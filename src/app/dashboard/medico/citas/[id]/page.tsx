@@ -262,7 +262,7 @@ export default function AppointmentDetailsPage() {
                 <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                   Detalles de Cita
                 </h1>
-                <p className="text-muted-foreground text-lg">Información completa de la cita médica</p>
+                <p className="text-sm text-muted-foreground">Información completa de la cita médica</p>
               </div>
               <Badge className={`${getStatusColor(appointment.status)} border px-2.5 py-1 text-xs font-medium`}>
                 {getStatusText(appointment.status)}

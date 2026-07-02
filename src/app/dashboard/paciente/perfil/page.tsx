@@ -136,7 +136,7 @@ export default function PacientePerfilPage() {
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                 Mi Perfil
               </h1>
-              <p className="text-muted-foreground text-lg">Gestiona tu información personal</p>
+              <p className="text-sm text-muted-foreground">Gestiona tu información personal</p>
             </div>
             <Button
               variant={isEditing ? "outline" : "default"}

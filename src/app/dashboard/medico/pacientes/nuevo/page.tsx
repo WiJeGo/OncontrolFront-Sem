@@ -234,7 +234,7 @@ export default function NuevoPacientePage() {
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                 Registrar Nuevo Paciente
               </h1>
-              <p className="text-muted-foreground text-lg">Complete la información del paciente</p>
+              <p className="text-sm text-muted-foreground">Complete la información del paciente</p>
             </div>
           </div>
 

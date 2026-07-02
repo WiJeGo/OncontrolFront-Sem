@@ -175,7 +175,7 @@ export default function NuevaCitaPage() {
                     <h3 className="text-lg font-semibold mb-3 text-foreground">
                       ¡Solicitud Enviada!
                     </h3>
-                    <p className="text-muted-foreground text-lg font-medium">
+                    <p className="text-sm text-muted-foreground font-medium">
                       Tu solicitud de cita ha sido enviada exitosamente. El doctor la revisará y te contactará pronto.
                     </p>
                   </div>
@@ -423,7 +423,7 @@ export default function NuevaCitaPage() {
               </Button>
               <Button 
                 type="submit" 
-                className="oncontrol-gradient text-white"
+                className="bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
                 disabled={!isFormValid || isSubmitting}
               >
                 {isSubmitting ? (

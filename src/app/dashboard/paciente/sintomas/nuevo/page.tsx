@@ -210,7 +210,7 @@ export default function NuevoSintomaPage() {
               <h1 className="text-2xl font-semibold tracking-tight text-foreground">
                 Reportar Síntoma
               </h1>
-              <p className="text-muted-foreground text-lg">Registra un nuevo síntoma para tu seguimiento médico</p>
+              <p className="text-sm text-muted-foreground">Registra un nuevo síntoma para tu seguimiento médico</p>
             </div>
           </div>
 
